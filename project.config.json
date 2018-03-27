@@ -8,8 +8,8 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.9.91",
-	"appid": "wx2106966b95439a3b",
+	"libVersion": "1.9.94",
+	"appid": "wxdc4a9273d9513ce8",
 	"projectname": "hanabi",
 	"isGameTourist": false,
 	"condition": {
