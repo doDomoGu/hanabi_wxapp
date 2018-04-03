@@ -8,6 +8,7 @@ Page({
     userInfo: {},
     userId: null,
     hasUserInfo: false,
+    roomList: [],
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
   //事件处理函数
@@ -56,10 +57,13 @@ Page({
     })
   },
   getRoom: function() {
+    console.log(this)
     wx.request({
       url: app.globalData.apiBaseUrl + '/room?accessToken=' + (wx.getStorageSync('token') || ''),
       success: function (res) {
-        console.log(res);
+        if (res.data) {
+          console.log(res.data)
+        }
         // if (res.data && res.data.success) {
         //   //获得 请求接口需要用到的token
         //   wx.setStorageSync('token', res.data.token)
