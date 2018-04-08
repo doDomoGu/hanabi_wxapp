@@ -12,8 +12,11 @@ Page({
     hasUserInfo: false,
     isInRoom: false,
     isInGame: false,
+    width: 0,
+    height: 0,
+    ratio: 1,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    apiBaseUrl: "http://192.168.0.100:8889/v1"
+    apiBaseUrl: "http://192.168.31.176:8889/v1"
   },
   //事件处理函数
   bindViewTap: function() {
@@ -23,24 +26,53 @@ Page({
   },
 
   onLoad: function () {
-    // const ctx = wx.createCanvasContext('myCanvas')
+    const that = this
+    
+
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          width: res.windowWidth,
+          height: res.windowHeight,
+          ratio: res.pixelRatio
+        })
+        // that.radius = 105 / 602 * that.height
+        // console.log(res.model)
+        // console.log(res.pixelRatio)
+        // console.log(res.windowWidth)
+        // console.log(res.windowHeight)
+        // console.log(res.language)
+        // console.log(res.version)
+        // console.log(res.platform)
+      }
+    })
+// const ctx = wx.createCanvasContext('myCanvas')
     //
     // ctx.draw()
-
-
-    const that = this
-
-
     let token = wx.getStorageSync('token') || ''
 
     if (token !== '') {
+      that.wxauth(token).then(function(res){
+        console.log(56)
+        console.log(res)
+      }).catch(error => console.log(error))
+    }else{
+      that.login()
+    }
+    console.log(76)
+  },
+
+  wxauth: function (token) {
+    const that = this
+    return new Promise(function (resolve, reject) {
       wx.request({
-        url: this.data.apiBaseUrl + '/wxauth?token=' + token,
+        url: that.data.apiBaseUrl + '/wxauth?token=' + token,
         success: function (res) {
-          console.log(40);
+          console.log('#41')
           console.log(res)
           if (res.data && res.data.success) {
-            console.log(43)
+            console.log('#44')
+
             //获得 请求接口需要用到的token
             // wx.setStorageSync('token', res.data.token)
             // //获得 用户ID
@@ -48,48 +80,59 @@ Page({
             //   userId: res.data.userid,
             //   motto: that.data.motto + '(' + res.data.userid + ')'
             // })
-
+            resolve({a:1});
             //that.getRoom()
           } else {
             wx.removeStorageSync('token')
-            console.log(55)
-            that.login()
+            console.log('#56')
+            reject({b:2})
+            //that.login()
+            console.log('#58')
           }
+
+          console.log('#61')
         }
       })
-    }else{
-      that.login()
-    }
+    })
   },
+
   login: function () {
     const that = this
     // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-        console.log(69)
-        console.log(res)
-        wx.request({
-          url: this.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
-          success: function (res) {
-            if (res.data && res.data.success) {
-              //获得 请求接口需要用到的token
-              wx.setStorageSync('token', res.data.token)
-              //获得 用户ID
-              that.setData({
-                userId: res.data.userid,
-                motto: that.data.motto + '(' + res.data.userid + ')'
-              })
+    console.log(75)
+    return new Promise(function (resolve, reject) {
+      wx.login({
+        success: res => {
+          // 发送 res.code 到后台换取 openId, sessionKey, unionId
+          console.log('#79')
+          console.log(res)
+          wx.request({
+            url: that.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
+            success: function (res) {
+              if (res.data && res.data.success) {
+                console.log('##85')
+                //获得 请求接口需要用到的token
+                wx.setStorageSync('token', res.data.token)
+                //获得 用户ID
+                that.setData({
+                  userId: res.data.userid,
+                  motto: that.data.motto + '(' + res.data.userid + ')'
+                })
 
-              //that.getRoom()
+                //that.getRoom()
+
+                resolve()
+              }
             }
-          }
-        })
-      },
-      fail : res => {
-        console.log('login fail')
-        console.log(res)
-      }
+          })
+
+          console.log('#99')
+        },
+        fail : res => {
+          console.log('login fail')
+          console.log(res)
+        }
+      })
     })
   },
   /**

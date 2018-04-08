@@ -1,8 +1,8 @@
 App({
-  globalData : {
-    apiBaseUrl: "http://192.168.0.100:8889/v1",
+  // globalData : {
+  //   apiBaseUrl: "http://192.168.0.100:8889/v1",
 
-  },
+  // },
   onLaunch: function () {
     // let that = this
     // wx.login({
