@@ -1,13 +1,16 @@
 <!--index.wxml-->
 <view class="container">
   <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
+    <block wx:if="{{userInfoShow && !hasUserInfo}}">
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
-  <view class="usermotto">
+  <canvas wx:if="{{!isInRoom && !isInGame}}" canvas-id="roomCanvas" style=" border:1px solid #d3d3d3;background:#eeceee;" />
+  <canvas wx:if="{{isInRoom && !isInGame}}" canvas-id="myRoomCanvas" style=" border:1px solid #d3d3d3;background:#eeeeee;" />
+  <canvas wx:if="{{isInRoom && isInGame}}" canvas-id="myGameCanvas" style=" border:1px solid #d3d3d3;background:#aeeeee;" />
+
+  <view wx:if="{{userMottoShow}}" class="usermotto">
     <text class="user-motto">{{motto}}</text>
   </view>
 </view>

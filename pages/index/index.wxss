@@ -16,6 +16,10 @@
   color: #aaa;
 }
 
+/* .canvas-view {
+  height:200rpx;
+} */
+
 .usermotto {
   margin-top: 200px;
 }
