@@ -32,13 +32,15 @@ Page({
 
 
     let token = wx.getStorageSync('token') || ''
-    console.log(token)
-    if (token != '') {
+
+    if (token !== '') {
       wx.request({
         url: this.data.apiBaseUrl + '/wxauth?token=' + token,
         success: function (res) {
+          console.log(40);
+          console.log(res)
           if (res.data && res.data.success) {
-            console.log(41)
+            console.log(43)
             //获得 请求接口需要用到的token
             // wx.setStorageSync('token', res.data.token)
             // //获得 用户ID
@@ -50,41 +52,46 @@ Page({
             //that.getRoom()
           } else {
             wx.removeStorageSync('token')
+            console.log(55)
+            that.login()
           }
         }
       })
     }else{
-      // 登录
-      wx.login({
-        success: res => {
-          // 发送 res.code 到后台换取 openId, sessionKey, unionId
-          console.log(61)
-          console.log(res)
-          wx.request({
-            url: this.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
-            success: function (res) {
-              if (res.data && res.data.success) {
-                //获得 请求接口需要用到的token
-                wx.setStorageSync('token', res.data.token)
-                //获得 用户ID
-                that.setData({
-                  userId: res.data.userid,
-                  motto: that.data.motto + '(' + res.data.userid + ')'
-                })
-
-                //that.getRoom()
-              }
-            }
-          })
-        },
-        fail : res => {
-          console.log('login fail')
-          console.log(res)
-        }
-      })
+      that.login()
     }
   },
+  login: function () {
+    const that = this
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        console.log(69)
+        console.log(res)
+        wx.request({
+          url: this.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
+          success: function (res) {
+            if (res.data && res.data.success) {
+              //获得 请求接口需要用到的token
+              wx.setStorageSync('token', res.data.token)
+              //获得 用户ID
+              that.setData({
+                userId: res.data.userid,
+                motto: that.data.motto + '(' + res.data.userid + ')'
+              })
 
+              //that.getRoom()
+            }
+          }
+        })
+      },
+      fail : res => {
+        console.log('login fail')
+        console.log(res)
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
