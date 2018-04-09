@@ -27,113 +27,154 @@ Page({
 
   onLoad: function () {
     const that = this
-    
 
-    wx.getSystemInfo({
-      success: function (res) {
-        that.setData({
-          width: res.windowWidth,
-          height: res.windowHeight,
-          ratio: res.pixelRatio
-        })
-        // that.radius = 105 / 602 * that.height
-        // console.log(res.model)
-        // console.log(res.pixelRatio)
-        // console.log(res.windowWidth)
-        // console.log(res.windowHeight)
-        // console.log(res.language)
-        // console.log(res.version)
-        // console.log(res.platform)
-      }
-    })
-// const ctx = wx.createCanvasContext('myCanvas')
-    //
-    // ctx.draw()
-    let token = wx.getStorageSync('token') || ''
+    // 1.登录验证 （获得用户ID）
+    that.login()
+    // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
 
-    if (token !== '') {
-      that.wxauth(token).then(function(res){
-        console.log(56)
-        console.log(res)
-      }).catch(error => console.log(error))
-    }else{
-      that.login()
-    }
-    console.log(76)
+
+
+
+    /*const ctx = wx.createCanvasContext('myCanvas')
+    that.canvasInit().then(function() {
+
+    })*/
   },
-
-  wxauth: function (token) {
+  // 画布初始化 ：获得并设置高度/宽度/像素比
+  canvasInit: function () {
     const that = this
     return new Promise(function (resolve, reject) {
-      wx.request({
-        url: that.data.apiBaseUrl + '/wxauth?token=' + token,
+      wx.getSystemInfo({
         success: function (res) {
-          console.log('#41')
-          console.log(res)
-          if (res.data && res.data.success) {
-            console.log('#44')
-
-            //获得 请求接口需要用到的token
-            // wx.setStorageSync('token', res.data.token)
-            // //获得 用户ID
-            // that.setData({
-            //   userId: res.data.userid,
-            //   motto: that.data.motto + '(' + res.data.userid + ')'
-            // })
-            resolve({a:1});
-            //that.getRoom()
-          } else {
-            wx.removeStorageSync('token')
-            console.log('#56')
-            reject({b:2})
-            //that.login()
-            console.log('#58')
-          }
-
-          console.log('#61')
+          that.setData({
+            width : res.windowWidth,
+            height: res.windowHeight,
+            ratio : res.pixelRatio
+          })
+          // that.radius = 105 / 602 * that.height
+          // console.log(res.model)
+          // console.log(res.pixelRatio)
+          // console.log(res.windowWidth)
+          // console.log(res.windowHeight)
+          // console.log(res.language)
+          // console.log(res.version)
+          // console.log(res.platform)
+          resolve()
         }
       })
     })
   },
 
+
+  // 微信登录验证
   login: function () {
     const that = this
-    // 登录
-    console.log(75)
-    return new Promise(function (resolve, reject) {
-      wx.login({
-        success: res => {
-          // 发送 res.code 到后台换取 openId, sessionKey, unionId
-          console.log('#79')
-          console.log(res)
+
+    // 使用本地储存的token进行验证
+    let checkToken = function () {
+      return new Promise(function (resolve, reject) {
+        let token = wx.getStorageSync('token') || ''
+        if (token!==''){
+          console.log('token存在，开始验证')
           wx.request({
-            url: that.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
-            success: function (res) {
+            url: that.data.apiBaseUrl + '/wxauth?token=' + token,
+            success: res => {
               if (res.data && res.data.success) {
-                console.log('##85')
                 //获得 请求接口需要用到的token
-                wx.setStorageSync('token', res.data.token)
-                //获得 用户ID
-                that.setData({
-                  userId: res.data.userid,
-                  motto: that.data.motto + '(' + res.data.userid + ')'
-                })
-
-                //that.getRoom()
-
-                resolve()
+                // wx.setStorageSync('token', res.data.token)
+                // //获得 用户ID
+                // that.setData({
+                //   userId: res.data.userid,
+                //   motto: that.data.motto + '(' + res.data.userid + ')'
+                // })
+                console.log('token验证成功')
+                resolve({result:'success',user_id:res.data.user_id})
+              } else {
+                console.log('token验证失败')
+                wx.removeStorageSync('token')
+                resolve({result:'fail',error:'wrong_token'})
               }
+            },
+            fail: error => {
+              reject(error)
             }
           })
-
-          console.log('#99')
-        },
-        fail : res => {
-          console.log('login fail')
-          console.log(res)
+        }else{
+          console.log('token不存在')
+          resolve({result:'fail',error:'empty_token'})
         }
       })
+    }
+
+    let codeAuth = function () {
+      // 登录
+      return new Promise(function (resolve, reject) {
+        console.log('开始 请求获得code')
+        wx.login({
+          success: res => {
+            // 发送 res.code 到后台换取 openId, sessionKey, unionId
+            console.log('获得code :'+ res.code )
+            //console.log(res)
+
+            console.log('开始 请求code换取token')
+            wx.request({
+              url: that.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
+              success: function (res) {
+                if (res.data && res.data.success) {
+
+                  //获得 请求接口需要用到的token
+                  wx.setStorageSync('token', res.data.token)
+                  //获得 用户ID
+                  that.setData({
+                    userId: res.data.user_id,
+                    motto: that.data.motto + '(' + res.data.user_id + ')'
+                  })
+
+                  //that.getRoom()
+
+                  resolve({result:'success',user_id:res.data.user_id})
+                }
+              },
+              fail: error => {
+                  reject(error)
+              }
+            })
+          },
+          fail : error => {
+            console.log(error)
+            reject(error)
+          }
+        })
+      })
+    }
+
+
+    console.log('开始')
+
+    checkToken().then(function(res){
+      if(res.result === 'success'){
+        console.log('153 返回userid')
+        return res
+      } else {
+        return codeAuth()
+      }
+    }).then(function(res){
+      console.log(res)
+      console.log('打印 userid :' +   res.user_id)
+      console.log('结束')
+    }).catch(function(error){
+      console.log('有错')
+      console.log(error)
+
+
+      //wx.removeStorageSync('token')
     })
+   /* }else{
+      that.login()
+    }*/
+
+
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
