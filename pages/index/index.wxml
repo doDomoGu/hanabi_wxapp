@@ -6,9 +6,19 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
-  <canvas wx:if="{{!isInRoom && !isInGame}}" canvas-id="roomCanvas" style=" border:1px solid #d3d3d3;background:#eeceee;height:{{height}}px;width:{{width}}px;" />
-  <canvas wx:if="{{isInRoom && !isInGame}}" canvas-id="myRoomCanvas" style=" border:1px solid #d3d3d3;background:#eeeeee;" />
-  <canvas wx:if="{{isInRoom && isInGame}}" canvas-id="myGameCanvas" style=" border:1px solid #d3d3d3;background:#aeeeee;" />
+  <view style="z-index:100;position:absolute;width:100%;bottom:0">
+  <button bindtap="bindButtonTap" disabled="{{!isInRoom && !isInGame}}" data-page="1">房间列表</button>
+  <button bindtap="bindButtonTap" disabled="{{isInRoom && !isInGame}}"data-page="2">房间页面</button>
+  <button bindtap="bindButtonTap" disabled="{{isInRoom && isInGame}}"data-page="3">游戏页面</button>
+  </view>
+
+
+
+  <canvas wx:if="{{!isInRoom && !isInGame}}" canvas-id="roomListCanvas" style=" border:1px solid #d3d3d3;background:#eeceee;height:{{height}}px;width:{{width}}px;" />
+
+  <canvas wx:if="{{isInRoom && !isInGame}}" canvas-id="myRoomCanvas" style=" border:1px solid #d3d3d3;background:#eeeeee;height:{{height}}px;width:{{width}}px;" />
+
+  <canvas wx:if="{{isInRoom && isInGame}}" canvas-id="myGameCanvas" style=" border:1px solid #d3d3d3;background:#aeeeee;height:{{height}}px;width:{{width}}px;" />
 
   <view wx:if="{{userMottoShow}}" class="usermotto">
     <text class="user-motto">{{motto}}</text>

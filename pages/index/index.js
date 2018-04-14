@@ -24,12 +24,41 @@ Page({
       url: '../logs/logs'
     })
   },
+  bindButtonTap: function(r,a,b) {
+    const page = r.currentTarget.dataset.page
+    var isInRoom
+    var isInGame
+    if (page == 1){
+      isInRoom = false
+      isInGame = false
+    } else if(page == 2){
+      isInRoom = true
+      isInGame = false
+    } else if(page == 3){
+      isInRoom = true
+      isInGame = true
+    }
+
+    this.setData({
+      isInRoom: isInRoom,
+      isInGame: isInGame
+    })
+  },
 
   onLoad: function () {
     const that = this
 
+    this.canvasInit()
+
+
+
     // 1.登录验证 （获得用户ID）
-    that.login()
+    console.log('step 1')
+    that.login().then(function(res){
+      console.log(res)
+      console.log('step 2')
+    })
+
     // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
 
 
@@ -59,6 +88,20 @@ Page({
           // console.log(res.language)
           // console.log(res.version)
           // console.log(res.platform)
+
+          // const ctxRoomList = wx.createCanvasContext('roomListCanvas')
+          // const ctxMyRoom = wx.createCanvasContext('myRoomCanvas')
+          // const ctxMyGame = wx.createCanvasContext('myGameCanvas')
+
+
+
+
+
+          /*that.canvasInit().then(function() {
+
+          })*/
+
+
           resolve()
         }
       })
@@ -150,28 +193,33 @@ Page({
 
 
     console.log('开始')
+    return new Promise(function (resolve, reject) {
+      checkToken().then(function(res){
+        if(res.result === 'success'){
+          console.log('153 返回userid')
+          return res
+        } else {
+          return codeAuth()
+        }
+      }).then(function(res){
+        console.log(res)
+        console.log('打印 userid :' +   res.user_id)
+        console.log('结束')
+        resolve()
+      }).catch(function(error){
+        console.log('有错')
+        console.log(error)
 
-    checkToken().then(function(res){
-      if(res.result === 'success'){
-        console.log('153 返回userid')
-        return res
-      } else {
-        return codeAuth()
-      }
-    }).then(function(res){
-      console.log(res)
-      console.log('打印 userid :' +   res.user_id)
-      console.log('结束')
-    }).catch(function(error){
-      console.log('有错')
-      console.log(error)
+
+        //wx.removeStorageSync('token')
+      })
+      /* }else{
+         that.login()
+       }*/
 
 
-      //wx.removeStorageSync('token')
     })
-   /* }else{
-      that.login()
-    }*/
+
 
 
 
