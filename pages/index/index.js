@@ -16,7 +16,7 @@ Page({
     height: 0,
     ratio: 1,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    apiBaseUrl: "http://192.168.0.110:8889/v1",
+    apiBaseUrl: "http://192.168.31.176:8889/v1",
     roomList:[],
     canvasParam: {
       topLeftPad: 0,
@@ -32,11 +32,13 @@ Page({
       console.log('step 2')
       return that.getStatus()
     }).then(function(){
-      console.log(that.data.isInRoom)
-      console.log(that.data.isInGame)
       return that.canvasInit()
     }).then(function(){
-      return that.drawRoomList()
+      if(that.data.isInRoom===false){
+        that.drawRoomList()
+      }
+
+
     })
 
 
@@ -165,7 +167,7 @@ Page({
   canvasInit: function () {
     const that = this
     return new Promise(function (resolve, reject) {
-      setTimeout(function(){
+      //setTimeout(function(){
         wx.getSystemInfo({
           success: function (res) {
             that.setData({
@@ -206,7 +208,7 @@ Page({
             resolve()
           }
         })
-      },2000)
+      //},100)
 
     })
   },
@@ -333,35 +335,61 @@ Page({
   },
   getRoomList: function() {
     const that = this
+    return new Promise(function (resolve, reject) {
+      wx.request({
+        url: that.data.apiBaseUrl + '/room?token=' + (wx.getStorageSync('token') || ''),
+        success: function (res) {
+          if (res.data) {
+            that.setData({
+              roomList : res.data
+            })
+          }
+          // if (res.data && res.data.success) {
+          //   //获得 请求接口需要用到的token
+          //   wx.setStorageSync('token', res.data.token)
+          //   //获得 用户ID
+          //   that.setData({
+          //     userId: res.data.userid,
+          //     motto: that.data.motto + '(' + res.data.userid + ')'
+          //   })
 
-    wx.request({
-      url: that.data.apiBaseUrl + '/room?accessToken=' + (wx.getStorageSync('token') || ''),
-      success: function (res) {
-        if (res.data) {
-          console.log(res.data)
+          //   that.getRoom()
+          // }
+          resolve()
         }
-        // if (res.data && res.data.success) {
-        //   //获得 请求接口需要用到的token
-        //   wx.setStorageSync('token', res.data.token)
-        //   //获得 用户ID
-        //   that.setData({
-        //     userId: res.data.userid,
-        //     motto: that.data.motto + '(' + res.data.userid + ')'
-        //   })
-
-        //   that.getRoom()
-        // }
-      }
+      })
     })
 
   },
   drawRoomList: function() {
-    const ctx = wx.createCanvasContext('roomListCanvas')
-    const p = this.data.canvasParam
-    ctx.setFillStyle("#ffffff");
-    ctx.rect(p.topLeftPad,5,p.topWidth,15)
-    ctx.fill()
-    ctx.draw(true);
+    const that = this
+    that.getRoomList().then(function(){
+      const ctx = wx.createCanvasContext('roomListCanvas')
+      const p = that.data.canvasParam
+      ctx.setFillStyle("#ffffff");
+      ctx.rect(p.topLeftPad,5,p.topWidth,320)
+      ctx.fill()
+
+
+      const roomList = that.data.roomList
+      ctx.setFillStyle("#ff0000");
+      ctx.setFontSize(20)
+      //ctx.setTextAlign('left')
+      for(let i=0; i < roomList.length; i++){
+        let id = roomList[i].id
+        id = id < 10 ? '00' + id : '0' + id
+        let title = roomList[i].title
+
+        ctx.fillText(id, p.topLeftPad + 20, 30 + 30 * i)
+        ctx.fillText(title, 200, 30 + 30 * i)
+
+
+      }
+
+      ctx.draw(true);
+    })
+
+
   },
 
   /**
