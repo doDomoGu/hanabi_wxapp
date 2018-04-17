@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container">
+<view class="container {{containerClass}}">
   <view class="userinfo">
     <block wx:if="{{userInfoShow && !hasUserInfo}}">
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
@@ -14,11 +14,11 @@
 
 
 
-  <canvas wx:if="{{!isInRoom && !isInGame}}" canvas-id="roomListCanvas" style=" border:1px solid #d3d3d3;background:#eeceee;height:{{height}}px;width:{{width}}px;" />
+  <canvas wx:if="{{!isInRoom && !isInGame}}" canvas-id="roomListCanvas" style=" border:1px solid #d3d3d3;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
 
-  <canvas wx:if="{{isInRoom && !isInGame}}" canvas-id="myRoomCanvas" style=" border:1px solid #d3d3d3;background:#eeeeee;height:{{height}}px;width:{{width}}px;" />
+  <canvas wx:if="{{isInRoom && !isInGame}}" canvas-id="myRoomCanvas" style=" border:1px solid #d3d3d3;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
 
-  <canvas wx:if="{{isInRoom && isInGame}}" canvas-id="myGameCanvas" style=" border:1px solid #d3d3d3;background:#aeeeee;height:{{height}}px;width:{{width}}px;" />
+  <canvas wx:if="{{isInRoom && isInGame}}" canvas-id="myGameCanvas" style=" border:1px solid #d3d3d3;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
 
   <view wx:if="{{userMottoShow}}" class="usermotto">
     <text class="user-motto">{{motto}}</text>

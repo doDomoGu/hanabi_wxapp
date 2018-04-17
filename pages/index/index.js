@@ -4,6 +4,12 @@
 
 Page({
   data: {
+    //apiBaseUrl: "http://192.168.31.176:8889/v1",
+    apiBaseUrl: "http://192.168.0.110:8889/v1",
+    //apiBaseUrl: "https://api.hanabi8.com/v1",
+
+    containerClass:'',
+
     motto: 'Hello World',
     userInfoShow: false,
     userMottoShow: false,
@@ -12,13 +18,12 @@ Page({
     hasUserInfo: false,
     isInRoom: false,
     isInGame: false,
-    width: 0,
-    height: 0,
-    ratio: 1,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    apiBaseUrl: "http://192.168.31.176:8889/v1",
     roomList:[],
     canvasParam: {
+      width: 0,
+      height: 0,
+      ratio: 1,
       topLeftPad: 0,
       topWidth: 0,
     }
@@ -26,12 +31,25 @@ Page({
   onLoad: function () {
     const that = this
     // 1.登录验证 （获得用户ID）
-    console.log('step 1')
     that.login().then(function(){
       // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
-      console.log('step 2')
       return that.getStatus()
     }).then(function(){
+      let containerClass = ''
+      if(that.data.isInRoom){
+        if(that.data.isInGame){
+          containerClass = 'inGame'
+        }else{
+          containerClass = 'inRoom'
+        }
+      }else{
+        containerClass = 'notInRoom'
+      }
+      that.setData({
+        'containerClass' : containerClass
+      })
+
+      // 3.初始化画布 (获取宽/高/像素比)
       return that.canvasInit()
     }).then(function(){
       if(that.data.isInRoom===false){
@@ -68,20 +86,25 @@ Page({
 
     let isInRoom
     let isInGame
+    let containerClass = ''
     if (page === 1){
       isInRoom = false
       isInGame = false
+      containerClass = 'notInRoom'
     } else if(page === 2){
       isInRoom = true
       isInGame = false
+      containerClass = 'inRoom'
     } else if(page === 3){
       isInRoom = true
       isInGame = true
+      containerClass = 'inGame'
     }
 
     this.setData({
       isInRoom: isInRoom,
-      isInGame: isInGame
+      isInGame: isInGame,
+      containerClass: containerClass
     })
   },
   //
@@ -167,49 +190,27 @@ Page({
   canvasInit: function () {
     const that = this
     return new Promise(function (resolve, reject) {
-      //setTimeout(function(){
         wx.getSystemInfo({
           success: function (res) {
-            that.setData({
-              width : res.windowWidth,
-              height: res.windowHeight,
-              ratio : res.pixelRatio
-            })
+
 
             let p = that.data.canvasParam
-            const ratio = that.data.ratio
-            const width = that.data.width
+
+            const width = res.windowWidth
+            const height = res.windowHeight
+            const ratio = res.pixelRatio
+
+            p.width = width
+            p.height = height
+            p.ratio = ratio
             p.topLeftPad = 10 * ratio // 左侧pad
             p.topWidth = width - p.topLeftPad * 2 // 去除左右pad后的宽度
             that.setData({
-              canvasPararm : p
+              canvasParam : p
             })
-            // that.radius = 105 / 602 * that.height
-            // console.log(res.model)
-            // console.log(res.pixelRatio)
-            // console.log(res.windowWidth)
-            // console.log(res.windowHeight)
-            // console.log(res.language)
-            // console.log(res.version)
-            // console.log(res.platform)
-            //console.log(that.data.canvasParam)
-
-
-
-            // context.setFillStyle("#ff00ff");
-            // context.setStrokeStyle("#00ffff");
-            //
-            // context.rect(50,50,100,100)
-            // context.fill()
-            // context.stroke()
-
-            //ctx.stroke();
-
             resolve()
           }
         })
-      //},100)
-
     })
   },
 
