@@ -35,43 +35,13 @@ Page({
       // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
       return that.getStatus()
     }).then(function(){
-      let containerClass = ''
-      if(that.data.isInRoom){
-        if(that.data.isInGame){
-          containerClass = 'inGame'
-        }else{
-          containerClass = 'inRoom'
-        }
-      }else{
-        containerClass = 'notInRoom'
-      }
-      that.setData({
-        'containerClass' : containerClass
-      })
-
       // 3.初始化画布 (获取宽/高/像素比)
       return that.canvasInit()
     }).then(function(){
       if(that.data.isInRoom===false){
         that.drawRoomList()
       }
-
-
     })
-
-
-
-
-    //获取房间列表
-    //this.getRoomList()
-
-
-
-
-    /*const ctx = wx.createCanvasContext('myCanvas')
-    that.canvasInit().then(function() {
-
-    })*/
   },
 
 
@@ -86,25 +56,20 @@ Page({
 
     let isInRoom
     let isInGame
-    let containerClass = ''
     if (page === 1){
       isInRoom = false
       isInGame = false
-      containerClass = 'notInRoom'
     } else if(page === 2){
       isInRoom = true
       isInGame = false
-      containerClass = 'inRoom'
     } else if(page === 3){
       isInRoom = true
       isInGame = true
-      containerClass = 'inGame'
     }
 
     this.setData({
       isInRoom: isInRoom,
-      isInGame: isInGame,
-      containerClass: containerClass
+      isInGame: isInGame
     })
   },
   //
@@ -192,14 +157,10 @@ Page({
     return new Promise(function (resolve, reject) {
         wx.getSystemInfo({
           success: function (res) {
-
-
-            let p = that.data.canvasParam
-
             const width = res.windowWidth
             const height = res.windowHeight
             const ratio = res.pixelRatio
-
+            let p = that.data.canvasParam
             p.width = width
             p.height = height
             p.ratio = ratio
@@ -208,6 +169,28 @@ Page({
             that.setData({
               canvasParam : p
             })
+
+            const ctxRL = wx.createCanvasContext('roomListCanvas')
+            const ctxMR = wx.createCanvasContext('myRoomCanvas')
+            const ctxMG = wx.createCanvasContext('myGameCanvas')
+
+            ctxRL.setFillStyle("#333333");
+            ctxRL.setFontSize(20)
+            ctxRL.fillText('room list canvas', p.topLeftPad + 20, 30)
+
+            ctxMR.setFillStyle("#333333");
+            ctxMR.setFontSize(20)
+            ctxMR.fillText('my room canvas', p.topLeftPad + 20, 30)
+
+            ctxMG.setFillStyle("#333333");
+            ctxMG.setFontSize(20)
+            ctxMG.fillText('my game canvas', p.topLeftPad + 20, 30)
+
+
+            ctxRL.draw(true)
+            ctxMR.draw(true)
+            ctxMG.draw(true)
+
             resolve()
           }
         })
@@ -368,7 +351,7 @@ Page({
       const ctx = wx.createCanvasContext('roomListCanvas')
       const p = that.data.canvasParam
       ctx.setFillStyle("#ffffff");
-      ctx.rect(p.topLeftPad,5,p.topWidth,320)
+      ctx.rect(p.topLeftPad,70,p.topWidth,400)
       ctx.fill()
 
 
@@ -381,8 +364,8 @@ Page({
         id = id < 10 ? '00' + id : '0' + id
         let title = roomList[i].title
 
-        ctx.fillText(id, p.topLeftPad + 20, 30 + 30 * i)
-        ctx.fillText(title, 200, 30 + 30 * i)
+        ctx.fillText(id, p.topLeftPad + 20, 100 + 30 * i)
+        ctx.fillText(title, 200, 100 + 30 * i)
 
 
       }

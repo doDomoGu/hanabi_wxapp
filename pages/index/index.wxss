@@ -38,3 +38,7 @@
 .container.inGame {
   background:#ffffdf;
 }
+
+canvas.hidden {
+  display:none;
+}

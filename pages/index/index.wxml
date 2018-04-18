@@ -1,24 +1,27 @@
 <!--index.wxml-->
-<view class="container {{containerClass}}">
+<view class="container {{isInRoom ? ( isInGame ? 'inGame' : 'inRoom' ) : 'notInRoom'}}">
+
   <view class="userinfo">
     <block wx:if="{{userInfoShow && !hasUserInfo}}">
       <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
+
   <view style="z-index:100;position:absolute;width:100%;bottom:0">
-  <button bindtap="bindButtonTap" disabled="{{!isInRoom && !isInGame}}" data-page="1">房间列表</button>
-  <button bindtap="bindButtonTap" disabled="{{isInRoom && !isInGame}}"data-page="2">房间页面</button>
-  <button bindtap="bindButtonTap" disabled="{{isInRoom && isInGame}}"data-page="3">游戏页面</button>
+    <button bindtap="bindButtonTap" disabled="{{!isInRoom && !isInGame}}" data-page="1">房间列表</button>
+    <button bindtap="bindButtonTap" disabled="{{isInRoom && !isInGame}}"data-page="2">房间页面</button>
+    <button bindtap="bindButtonTap" disabled="{{isInRoom && isInGame}}"data-page="3">游戏页面</button>
   </view>
 
 
 
-  <canvas wx:if="{{!isInRoom && !isInGame}}" canvas-id="roomListCanvas" style=" border:1px solid #d3d3d3;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+  <canvas class="{{(!isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="roomListCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
 
-  <canvas wx:if="{{isInRoom && !isInGame}}" canvas-id="myRoomCanvas" style=" border:1px solid #d3d3d3;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+  <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
 
-  <canvas wx:if="{{isInRoom && isInGame}}" canvas-id="myGameCanvas" style=" border:1px solid #d3d3d3;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+
 
   <view wx:if="{{userMottoShow}}" class="usermotto">
     <text class="user-motto">{{motto}}</text>
