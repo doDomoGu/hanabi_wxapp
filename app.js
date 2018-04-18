@@ -1,8 +1,9 @@
 App({
-  // globalData : {
-  //   apiBaseUrl: "http://192.168.0.100:8889/v1",
-
-  // },
+  gData : {
+    //apiBaseUrl: "http://192.168.31.176:8889/v1",
+    apiBaseUrl: "http://192.168.0.110:8889/v1",
+    //apiBaseUrl: "https://api.hanabi8.com/v1",
+  },
   onLaunch: function () {
     // let that = this
     // wx.login({

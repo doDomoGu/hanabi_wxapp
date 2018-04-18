@@ -1,15 +1,10 @@
 //index.js
 //获取应用实例
-//const app = getApp()
+const app = getApp()
 
 Page({
   data: {
-    //apiBaseUrl: "http://192.168.31.176:8889/v1",
-    apiBaseUrl: "http://192.168.0.110:8889/v1",
-    //apiBaseUrl: "https://api.hanabi8.com/v1",
-
     containerClass:'',
-
     motto: 'Hello World',
     userInfoShow: false,
     userMottoShow: false,
@@ -39,7 +34,9 @@ Page({
       return that.canvasInit()
     }).then(function(){
       if(that.data.isInRoom===false){
-        that.drawRoomList()
+        that.getRoomList().then(()=>{
+          that.drawRoomList()
+        })
       }
     })
   },
@@ -81,7 +78,7 @@ Page({
         let token = wx.getStorageSync('token') || ''
         wx.request({
           method: "POST",
-          url: that.data.apiBaseUrl + '/my-room/get-info?token=' + token,
+          url: app.gData.apiBaseUrl + '/my-room/get-info?token=' + token,
           data: {
             mode: 'simple',
             force: true
@@ -105,7 +102,7 @@ Page({
         let token = wx.getStorageSync('token') || ''
         wx.request({
           method: "POST",
-          url: that.data.apiBaseUrl + '/my-game/get-info?token=' + token,
+          url: app.gData.apiBaseUrl + '/my-game/get-info?token=' + token,
           data: {
             mode: 'simple',
             force: true
@@ -187,9 +184,9 @@ Page({
             ctxMG.fillText('my game canvas', p.topLeftPad + 20, 30)
 
 
-            ctxRL.draw(true)
-            ctxMR.draw(true)
-            ctxMG.draw(true)
+            ctxRL.draw()
+            ctxMR.draw()
+            ctxMG.draw()
 
             resolve()
           }
@@ -209,7 +206,7 @@ Page({
         if (token!==''){
           console.log('token存在，开始验证')
           wx.request({
-            url: that.data.apiBaseUrl + '/wxauth?token=' + token,
+            url: app.gData.apiBaseUrl + '/wxauth?token=' + token,
             success: res => {
               if (res.data && res.data.success) {
                 //获得 请求接口需要用到的token
@@ -250,7 +247,7 @@ Page({
 
             console.log('开始 请求code换取token')
             wx.request({
-              url: that.data.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
+              url: app.gData.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
               success: function (res) {
                 if (res.data && res.data.success) {
 
@@ -317,64 +314,52 @@ Page({
 
 
   },
+
   getRoomList: function() {
     const that = this
     return new Promise(function (resolve, reject) {
       wx.request({
-        url: that.data.apiBaseUrl + '/room?token=' + (wx.getStorageSync('token') || ''),
+        url: app.gData.apiBaseUrl + '/room?token=' + (wx.getStorageSync('token') || ''),
         success: function (res) {
           if (res.data) {
             that.setData({
               roomList : res.data
             })
           }
-          // if (res.data && res.data.success) {
-          //   //获得 请求接口需要用到的token
-          //   wx.setStorageSync('token', res.data.token)
-          //   //获得 用户ID
-          //   that.setData({
-          //     userId: res.data.userid,
-          //     motto: that.data.motto + '(' + res.data.userid + ')'
-          //   })
-
-          //   that.getRoom()
-          // }
           resolve()
         }
       })
     })
-
   },
+
   drawRoomList: function() {
     const that = this
-    that.getRoomList().then(function(){
-      const ctx = wx.createCanvasContext('roomListCanvas')
-      const p = that.data.canvasParam
-      ctx.setFillStyle("#ffffff");
-      ctx.rect(p.topLeftPad,70,p.topWidth,400)
-      ctx.fill()
+
+    const ctx = wx.createCanvasContext('roomListCanvas')
+    const p = that.data.canvasParam
+    ctx.setFillStyle("#ffffff");
+    ctx.rect(p.topLeftPad,70,p.topWidth,400)
+    ctx.fill()
 
 
-      const roomList = that.data.roomList
-      ctx.setFillStyle("#ff0000");
-      ctx.setFontSize(20)
-      //ctx.setTextAlign('left')
-      for(let i=0; i < roomList.length; i++){
-        let id = roomList[i].id
-        id = id < 10 ? '00' + id : '0' + id
-        let title = roomList[i].title
+    const roomList = that.data.roomList
+    ctx.setFillStyle("#ff0000");
+    ctx.setFontSize(20)
+    //ctx.setTextAlign('left')
+    for(let i=0; i < roomList.length; i++){
+      let id = roomList[i].id
+      id = id < 10 ? '00' + id : '0' + id
+      let title = roomList[i].title
 
-        ctx.fillText(id, p.topLeftPad + 20, 100 + 30 * i)
-        ctx.fillText(title, 200, 100 + 30 * i)
-
-
-      }
-
-      ctx.draw(true);
-    })
+      ctx.fillText(id, p.topLeftPad + 20, 100 + 30 * i)
+      ctx.fillText(title, 200, 100 + 30 * i)
 
 
+    }
+
+    ctx.draw(true);
   },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成

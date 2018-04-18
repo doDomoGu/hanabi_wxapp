@@ -10,8 +10,8 @@
 
   <view style="z-index:100;position:absolute;width:100%;bottom:0">
     <button bindtap="bindButtonTap" disabled="{{!isInRoom && !isInGame}}" data-page="1">房间列表</button>
-    <button bindtap="bindButtonTap" disabled="{{isInRoom && !isInGame}}"data-page="2">房间页面</button>
-    <button bindtap="bindButtonTap" disabled="{{isInRoom && isInGame}}"data-page="3">游戏页面</button>
+    <button bindtap="bindButtonTap" disabled="{{isInRoom && !isInGame}}" data-page="2">房间页面</button>
+    <button bindtap="bindButtonTap" disabled="{{isInRoom && isInGame}}" data-page="3">游戏页面</button>
   </view>
 
 
