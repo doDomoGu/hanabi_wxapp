@@ -1,6 +1,7 @@
 //index.js
 
 const Api = require('../../utils/api.js')
+const Auth = require('../../utils/auth.js')
 const Draw = require('../../utils/draw.js')
 
 //获取应用实例
@@ -61,7 +62,10 @@ Page({
   onLoad: function () {
     const that = this
     // 1.登录验证 （获得用户ID）
-    that.login().then(function(){
+    Auth.login().then(function(userId){
+      that.setData({
+        userId: userId
+      })
       // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
       return that.getStatus()
     }).then(function(){
@@ -185,134 +189,7 @@ Page({
         }
       })
     })
-
-
-
   },
-
-
-
-  // 微信登录验证
-  login: function () {
-    const that = this
-
-    // 使用本地储存的token进行验证
-    let checkToken = function () {
-      return new Promise(function (resolve, reject) {
-        let token = wx.getStorageSync('token') || ''
-        if (token!==''){
-          console.log('token存在，开始验证')
-          wx.request({
-            url: app.gData.apiBaseUrl + '/wxauth?token=' + token,
-            success: res => {
-              if (res.data && res.data.success) {
-                //获得 请求接口需要用到的token
-                // wx.setStorageSync('token', res.data.token)
-                // //获得 用户ID
-                // that.setData({
-                //   userId: res.data.userid,
-                //   motto: that.data.motto + '(' + res.data.userid + ')'
-                // })
-                console.log('token验证成功')
-                resolve({result:'success',user_id:res.data.user_id})
-              } else {
-                console.log('token验证失败')
-                wx.removeStorageSync('token')
-                resolve({result:'fail',error:'wrong_token'})
-              }
-            },
-            fail: error => {
-              reject(error)
-            }
-          })
-        }else{
-          console.log('token不存在')
-          resolve({result:'fail',error:'empty_token'})
-        }
-      })
-    }
-
-    let codeAuth = function () {
-      // 登录
-      return new Promise(function (resolve, reject) {
-        console.log('开始 请求获得code')
-        wx.login({
-          success: res => {
-            // 发送 res.code 到后台换取 openId, sessionKey, unionId
-            console.log('获得code :'+ res.code )
-            //console.log(res)
-
-            console.log('开始 请求code换取token')
-            wx.request({
-              url: app.gData.apiBaseUrl + '/wxauth/code2session?jscode=' + res.code,
-              success: function (res) {
-                if (res.data && res.data.success) {
-
-                  //获得 请求接口需要用到的token
-                  wx.setStorageSync('token', res.data.token)
-                  //获得 用户ID
-                  // that.setData({
-                  //   userId: res.data.user_id,
-                  //   motto: that.data.motto + '(' + res.data.user_id + ')'
-                  // })
-
-                  //that.getRoom()
-
-                  resolve({result:'success',user_id:res.data.user_id})
-                }
-              },
-              fail: error => {
-                  reject(error)
-              }
-            })
-          },
-          fail : error => {
-            console.log(error)
-            reject(error)
-          }
-        })
-      })
-    }
-
-
-    console.log('开始')
-    return new Promise(function (resolve, reject) {
-      checkToken().then(function(res){
-        if(res.result === 'success'){
-          console.log('153 返回userid')
-          return res
-        } else {
-          return codeAuth()
-        }
-      }).then(function(res){
-        that.setData({
-          userId: res.user_id,
-        })
-
-        console.log(res)
-        console.log('打印 userid :' +   res.user_id)
-        console.log('结束')
-        resolve(res.user_id)
-      }).catch(function(error){
-        console.log('有错')
-        console.log(error)
-
-
-        //wx.removeStorageSync('token')
-      })
-      /* }else{
-         that.login()
-       }*/
-
-
-    })
-
-
-
-
-  },
-
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
