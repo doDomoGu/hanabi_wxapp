@@ -84,11 +84,60 @@ const getRoomList = () => {
   })
 }
 
+const getRoomId = () => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-room/get-info?token=' + token,
+      data: {
+        mode: 'simple',
+        force: true
+      },
+      success: res => {
+        if (res.data && res.data.success) {
+          resolve(res.data.data.roomId)
+        } else {
+          resolve(res.data.data.roomId)
+        }
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
+
+const getIsInGame = function() {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-game/get-info?token=' + token,
+      data: {
+        mode: 'simple',
+        force: true
+      },
+      success: res => {
+        if (res.data && res.data.success) {
+          resolve(true)
+        } else {
+          resolve(false)
+        }
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
 
 
 
 module.exports = {
   checkToken: checkToken,
   getToken: getToken,
-  getRoomList: getRoomList
+  getRoomList: getRoomList,
+  getRoomId: getRoomId
 }

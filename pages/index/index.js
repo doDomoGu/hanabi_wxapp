@@ -117,63 +117,10 @@ Page({
   //
   getStatus: function () {
     const that = this
-
-    let getRoomId = function() {
-      return new Promise(function (resolve, reject) {
-        let token = wx.getStorageSync('token') || ''
-        wx.request({
-          method: "POST",
-          url: app.gData.apiBaseUrl + '/my-room/get-info?token=' + token,
-          data: {
-            mode: 'simple',
-            force: true
-          },
-          success: res => {
-            if (res.data && res.data.success) {
-              resolve(res.data.data.roomId)
-            } else {
-              resolve(res.data.data.roomId)
-            }
-          },
-          fail: error => {
-            reject(error)
-          }
-        })
-      })
-    }
-
-    let getIsInGame = function() {
-      return new Promise(function (resolve, reject) {
-        let token = wx.getStorageSync('token') || ''
-        wx.request({
-          method: "POST",
-          url: app.gData.apiBaseUrl + '/my-game/get-info?token=' + token,
-          data: {
-            mode: 'simple',
-            force: true
-          },
-          success: res => {
-            if (res.data && res.data.success) {
-              resolve(true)
-            } else {
-              resolve(false)
-            }
-          },
-          fail: error => {
-            reject(error)
-          }
-        })
-      })
-    }
-
     return new Promise(function (resolve, reject) {
-      getRoomId().then(function(room_id){
+      Api.getRoomId().then(function(room_id){
         if(room_id>0){
-          // that.setData({
-          //   isInRoom: true
-          // })
-          console.log(142)
-          return getIsInGame().then(function(isInGame){
+          return Api.getIsInGame().then(function(isInGame){
             that.setData({
               isInRoom: true,
               isInGame: isInGame
