@@ -1,4 +1,8 @@
 //index.js
+
+const Api = require('../../utils/api.js')
+const Draw = require('../../utils/draw.js')
+
 //获取应用实例
 const app = getApp()
 
@@ -14,13 +18,44 @@ Page({
     isInRoom: false,
     isInGame: false,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
+
+
     roomList:[],
+
+    roomId: -1,
+    isHost: null,
+    hostPlayer: {
+      id: -1,
+      username: null,
+      name: null
+    },
+    guestPlayer: {
+      id: -1,
+      username: null,
+      name: null
+    },
+    isReady: null,
+
+    isPlaying: null,
+    logList: [],
+    hostHands: [],
+    guestHands: [],
+    roundNum: -1,
+    roundPlayerIsHost: -1,
+    libraryCardsNum: -1,
+    discardCardsNum: -1,
+    lastUpdated: null,
+    cueNum: -1,
+    chanceNum: -1,
+    score: -1,
+    successCards: [],
+
     canvasParam: {
-      width: 0,
-      height: 0,
-      ratio: 1,
-      topLeftPad: 0,
-      topWidth: 0,
+      // width: 0,
+      // height: 0,
+      // ratio: 1,
+      // topLeftPad: 0,
+      // topWidth: 0,
     }
   },
   onLoad: function () {
@@ -31,13 +66,19 @@ Page({
       return that.getStatus()
     }).then(function(){
       // 3.初始化画布 (获取宽/高/像素比)
-      return that.canvasInit()
+      return Draw.init(that)
     }).then(function(){
       if(that.data.isInRoom===false){
-        that.getRoomList().then(()=>{
-          that.drawRoomList()
+        Api.getRoomList().then((roomList)=>{
+          that.setData({
+            roomList: roomList
+          })
+          Draw.drawRoomList(that.data)
         })
       }
+    }).catch(function(err){
+      console.log('catch err')
+      console.log(err)
     })
   },
 
@@ -148,51 +189,7 @@ Page({
 
 
   },
-  // 画布初始化 ：获得并设置高度/宽度/像素比
-  canvasInit: function () {
-    const that = this
-    return new Promise(function (resolve, reject) {
-        wx.getSystemInfo({
-          success: function (res) {
-            const width = res.windowWidth
-            const height = res.windowHeight
-            const ratio = res.pixelRatio
-            let p = that.data.canvasParam
-            p.width = width
-            p.height = height
-            p.ratio = ratio
-            p.topLeftPad = 10 * ratio // 左侧pad
-            p.topWidth = width - p.topLeftPad * 2 // 去除左右pad后的宽度
-            that.setData({
-              canvasParam : p
-            })
 
-            const ctxRL = wx.createCanvasContext('roomListCanvas')
-            const ctxMR = wx.createCanvasContext('myRoomCanvas')
-            const ctxMG = wx.createCanvasContext('myGameCanvas')
-
-            ctxRL.setFillStyle("#333333");
-            ctxRL.setFontSize(20)
-            ctxRL.fillText('room list canvas', p.topLeftPad + 20, 30)
-
-            ctxMR.setFillStyle("#333333");
-            ctxMR.setFontSize(20)
-            ctxMR.fillText('my room canvas', p.topLeftPad + 20, 30)
-
-            ctxMG.setFillStyle("#333333");
-            ctxMG.setFontSize(20)
-            ctxMG.fillText('my game canvas', p.topLeftPad + 20, 30)
-
-
-            ctxRL.draw()
-            ctxMR.draw()
-            ctxMG.draw()
-
-            resolve()
-          }
-        })
-    })
-  },
 
 
   // 微信登录验证
@@ -313,51 +310,6 @@ Page({
 
 
 
-  },
-
-  getRoomList: function() {
-    const that = this
-    return new Promise(function (resolve, reject) {
-      wx.request({
-        url: app.gData.apiBaseUrl + '/room?token=' + (wx.getStorageSync('token') || ''),
-        success: function (res) {
-          if (res.data) {
-            that.setData({
-              roomList : res.data
-            })
-          }
-          resolve()
-        }
-      })
-    })
-  },
-
-  drawRoomList: function() {
-    const that = this
-
-    const ctx = wx.createCanvasContext('roomListCanvas')
-    const p = that.data.canvasParam
-    ctx.setFillStyle("#ffffff");
-    ctx.rect(p.topLeftPad,70,p.topWidth,400)
-    ctx.fill()
-
-
-    const roomList = that.data.roomList
-    ctx.setFillStyle("#ff0000");
-    ctx.setFontSize(20)
-    //ctx.setTextAlign('left')
-    for(let i=0; i < roomList.length; i++){
-      let id = roomList[i].id
-      id = id < 10 ? '00' + id : '0' + id
-      let title = roomList[i].title
-
-      ctx.fillText(id, p.topLeftPad + 20, 100 + 30 * i)
-      ctx.fillText(title, 200, 100 + 30 * i)
-
-
-    }
-
-    ctx.draw(true);
   },
 
 
