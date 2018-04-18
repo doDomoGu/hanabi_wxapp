@@ -1,11 +1,11 @@
 //index.js
 
-const Api = require('../../utils/api.js')
+const Api  = require('../../utils/api.js')
 const Auth = require('../../utils/auth.js')
 const Draw = require('../../utils/draw.js')
 
 //获取应用实例
-const app = getApp()
+//const app = getApp()
 
 Page({
   data: {
@@ -85,14 +85,6 @@ Page({
       console.log(err)
     })
   },
-
-
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
   bindButtonTap: function(r) {
     const page = parseInt(r.currentTarget.dataset.page)
 
@@ -108,13 +100,11 @@ Page({
       isInRoom = true
       isInGame = true
     }
-
     this.setData({
       isInRoom: isInRoom,
       isInGame: isInGame
     })
   },
-  //
   getStatus: function () {
     const that = this
     return new Promise(function (resolve, reject) {
@@ -184,21 +174,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  //
-  // onReady:function(){
-  //   // 页面渲染完成
-  //   //第一步创建个上下文容器
-  //   let ctx = wx.createCanvasContext('main', this)
-  //
-  //   //第二步绘制这里我们绘制个矩形
-  //   ctx.strokeRect(50, 50, 100, 100)
-  //   ctx.draw()
-  //
-  //
-  //   console.log(ctx)
-  //
-  // },
-
-
+  }
 })

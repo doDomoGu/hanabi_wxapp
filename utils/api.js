@@ -139,5 +139,6 @@ module.exports = {
   checkToken: checkToken,
   getToken: getToken,
   getRoomList: getRoomList,
-  getRoomId: getRoomId
+  getRoomId: getRoomId,
+  getIsInGame: getIsInGame
 }
