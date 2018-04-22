@@ -1,5 +1,25 @@
+
+let MyRoomPage = {
+//   playerAreaX = this.topLeftPad // 玩家区域x偏移量(相对整个画布)
+// this.playerAreaHostY = MyCanvas.px2Rem(10) * this.ratio // 房主玩家区域y偏移量(相对整个画布)
+// this.playerAreaGuestY = MyCanvas.px2Rem(160) * this.ratio // 访客玩家区域y偏移量(相对整个画布)
+// this.playerAreaHeight = MyCanvas.px2Rem(140) * this.ratio // 玩家区域的高度
+// this.playerAreaWidth = this.topWidth // 玩家区域的宽度
+//
+// this.playerButtonXOffset = MyCanvas.px2Rem(20) * this.ratio // 玩家区域内按钮x偏移量(相对玩家区域)
+// this.playerButtonYOffset = MyCanvas.px2Rem(80) * this.ratio // 玩家区域内按钮y偏移量(相对玩家区域)
+// this.playerButtonWidth = MyCanvas.px2Rem(100) * this.ratio // 玩家区域内按钮宽度
+// this.playerButtonHeight = MyCanvas.px2Rem(30) * this.ratio // 玩家区域内按钮高度
+//
+// this.playerButtonTextXOffset = MyCanvas.px2Rem(20) * this.ratio // 玩家区域内按钮内文字x偏移量(相对按钮区域)
+// this.playerButtonTextYOffset = MyCanvas.px2Rem(20) * this.ratio // 玩家区域内按钮内文字y偏移量(相对按钮区域)
+}
+
+
 // 画布初始化 ：获得并设置高度/宽度/像素比  设置绘图的各种参数 位置/高度/宽度/颜色/样式
 const init = (t) => {
+
+
   return new Promise(function (resolve, reject) {
     wx.getSystemInfo({
       success: function (res) {
