@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container {{isInRoom ? ( isInGame ? 'inGame' : 'inRoom' ) : 'notInRoom'}}">
+<view class="container {{isInRoom ? ( isInGame ? 'in-game' : 'in-room' ) : 'not-in-room'}}">
 
   <view class="userinfo">
     <block wx:if="{{userInfoShow && !hasUserInfo}}">

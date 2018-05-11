@@ -28,14 +28,14 @@
   background:#eeeeee;
 }
 
-.container.notInRoom {
+.container.not-in-room {
   background:#dfdfff;
 }
 
-.container.inRoom {
+.container.in-room {
   background:#ffdfff;
 }
-.container.inGame {
+.container.in-game {
   background:#ffffdf;
 }
 
