@@ -1,50 +1,52 @@
-// let page = {
-//   width : 0,
-//   height : 0,
-//   height
-// }
-
-let MyRoomPage = {
-//   playerAreaX = this.topLeftPad // 玩家区域x偏移量(相对整个画布)
-// this.playerAreaHostY = MyCanvas.px2Rem(10) * this.ratio // 房主玩家区域y偏移量(相对整个画布)
-// this.playerAreaGuestY = MyCanvas.px2Rem(160) * this.ratio // 访客玩家区域y偏移量(相对整个画布)
-// this.playerAreaHeight = MyCanvas.px2Rem(140) * this.ratio // 玩家区域的高度
-// this.playerAreaWidth = this.topWidth // 玩家区域的宽度
-//
-// this.playerButtonXOffset = MyCanvas.px2Rem(20) * this.ratio // 玩家区域内按钮x偏移量(相对玩家区域)
-// this.playerButtonYOffset = MyCanvas.px2Rem(80) * this.ratio // 玩家区域内按钮y偏移量(相对玩家区域)
-// this.playerButtonWidth = MyCanvas.px2Rem(100) * this.ratio // 玩家区域内按钮宽度
-// this.playerButtonHeight = MyCanvas.px2Rem(30) * this.ratio // 玩家区域内按钮高度
-//
-// this.playerButtonTextXOffset = MyCanvas.px2Rem(20) * this.ratio // 玩家区域内按钮内文字x偏移量(相对按钮区域)
-// this.playerButtonTextYOffset = MyCanvas.px2Rem(20) * this.ratio // 玩家区域内按钮内文字y偏移量(相对按钮区域)
-}
-
-
 let commonParam = (p) => {
-  p.topPad = 10 * p.ratio // 上侧pad
-  p.leftPad = p.rightPad =  10 * p.ratio // 左右两侧pad
-  p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右pad后的宽度
+  p.topPad = 10 // 上边距
+  p.leftPad = p.rightPad =  10 * p.ratio // 左右边距
+  p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右边距后的宽度
   return p
 }
 
 let roomListParam = (p) => {
-  p.RL_bgColor = '#FFFFFF'
-  p.RL_fontColor = '#2510cc'
-  p.RL_fontSize = 20
+  p.RL_bgColor = '#FFFFFF'  //区域背景色
+  p.RL_fontColor = '#2510cc' //文字颜色
+  p.RL_fontSize = 20  //文字尺寸
 
-  p.RL_innerHeight = 400
-  p.RL_innerLeftPad = p.leftPad + 20 * p.ratio
-  p.RL_innerTopPad = 100
-  p.RL_innerLineHeight = 30 
-  p.RL_innerTitleLeftPad = p.RL_innerLeftPad + 50 * p.ratio
+  p.RL_innerHeight = 400  //区域高度
+  p.RL_innerLeftPad = p.leftPad + 20 * p.ratio //区域左边距（相对整个画布）
+  p.RL_innerTopPad = p.topPad + 80  //区域上边距 （相对整个画布）
+  p.RL_innerLineHeight = 30  //列表行高
+  p.RL_innerTitleLeftPad = p.RL_innerLeftPad + 50 * p.ratio //列表标题左边距（相对整个画布）
+
+  return p
+}
+
+let myRoomParam =  (p) => {
+  p.MR_playerAreaX = p.leftPad // 玩家区域x偏移量(相对整个画布)
+  p.MR_playerAreaHostY = 10 * p.ratio // 房主玩家区域y偏移量(相对整个画布)
+  p.MR_playerAreaGuestY = 160 * p.ratio // 访客玩家区域y偏移量(相对整个画布)
+  p.MR_playerAreaHeight = 140 * p.ratio // 玩家区域的高度
+  p.MR_playerAreaWidth = p.innerWidth // 玩家区域的宽度
+
+  p.MR_playerButtonXOffset = 20 * p.ratio // 玩家区域内按钮x偏移量(相对玩家区域)
+  p.MR_playerButtonYOffset = 80 * p.ratio // 玩家区域内按钮y偏移量(相对玩家区域)
+  p.MR_playerButtonWidth = 100 * p.ratio // 玩家区域内按钮宽度
+  p.MR_playerButtonHeight = 30 * p.ratio // 玩家区域内按钮高度
+
+  p.MR_playerButtonTextXOffset = 20 * p.ratio // 玩家区域内按钮内文字x偏移量(相对按钮区域)
+  p.MR_playerButtonTextYOffset = 20 * p.ratio // 玩家区域内按钮内文字y偏移量(相对按钮区域)
+
+  return p
+}
+
+
+let myGameParam =  (p) => {
+
 
   return p
 }
 
 
 // 画布初始化 ：获得并设置高度/宽度/像素比  设置绘图的各种参数 位置/高度/宽度/颜色/样式
-const init = (t) => {
+const init = (t) => {  // t = this
   return new Promise(function (resolve, reject) {
     wx.getSystemInfo({
       success: function (res) {
@@ -57,6 +59,10 @@ const init = (t) => {
         p = commonParam(p)
         //2.房间列表页面参数
         p = roomListParam(p)
+        //3.房间页面参数
+        p = myRoomParam(p)
+        //4.游戏页面参数
+        p = myGameParam(p)
 
         t.setData({
           canvasParam: p
