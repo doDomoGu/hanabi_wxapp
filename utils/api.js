@@ -1,4 +1,5 @@
-const Url = top.getApp().gData.apiBaseUrl
+const Url = getApp().gData.apiBaseUrl
+
 
 // 使用本地储存的token进行验证
 const checkToken = () => {
