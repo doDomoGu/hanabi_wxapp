@@ -5,12 +5,12 @@ const login = () => {
   let codeAuth = function () {
     // 登录
     return new Promise(function (resolve, reject) {
-      console.log('开始 请求获得code')
+      // console.log('开始 请求获得code')
       wx.login({
         success: res => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
-          console.log('获得code :'+ res.code )
-          console.log('开始 请求code换取token')
+          // console.log('获得code :'+ res.code )
+          // console.log('开始 请求code换取token')
           Api.getToken(res.code)
         },
         fail : error => {
@@ -22,11 +22,11 @@ const login = () => {
   }
 
 
-  console.log('开始')
+  // console.log('开始')
   return new Promise(function (resolve, reject) {
     Api.checkToken().then(function(res){
       if(res.result === 'success'){
-        console.log('153 返回userid')
+        // console.log('153 返回userid')
         return res
       } else {
         return codeAuth()
@@ -36,9 +36,9 @@ const login = () => {
       //   userId: res.user_id,
       // })
 
-      console.log(res)
-      console.log('打印 userid :' +   res.user_id)
-      console.log('结束')
+      // console.log(res)
+      // console.log('打印 userid :' +   res.user_id)
+      // console.log('结束')
       resolve(res.user_id)
     }).catch(function(error){
       console.log('有错')
