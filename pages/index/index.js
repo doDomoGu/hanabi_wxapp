@@ -1,8 +1,8 @@
 //index.js
 
-const Api  = require('../../utils/api.js')
-const Auth = require('../../utils/auth.js')
-const Draw = require('../../utils/draw.js')
+const Api    = require('../../utils/api.js')
+const Auth   = require('../../utils/auth.js')
+const Canvas = require('../../utils/canvas.js')
 
 //获取应用实例
 //const app = getApp()
@@ -21,7 +21,7 @@ Page({
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
 
-    //roomList:[],
+    roomList:[],
 
     roomId: -1,
     isHost: null,
@@ -63,6 +63,7 @@ Page({
     const that = this
     // 1.登录验证 （获得用户ID）
     Auth.login().then(function(userId){
+      console.log('userId :'+ userId)
       that.setData({
         userId: userId
       })
@@ -70,16 +71,16 @@ Page({
       return that.getStatus()
     }).then(function(){
       // 3.初始化画布 (获取宽/高/像素比)
-      return Draw.init(that)
+      return Canvas.init(that)
     }).then(function(){
-      console.log(22222)
       if(that.data.isInRoom===false){
-
         Api.getRoomList().then((roomList)=>{
-          // that.setData({
-          //   roomList: roomList
-          // })
-          Draw.drawRoomList(roomList,that.data.canvasParam)
+          that.setData({
+            roomList: roomList
+          })
+          console.log(roomList)
+          Canvas.drawRoomList(roomList,that.data.canvasParam)
+          //Canvas.bindClickInRoomList(roomList,that.data.canvasParam)
         })
       }
     }).catch(function(err){
@@ -106,6 +107,45 @@ Page({
       isInRoom: isInRoom,
       isInGame: isInGame
     })
+  },
+  tapRoomList: function (r) {
+    // console.log(r)
+    const x = r.detail.x
+    const y = r.detail.y
+    // console.log("鼠标指针坐标：" + x + "," + y);
+    const roomList = this.data.roomList
+    const p = this.data.canvasParam
+
+    for(let i = 0 ; i < roomList.length ; i++){
+      if( x >= p.leftPad
+        && x <= ( p.leftPad  + p.innerWidth )
+        && y>= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16)
+        && y <= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16 + p.RL_innerLineHeight ) ){
+        let id = roomList[i].id
+        id = id < 10 ? '00' + id : '0' + id
+        if(roomList[i].password ===''){
+          wx.showToast({
+            title: '[' + id + '] 可以进入'
+          })
+        }else{
+          wx.showToast({
+            title: '[' + id + '] 不可进入'
+          })
+        }
+      }
+
+    }
+
+
+
+  },
+  tapMyRoom: (r) => {
+    console.log('my_room')
+    console.log(r)
+  },
+  tapMyGame: (r) => {
+    console.log('my_game')
+    console.log(r)
   },
   getStatus: function () {
     const that = this

@@ -16,11 +16,11 @@
 
 
 
-  <canvas class="{{(!isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="roomListCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+  <canvas class="{{(!isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="roomListCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" bindtap="tapRoomList" />
 
-  <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+  <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" bindtap="tapMyRoom" />
 
-  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" />
+  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" bindtap="tapMyGame" />
 
 
   <view wx:if="{{userMottoShow}}" class="usermotto">
