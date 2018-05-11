@@ -1,3 +1,8 @@
+// let page = {
+//   width : 0,
+//   height : 0,
+//   height
+// }
 
 let MyRoomPage = {
 //   playerAreaX = this.topLeftPad // 玩家区域x偏移量(相对整个画布)
@@ -16,25 +21,49 @@ let MyRoomPage = {
 }
 
 
+let commonParam = (p) => {
+  p.topPad = 10 * p.ratio // 上侧pad
+  p.leftPad = p.rightPad =  10 * p.ratio // 左右两侧pad
+  p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右pad后的宽度
+  return p
+}
+
+let roomListParam = (p) => {
+  p.RL_bgColor = '#FFFFFF'
+  p.RL_fontColor = '#2510cc'
+  p.RL_fontSize = 20
+
+  p.RL_innerHeight = 400
+  p.RL_innerLeftPad = p.leftPad + 20 * p.ratio
+  p.RL_innerTopPad = 100
+  p.RL_innerLineHeight = 30 
+  p.RL_innerTitleLeftPad = p.RL_innerLeftPad + 50 * p.ratio
+
+  return p
+}
+
+
 // 画布初始化 ：获得并设置高度/宽度/像素比  设置绘图的各种参数 位置/高度/宽度/颜色/样式
 const init = (t) => {
-
-
   return new Promise(function (resolve, reject) {
     wx.getSystemInfo({
       success: function (res) {
-        const width = res.windowWidth
-        const height = res.windowHeight
-        const ratio = res.pixelRatio
         let p = t.data.canvasParam
-        p.width = width
-        p.height = height
-        p.ratio = ratio
-        p.topLeftPad = 10 * ratio // 左侧pad
-        p.topWidth = width - p.topLeftPad * 2 // 去除左右pad后的宽度
+        p.width = res.windowWidth
+        p.height = res.windowHeight
+        p.ratio = res.pixelRatio
+
+        //1.通用参数
+        p = commonParam(p)
+        //2.房间列表页面参数
+        p = roomListParam(p)
+
         t.setData({
           canvasParam: p
         })
+
+
+
 
 
         const ctxRL = wx.createCanvasContext('roomListCanvas')
@@ -64,26 +93,26 @@ const init = (t) => {
   })
 }
 
-const drawRoomList = (data) => {
+const drawRoomList = (roomList, p) => {
   const ctx = wx.createCanvasContext('roomListCanvas')
-  const p = data.canvasParam
-  const roomList = data.roomList
 
-  ctx.setFillStyle("#ffffff");
-  ctx.rect(p.topLeftPad,70,p.topWidth,400)
+  //区域背景填充
+  ctx.setFillStyle(p.RL_bgColor);
+  ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
   ctx.fill()
 
 
-  ctx.setFillStyle("#ff0000");
-  ctx.setFontSize(20)
-  //ctx.setTextAlign('left')
+  //列表文字
+  ctx.setFillStyle(p.RL_fontColor);
+  ctx.setFontSize(p.RL_fontSize)
+  ctx.setTextAlign('left')
   for(let i=0; i < roomList.length; i++){
     let id = roomList[i].id
     id = id < 10 ? '00' + id : '0' + id
     let title = roomList[i].title
 
-    ctx.fillText(id, p.topLeftPad + 20, 100 + 30 * i)
-    ctx.fillText(title, 200, 100 + 30 * i)
+    ctx.fillText(id, p.RL_innerLeftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i)
+    ctx.fillText(title, p.RL_innerTitleLeftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i)
 
 
   }

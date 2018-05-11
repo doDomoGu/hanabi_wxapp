@@ -21,7 +21,7 @@ Page({
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
 
-    roomList:[],
+    //roomList:[],
 
     roomId: -1,
     isHost: null,
@@ -60,41 +60,32 @@ Page({
     }
   },
   onLoad: function () {
-    let s = this.data.logList
-    console.log(s)
+    const that = this
+    // 1.登录验证 （获得用户ID）
+    Auth.login().then(function(userId){
+      that.setData({
+        userId: userId
+      })
+      // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
+      return that.getStatus()
+    }).then(function(){
+      // 3.初始化画布 (获取宽/高/像素比)
+      return Draw.init(that)
+    }).then(function(){
+      console.log(22222)
+      if(that.data.isInRoom===false){
 
-
-    this.setData({
-      logList : [1,2,3]
+        Api.getRoomList().then((roomList)=>{
+          // that.setData({
+          //   roomList: roomList
+          // })
+          Draw.drawRoomList(roomList,that.data.canvasParam)
+        })
+      }
+    }).catch(function(err){
+      console.log('catch err')
+      console.log(err)
     })
-
-    console.log(this.data.logList)
-
-    console.log(this.data.logList2)
-    // const that = this
-    // // 1.登录验证 （获得用户ID）
-    // Auth.login().then(function(userId){
-    //   that.setData({
-    //     userId: userId
-    //   })
-    //   // 2.根据用户ID 获取当前状态（在房间中/在游戏中）
-    //   return that.getStatus()
-    // }).then(function(){
-    //   // 3.初始化画布 (获取宽/高/像素比)
-    //   return Draw.init(that)
-    // }).then(function(){
-    //   if(that.data.isInRoom===false){
-    //     Api.getRoomList().then((roomList)=>{
-    //       that.setData({
-    //         roomList: roomList
-    //       })
-    //       Draw.drawRoomList(that.data)
-    //     })
-    //   }
-    // }).catch(function(err){
-    //   console.log('catch err')
-    //   console.log(err)
-    // })
   },
   bindButtonTap: function(r) {
     const page = parseInt(r.currentTarget.dataset.page)
