@@ -70,38 +70,42 @@ const init = (t) => {  // t = this
         //4.游戏页面参数
         p = myGameParam(p)
 
+
         t.setData({
           canvasParam: p
         })
 
-        const ctxRL = wx.createCanvasContext('roomListCanvas')
-        const ctxMR = wx.createCanvasContext('myRoomCanvas')
-        const ctxMG = wx.createCanvasContext('myGameCanvas')
-
-        ctxRL.setFillStyle("#333333");
-        ctxRL.setFontSize(20)
-        //ctxRL.setTextBaseline('top')
-        ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
-
-
-
-        ctxMR.setFillStyle("#333333");
-        ctxMR.setFontSize(20)
-        ctxMR.fillText('my room canvas', p.leftPad + 10, 10)
-
-        ctxMG.setFillStyle("#333333");
-        ctxMG.setFontSize(20)
-        ctxMG.fillText('my game canvas', p.leftPad + 10, 10)
-
-
-        ctxRL.draw()
-        ctxMR.draw()
-        ctxMG.draw()
+        //测试用
+        initTest(p)
 
         resolve()
       }
     })
   })
+}
+
+const initTest = (p) => {
+  const ctxRL = wx.createCanvasContext('roomListCanvas')
+  const ctxMR = wx.createCanvasContext('myRoomCanvas')
+  const ctxMG = wx.createCanvasContext('myGameCanvas')
+
+  ctxRL.setFillStyle("#333333");
+  ctxRL.setFontSize(20)
+  //ctxRL.setTextBaseline('top')
+  ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
+  ctxRL.draw()
+
+  // ctxMR.setFillStyle("#333333");
+  // ctxMR.setFontSize(20)
+  ctxMR.fillText('my room canvas', p.leftPad + 10, 10)
+  ctxMR.draw()
+
+  // ctxMG.setFillStyle("#333333");
+  // ctxMG.setFontSize(20)
+  ctxMG.fillText('my game canvas', p.leftPad + 10, 10)
+  ctxMG.draw()
+
+
 }
 
 const drawRoomList = (roomList, p) => {
