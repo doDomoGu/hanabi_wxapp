@@ -78,7 +78,6 @@ Page({
           that.setData({
             roomList: roomList
           })
-          console.log(roomList)
           Canvas.drawRoomList(roomList,that.data.canvasParam)
           //Canvas.bindClickInRoomList(roomList,that.data.canvasParam)
         })
@@ -108,36 +107,8 @@ Page({
       isInGame: isInGame
     })
   },
-  tapRoomList: function (r) {
-    // console.log(r)
-    const x = r.detail.x
-    const y = r.detail.y
-    // console.log("鼠标指针坐标：" + x + "," + y);
-    const roomList = this.data.roomList
-    const p = this.data.canvasParam
-
-    for(let i = 0 ; i < roomList.length ; i++){
-      if( x >= p.leftPad
-        && x <= ( p.leftPad  + p.innerWidth )
-        && y>= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16)
-        && y <= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16 + p.RL_innerLineHeight ) ){
-        let id = roomList[i].id
-        id = id < 10 ? '00' + id : '0' + id
-        if(roomList[i].password ===''){
-          wx.showToast({
-            title: '[' + id + '] 可以进入'
-          })
-        }else{
-          wx.showToast({
-            title: '[' + id + '] 不可进入'
-          })
-        }
-      }
-
-    }
-
-
-
+  tapRoomList: function(r) {
+    Canvas.tapRoomList(this.data.roomList, r, this.data.canvasParam)
   },
   tapMyRoom: (r) => {
     console.log('my_room')

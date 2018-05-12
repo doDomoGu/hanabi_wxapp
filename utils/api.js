@@ -110,7 +110,7 @@ const getRoomId = () => {
 }
 
 
-const getIsInGame = function() {
+const getIsInGame = () => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
     wx.request({
@@ -134,6 +134,44 @@ const getIsInGame = function() {
   })
 }
 
+const enterRoom = (roomId) => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-room/enter?token=' + token,
+      data: {
+        roomId : roomId
+      },
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
+const exitRoom = (roomId) => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-room/enter?token=' + token,
+      data: {
+        roomId : roomId
+      },
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
 
 
 module.exports = {
@@ -141,5 +179,7 @@ module.exports = {
   getToken: getToken,
   getRoomList: getRoomList,
   getRoomId: getRoomId,
-  getIsInGame: getIsInGame
+  getIsInGame: getIsInGame,
+  enterRoom: enterRoom,
+  exitRoom: exitRoom
 }

@@ -146,49 +146,35 @@ const drawRoomList = (roomList, p) => {
   }
 }
 
-const bindClickInRoomList = (roomList, p)=> {
-  const ctx = wx.createCanvasContext('roomListCanvas')
-  console.log(ctx)
+const tapRoomList = (roomList, r, p) => {
+  // console.log(r)
+  const x = r.detail.x
+  const y = r.detail.y
+  // console.log("鼠标指针坐标：" + x + "," + y);
 
-  ctx.addEventListener('click', function (evt) {
-    // console.log(evt); return true;
-    // evt = evt.changedTouches[0]; //touchend
-    // evt = evt.touches[0];   //touchstart
-    const mousePos = getMousePos(ctx, evt, 1)
-
-    return true;
-    // writeMessage("鼠标指针坐标：" + mousePos.x + "," + mousePos.y);
-    if (that.isExitBtnPath(mousePos)) {
-      that.ctx.fillStyle = that.exitButtonTouchColor
-      MyCanvas.drawRoundedRect(
-        {
-          x: that.exitBtnX,
-          y: that.exitBtnY,
-          w: that.exitBtnW,
-          h: that.exitBtnH
-        },
-        that.radius,
-        that.ctx
-      )
-      that.ctx.font = MyCanvas.px2Rem(40) + 'px Arial'
-      that.ctx.fillStyle = '#FFFFFF'
-      that.ctx.textAlign = 'center'
-      that.ctx.fillText('退出房间', that.canvas.width / 2, that.exitBtnY + that.exitBtnTextY)
-      setTimeout(function () {
-        that.exit()
-      }, 200)
-
-      // that.exit();
-    } else if (that.isReadyBtnPath(mousePos) && !that.isHost) {
-      that.doReady()
-    } else if (that.isStartBtnPath(mousePos) && that.isHost && that.isReady) {
-      that.startGame()
+  for(let i = 0 ; i < roomList.length ; i++){
+    if( x >= p.leftPad
+      && x <= ( p.leftPad  + p.innerWidth )
+      && y>= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16)
+      && y <= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16 + p.RL_innerLineHeight ) ){
+      let id = roomList[i].id
+      id = id < 10 ? '00' + id : '0' + id
+      if(roomList[i].password ===''){
+        wx.showToast({
+          title: '[' + id + '] 可以进入'
+        })
+      }else{
+        wx.showToast({
+          title: '[' + id + '] 不可进入'
+        })
+      }
     }
-  }, false)
+
+  }
 }
 
 module.exports = {
   init: init,
   drawRoomList : drawRoomList,
-  bindClickInRoomList :bindClickInRoomList
+  tapRoomList :tapRoomList
 }
