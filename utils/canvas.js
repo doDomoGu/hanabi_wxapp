@@ -1,3 +1,5 @@
+const Api    = require('./api.js')
+
 let commonParam = (p) => {
   p.topPad = 10 // 上边距
   p.leftPad = p.rightPad =  10 // 左右边距
@@ -160,9 +162,7 @@ const tapRoomList = (roomList, r, p) => {
       let id = roomList[i].id
       id = id < 10 ? '00' + id : '0' + id
       if(roomList[i].password ===''){
-        wx.showToast({
-          title: '[' + id + '] 可以进入'
-        })
+        Api.enterRoom(roomList[i].id)
       }else{
         wx.showToast({
           title: '[' + id + '] 不可进入'
