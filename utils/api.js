@@ -158,10 +158,7 @@ const exitRoom = (roomId) => {
   return new Promise(function (resolve, reject) {
     wx.request({
       method: "POST",
-      url: Url + '/my-room/enter?token=' + token,
-      data: {
-        roomId : roomId
-      },
+      url: Url + '/my-room/exit?token=' + token,
       success: res => {
         resolve(res.data)
       },
