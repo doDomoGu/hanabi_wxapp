@@ -73,7 +73,7 @@ Page({
       // 3.初始化画布 (获取宽/高/像素比)
       return Canvas.init(that)
     }).then(function(){
-      if(that.data.isInRoom===false){
+      if ( that.data.isInRoom === false ) {
         Api.getRoomList().then((roomList)=>{
           that.setData({
             roomList: roomList
@@ -81,6 +81,12 @@ Page({
           Canvas.drawRoomList(roomList,that.data.canvasParam)
           //Canvas.bindClickInRoomList(roomList,that.data.canvasParam)
         })
+      }else if(that.data.isInRoom === true ){
+        if(that.data.isInGame === false ) {
+
+        }else{
+          Canvas.drawMyRoom(that.data.canvasParam)
+        }
       }
     }).catch(function(err){
       console.log('catch err')
@@ -107,14 +113,13 @@ Page({
       isInGame: isInGame
     })
   },
-  tapRoomList: function(r) {
+  tapRoomList : function(r) {
     Canvas.tapRoomList(this.data.roomList, r, this.data.canvasParam)
   },
-  tapMyRoom: (r) => {
-    console.log('my_room')
-    console.log(r)
+  tapMyRoom : function(r) {
+    Canvas.tapMyRoom(r, this.data.canvasParam)
   },
-  tapMyGame: (r) => {
+  tapMyGame : function(r) {
     console.log('my_game')
     console.log(r)
   },

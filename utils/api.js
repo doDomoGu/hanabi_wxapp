@@ -153,7 +153,7 @@ const enterRoom = (roomId) => {
   })
 }
 
-const exitRoom = (roomId) => {
+const exitRoom = () => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
     wx.request({

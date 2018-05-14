@@ -112,11 +112,14 @@ const initTest = (p) => {
 
 const drawRoomList = (roomList, p) => {
   const ctx = wx.createCanvasContext('roomListCanvas')
+  //清空内容
+  ctx.clearRect(0,0,p.width,p.height)
+
   //区域背景填充
   ctx.setFillStyle(p.RL_bgColor);
   ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
   ctx.fill()
-  //列表文字
+  //列表文字绘制
   ctx.setFontSize(p.RL_fontSize)
   ctx.setTextAlign('left')
   ctx.setTextBaseline('middle')
@@ -146,6 +149,9 @@ const drawRoomList = (roomList, p) => {
       ctx.fillText('locked', p.RL_innerLockLeftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i)
     ctx.draw(true)
   }
+
+  //清空内容
+  ctx.clearRect(0,0,p.width,p.height)
 }
 
 const tapRoomList = (roomList, r, p) => {
@@ -169,12 +175,31 @@ const tapRoomList = (roomList, r, p) => {
         })
       }
     }
-
   }
+}
+
+const drawMyRoom = ( p) => {
+  const ctx = wx.createCanvasContext('myRoomCanvas')
+  //区域背景填充
+  ctx.setFillStyle(p.RL_bgColor);
+  ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
+  ctx.fill()
+  ctx.draw(true)
+}
+
+const tapMyRoom = (r, p) => {
+  // console.log(r)
+  const x = r.detail.x
+  const y = r.detail.y
+  console.log("鼠标指针坐标：" + x + "," + y);
+
+  Api.exitRoom()
 }
 
 module.exports = {
   init: init,
   drawRoomList : drawRoomList,
-  tapRoomList :tapRoomList
+  tapRoomList : tapRoomList,
+  drawMyRoom : drawMyRoom,
+  tapMyRoom : tapMyRoom
 }
