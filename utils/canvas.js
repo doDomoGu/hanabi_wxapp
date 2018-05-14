@@ -4,6 +4,7 @@ let commonParam = (p) => {
   p.topPad = 10 // 上边距
   p.leftPad = p.rightPad =  10 // 左右边距
   p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右边距后的宽度
+  p.radius = 10
   return p
 }
 
@@ -26,6 +27,18 @@ let roomListParam = (p) => {
 }
 
 let myRoomParam =  (p) => {
+  p.MR_playerAreaBgColor = '#5fc0f3' // 玩家区域的背景色
+  p.MR_playerInfoBgColor = '#ccf0f1' // 玩家信息的背景色
+  p.MR_playerInfoTextColor = '#283085' // 玩家信息的文本色
+
+  p.MR_playerButtonBgColor = '#f18d98' // 玩家按钮的背景色
+  p.MR_playerButtonTextColor = '#e7f1ef' // 玩家按钮的文本色
+  p.MR_playerButtonDisableBgColor = '#e7f1ef' // 玩家按钮(禁用)的背景色
+  p.MR_playerButtonDisableTextColor = '#626262' // 玩家按钮(禁用)的文本色
+
+  p.MR_exitButtonColor = '#dc0c22' // 退出按钮颜色
+  p.MR_exitButtonTouchColor = '#8d0917' // 退出按钮颜色(触摸时)
+
   p.MR_playerAreaX = p.leftPad // 玩家区域x偏移量(相对整个画布)
   p.MR_playerAreaHostY = 10 // 房主玩家区域y偏移量(相对整个画布)
   p.MR_playerAreaGuestY = 160 // 访客玩家区域y偏移量(相对整个画布)
@@ -40,6 +53,26 @@ let myRoomParam =  (p) => {
   p.MR_playerButtonTextXOffset = 20 // 玩家区域内按钮内文字x偏移量(相对按钮区域)
   p.MR_playerButtonTextYOffset = 20 // 玩家区域内按钮内文字y偏移量(相对按钮区域)
 
+  p.MR_playerButtonRectHost = {
+    x: p.MR_playerAreaX + p.MR_playerButtonXOffset,
+    y: p.MR_playerAreaHostY + p.MR_playerButtonYOffset,
+    w: p.MR_playerButtonWidth,
+    h: p.MR_playerButtonHeight
+  }
+  p.MR_playerButtonRectGuest = {
+    x: p.MR_playerAreaX + p.MR_playerButtonXOffset,
+    y: p.MR_playerAreaGuestY + p.MR_playerButtonYOffset,
+    w: p.MR_playerButtonWidth,
+    h: p.MR_playerButtonHeight
+  }
+
+  p.MR_exitBtnX = p.leftPad // 退出按钮x偏移量(相对整个画布)
+  p.MR_exitBtnY = 320 // 退出按钮y偏移量(相对整个画布)
+  p.MR_exitBtnH = 30 // 退出按钮高度
+  p.MR_exitBtnW = p.innerWidth // 退出按钮宽度
+
+  p.MR_exitBtnTextY = 20 // 退出按钮内文字y偏移量(相对按钮区域)
+
   return p
 }
 
@@ -50,6 +83,30 @@ let myGameParam =  (p) => {
   return p
 }
 
+
+// 函数：绘制圆角矩形
+const drawRoundedRect = function (rect, radius, ctx) {
+  const point = function (x, y) {
+    return { x: x, y: y }
+  }
+  const ptA = point(rect.x + radius, rect.y)
+  const ptB = point(rect.x + rect.w, rect.y)
+  const ptC = point(rect.x + rect.w, rect.y + rect.h)
+  const ptD = point(rect.x, rect.y + rect.h)
+  const ptE = point(rect.x, rect.y)
+
+  ctx.beginPath()
+
+  ctx.moveTo(ptA.x, ptA.y)
+  ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, radius)
+  ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, radius)
+  ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, radius)
+  ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, radius)
+
+  // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
+  ctx.fill()
+  ctx.draw(true)
+}
 
 // 画布初始化 ：获得并设置高度/宽度/像素比  设置绘图的各种参数 位置/高度/宽度/颜色/样式
 const init = (t) => {  // t = this
@@ -191,10 +248,75 @@ const tapRoomList = (roomList, r, t) => {
 
 const drawMyRoom = (p) => {
   const ctx = wx.createCanvasContext('myRoomCanvas')
-  //区域背景填充
-  ctx.setFillStyle(p.RL_bgColor);
-  ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
-  ctx.fill()
+  // 绘制玩家1和玩家2区域
+  ctx.fillStyle = p.MR_playerAreaBgColor
+  drawRoundedRect(
+    {
+      x: p.MR_playerAreaX,
+      y: p.MR_playerAreaHostY,
+      w: p.MR_playerAreaWidth,
+      h: p.MR_playerAreaHeight
+    },
+    p.radius,
+    ctx
+  )
+  drawRoundedRect(
+    {
+      x: p.MR_playerAreaX,
+      y: p.MR_playerAreaGuestY,
+      w: p.MR_playerAreaWidth,
+      h: p.MR_playerAreaHeight
+    },
+    p.radius,
+    ctx
+  )
+
+  drawPlayerInfo({}, true, p, ctx)
+  drawPlayerInfo({}, false, p, ctx)
+
+  // 绘制退出按钮
+  ctx.fillStyle = p.MR_exitButtonColor
+  drawRoundedRect(
+    {
+      x: p.MR_exitBtnX,
+      y: p.MR_exitBtnY,
+      w: p.MR_exitBtnW,
+      h: p.MR_exitBtnH
+    },
+    p.radius,
+    ctx
+  )
+  // ctx.font = '40px Arial'
+  // ctx.fillStyle = '#FFFFFF'
+  // ctx.textAlign = 'center'
+  // ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnTextY)
+  // ctx.draw(true)
+}
+
+const drawPlayerInfo = function (info, isHost,  p, ctx) {
+  let rectYOffset, textYOffset
+  if (isHost) {
+    rectYOffset = p.MR_playerAreaHostY + 20
+    textYOffset = p.MR_playerAreaHostY + 46
+  } else {
+    rectYOffset = p.MR_playerAreaGuestY + 20
+    textYOffset = p.MR_playerAreaGuestY + 46
+  }
+  const rect = {
+    x: p.MR_playerAreaX + 20,
+    y: rectYOffset,
+    w: p.MR_playerAreaWidth - 40,
+    h: 40
+  }
+  ctx.fillStyle = p.MR_playerInfoBgColor
+
+  drawRoundedRect(rect, p.radius, ctx)
+  ctx.font = '40px Microsoft JhengHei'
+  ctx.fillStyle = p.MR_playerInfoTextColor
+  ctx.textAlign = 'left'
+
+  const playerName = info.id > -1 ? info.name + (isHost === isHost ? ' (你)' : '') : '--'
+  ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + playerName, p.MR_playerAreaX + 40, textYOffset)
   ctx.draw(true)
 }
 
