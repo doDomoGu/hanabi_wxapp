@@ -119,6 +119,7 @@ const drawRoomList = (roomList, p) => {
   ctx.setFillStyle(p.RL_bgColor);
   ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
   ctx.fill()
+  ctx.draw(true)
   //列表文字绘制
   ctx.setFontSize(p.RL_fontSize)
   ctx.setTextAlign('left')
@@ -149,16 +150,19 @@ const drawRoomList = (roomList, p) => {
       ctx.fillText('locked', p.RL_innerLockLeftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i)
     ctx.draw(true)
   }
-
-  //清空内容
-  ctx.clearRect(0,0,p.width,p.height)
 }
-
-const tapRoomList = (roomList, r, p) => {
+/*
+ * roomlist :房间列表
+ * r : 点击信息
+ * t : 页面this对象
+ */
+const tapRoomList = (roomList, r, t) => {
   // console.log(r)
   const x = r.detail.x
   const y = r.detail.y
   // console.log("鼠标指针坐标：" + x + "," + y);
+
+  const p = t.data.canvasParam
 
   for(let i = 0 ; i < roomList.length ; i++){
     if( x >= p.leftPad
@@ -168,7 +172,13 @@ const tapRoomList = (roomList, r, p) => {
       let id = roomList[i].id
       id = id < 10 ? '00' + id : '0' + id
       if(roomList[i].password ===''){
-        Api.enterRoom(roomList[i].id)
+        Api.enterRoom(roomList[i].id).then(function(re){
+          if(re.success){
+            t.setData({
+              isInRoom : true
+            })
+          }
+        })
       }else{
         wx.showToast({
           title: '[' + id + '] 不可进入'
@@ -178,7 +188,7 @@ const tapRoomList = (roomList, r, p) => {
   }
 }
 
-const drawMyRoom = ( p) => {
+const drawMyRoom = (p) => {
   const ctx = wx.createCanvasContext('myRoomCanvas')
   //区域背景填充
   ctx.setFillStyle(p.RL_bgColor);
@@ -187,13 +197,20 @@ const drawMyRoom = ( p) => {
   ctx.draw(true)
 }
 
-const tapMyRoom = (r, p) => {
+const tapMyRoom = (r, t) => {
   // console.log(r)
   const x = r.detail.x
   const y = r.detail.y
   console.log("鼠标指针坐标：" + x + "," + y);
 
-  Api.exitRoom()
+  Api.exitRoom().then(function(re){
+    if(re.success){
+      drawRoomList(t.data.roomList,t.data.canvasParam)
+      t.setData({
+        isInRoom : false
+      })
+    }
+  })
 }
 
 module.exports = {

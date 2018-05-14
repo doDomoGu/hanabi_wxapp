@@ -114,10 +114,10 @@ Page({
     })
   },
   tapRoomList : function(r) {
-    Canvas.tapRoomList(this.data.roomList, r, this.data.canvasParam)
+    Canvas.tapRoomList(this.data.roomList, r, this)
   },
   tapMyRoom : function(r) {
-    Canvas.tapMyRoom(r, this.data.canvasParam)
+    Canvas.tapMyRoom(r, this)
   },
   tapMyGame : function(r) {
     console.log('my_game')
