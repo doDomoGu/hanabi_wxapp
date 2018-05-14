@@ -74,13 +74,25 @@ Page({
       return Canvas.init(that)
     }).then(function(){
       if ( that.data.isInRoom === false ) {
-        Api.getRoomList().then((roomList)=>{
-          that.setData({
-            roomList: roomList
+        let roomListInterval = setInterval(function(){
+          Api.getRoomList().then((roomList)=>{
+            //console.log(roomList)
+            //console.log(that.data.roomList)
+            /*if(roomList !== that.data.roomList){*/
+              //TODO roomList不变化不用重新绘制
+              that.setData({
+                roomList: roomList
+              })
+              Canvas.drawRoomList(roomList,that.data.canvasParam)
+            /*}*/
           })
-          Canvas.drawRoomList(roomList,that.data.canvasParam)
-          //Canvas.bindClickInRoomList(roomList,that.data.canvasParam)
+        },1000)
+
+        that.setData({
+          roomListInterval : roomListInterval
         })
+
+        //clearInterval(roomListInterval)
       }else if(that.data.isInRoom === true ){
         if(that.data.isInGame === false ) {
 
