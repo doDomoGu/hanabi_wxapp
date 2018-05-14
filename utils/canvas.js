@@ -174,6 +174,7 @@ const tapRoomList = (roomList, r, t) => {
       if(roomList[i].password ===''){
         Api.enterRoom(roomList[i].id).then(function(re){
           if(re.success){
+            clearInterval(t.data.roomListInterval)
             t.setData({
               isInRoom : true
             })

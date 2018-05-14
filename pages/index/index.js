@@ -74,20 +74,8 @@ Page({
       return Canvas.init(that)
     }).then(function(){
       if ( that.data.isInRoom === false ) {
-        let roomListInterval = setInterval(function(){
-          Api.getRoomList().then((roomList)=>{
-            //console.log(roomList)
-            //console.log(that.data.roomList)
-            /*if(roomList !== that.data.roomList){*/
-              //TODO roomList不变化不用重新绘制
-              that.setData({
-                roomList: roomList
-              })
-              Canvas.drawRoomList(roomList,that.data.canvasParam)
-            /*}*/
-          })
-        },1000)
-
+        that.drawRoomList()
+        let roomListInterval = setInterval(that.drawRoomList,1000)
         that.setData({
           roomListInterval : roomListInterval
         })
@@ -95,9 +83,9 @@ Page({
         //clearInterval(roomListInterval)
       }else if(that.data.isInRoom === true ){
         if(that.data.isInGame === false ) {
-
-        }else{
           Canvas.drawMyRoom(that.data.canvasParam)
+        }else{
+
         }
       }
     }).catch(function(err){
@@ -123,6 +111,21 @@ Page({
     this.setData({
       isInRoom: isInRoom,
       isInGame: isInGame
+    })
+  },
+
+  drawRoomList : function(){
+    let that = this
+    Api.getRoomList().then((roomList)=>{
+      //console.log(roomList)
+      //console.log(that.data.roomList)
+      /*if(roomList !== that.data.roomList){*/
+      //TODO roomList不变化不用重新绘制
+      that.setData({
+        roomList: roomList
+      })
+      Canvas.drawRoomList(roomList,that.data.canvasParam)
+      /*}*/
     })
   },
   tapRoomList : function(r) {
