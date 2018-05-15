@@ -5,6 +5,7 @@ let commonParam = (p) => {
   p.leftPad = p.rightPad =  10 // 左右边距
   p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右边距后的宽度
   p.radius = 10
+  p.fontSize = 20  //全局文字尺寸
   return p
 }
 
@@ -14,7 +15,7 @@ let roomListParam = (p) => {
   p.RL_fontColor = '#2510cc' //文字颜色
   p.RL_fontColor2 = '#FFFFFF' //文字颜色2
 
-  p.RL_fontSize = 20  //文字尺寸
+  //p.RL_fontSize = 20  //文字尺寸
 
   p.RL_innerHeight = 400 //区域高度
   p.RL_innerLeftPad = p.leftPad + 10 //区域左边距（相对整个画布）
@@ -86,26 +87,37 @@ let myGameParam =  (p) => {
 
 // 函数：绘制圆角矩形
 const drawRoundedRect = function (rect, radius, ctx) {
-  const point = function (x, y) {
-    return { x: x, y: y }
-  }
-  const ptA = point(rect.x + radius, rect.y)
-  const ptB = point(rect.x + rect.w, rect.y)
-  const ptC = point(rect.x + rect.w, rect.y + rect.h)
-  const ptD = point(rect.x, rect.y + rect.h)
-  const ptE = point(rect.x, rect.y)
+  ctx.fillRect(rect.x,rect.y,rect.w,rect.h)
 
-  ctx.beginPath()
-
-  ctx.moveTo(ptA.x, ptA.y)
-  ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, radius)
-  ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, radius)
-  ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, radius)
-  ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, radius)
-
-  // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
-  ctx.fill()
   ctx.draw(true)
+
+  // const point = function (x, y) {
+  //   return { x: x, y: y }
+  // }
+  // const ptA = point(rect.x + radius, rect.y)
+  // const ptB = point(rect.x + rect.w, rect.y)
+  // const ptC = point(rect.x + rect.w, rect.y + rect.h)
+  // const ptD = point(rect.x, rect.y + rect.h)
+  // const ptE = point(rect.x, rect.y)
+  //
+  // // console.log('A:',ptA.x, ptA.y)
+  // // console.log('B:',ptB.x, ptB.y)
+  // // console.log('C:',ptC.x, ptC.y)
+  // // console.log('D:',ptD.x, ptD.y)
+  // // console.log('E:',ptE.x, ptE.y)
+  // // console.log('F:',ptF.x, ptF.y)
+  // // console.log('G:',ptG.x, ptG.y)
+  // // console.log('H:',ptH.x, ptH.y)
+  //
+  // ctx.beginPath()
+  // ctx.moveTo(ptA.x, ptA.y)
+  // ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, radius)
+  // ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, radius)
+  // ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, radius)
+  // ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, radius)
+  // // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
+  // ctx.fill()
+  // ctx.draw()
 }
 
 // 画布初始化 ：获得并设置高度/宽度/像素比  设置绘图的各种参数 位置/高度/宽度/颜色/样式
@@ -149,7 +161,7 @@ const initTest = (p) => {
   const ctxMG = wx.createCanvasContext('myGameCanvas')
 
   ctxRL.setFillStyle("#333333");
-  ctxRL.setFontSize(20)
+  ctxRL.setFontSize(p.fontSize)
   //ctxRL.setTextBaseline('top')
   ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
   ctxRL.draw()
@@ -178,7 +190,7 @@ const drawRoomList = (roomList, p) => {
   ctx.fill()
   ctx.draw(true)
   //列表文字绘制
-  ctx.setFontSize(p.RL_fontSize)
+  ctx.setFontSize(p.fontSize)
   ctx.setTextAlign('left')
   ctx.setTextBaseline('middle')
   for(let i = 0 ; i < roomList.length ; i++){
@@ -286,11 +298,11 @@ const drawMyRoom = (p) => {
     p.radius,
     ctx
   )
-  // ctx.font = '40px Arial'
-  // ctx.fillStyle = '#FFFFFF'
-  // ctx.textAlign = 'center'
-  // ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnTextY)
-  // ctx.draw(true)
+  ctx.font = p.fontSize
+  ctx.fillStyle = '#FFFFFF'
+  ctx.textAlign = 'center'
+  ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnTextY)
+  ctx.draw(true)
 }
 
 const drawPlayerInfo = function (info, isHost,  p, ctx) {
@@ -311,7 +323,7 @@ const drawPlayerInfo = function (info, isHost,  p, ctx) {
   ctx.fillStyle = p.MR_playerInfoBgColor
 
   drawRoundedRect(rect, p.radius, ctx)
-  ctx.font = '40px Microsoft JhengHei'
+  ctx.font = p.fontSize
   ctx.fillStyle = p.MR_playerInfoTextColor
   ctx.textAlign = 'left'
 
