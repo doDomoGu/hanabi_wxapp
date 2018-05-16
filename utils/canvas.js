@@ -5,7 +5,8 @@ let commonParam = (p) => {
   p.leftPad = p.rightPad =  10 // 左右边距
   p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右边距后的宽度
   p.radius = 10
-  p.fontSize = 20  //全局文字尺寸
+  p.fontSize = '10px sans-serif'  //全局文字尺寸
+
   return p
 }
 
@@ -19,7 +20,7 @@ let roomListParam = (p) => {
 
   p.RL_innerHeight = 400 //区域高度
   p.RL_innerLeftPad = p.leftPad + 10 //区域左边距（相对整个画布）
-  p.RL_innerTopPad = p.topPad + 30   //区域上边距 （相对整个画布）
+  p.RL_innerTopPad = p.topPad + 14  //区域上边距 （相对整个画布）
   p.RL_innerLineHeight = 32 //列表行高
   p.RL_innerTitleLeftPad = p.RL_innerLeftPad + 50 //列表标题左边距（相对整个画布）
   p.RL_innerLockLeftPad = p.RL_innerLeftPad + 100 //上锁标志左边距（相对整个画布）
@@ -27,7 +28,7 @@ let roomListParam = (p) => {
   return p
 }
 
-let myRoomParam =  (p) => {
+let myRoomParam = (p) => {
   p.MR_playerAreaBgColor = '#5fc0f3' // 玩家区域的背景色
   p.MR_playerInfoBgColor = '#ccf0f1' // 玩家信息的背景色
   p.MR_playerInfoTextColor = '#283085' // 玩家信息的文本色
@@ -132,6 +133,8 @@ const init = (t) => {  // t = this
         // console.log('width : '+ p.width)
         // console.log('height : '+ p.height)
         // console.log('ratio : '+ p.ratio)
+
+
         //1.通用参数
         p = commonParam(p)
         //2.房间列表页面参数
@@ -161,22 +164,20 @@ const initTest = (p) => {
   const ctxMG = wx.createCanvasContext('myGameCanvas')
 
   ctxRL.setFillStyle("#333333");
-  ctxRL.setFontSize(p.fontSize)
+  //ctxRL.setFontSize(p.fontSize)
   //ctxRL.setTextBaseline('top')
   ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
   ctxRL.draw()
 
-  // ctxMR.setFillStyle("#333333");
-  // ctxMR.setFontSize(20)
+  ctxMR.setFillStyle("#333333");
+  //ctxMR.setFontSize(p.fontSize)
   ctxMR.fillText('my room canvas', p.leftPad + 10, 10)
   ctxMR.draw()
 
-  // ctxMG.setFillStyle("#333333");
-  // ctxMG.setFontSize(20)
+  ctxMG.setFillStyle("#333333");
+  // ctxMG.setFontSize(p.fontSize)
   ctxMG.fillText('my game canvas', p.leftPad + 10, 10)
   ctxMG.draw()
-
-
 }
 
 const drawRoomList = (roomList, p) => {
@@ -190,7 +191,7 @@ const drawRoomList = (roomList, p) => {
   ctx.fill()
   ctx.draw(true)
   //列表文字绘制
-  ctx.setFontSize(p.fontSize)
+  // ctx.setFontSize(p.fontSize)
   ctx.setTextAlign('left')
   ctx.setTextBaseline('middle')
   for(let i = 0 ; i < roomList.length ; i++){
@@ -199,7 +200,7 @@ const drawRoomList = (roomList, p) => {
     } else {
       ctx.setFillStyle(p.RL_bgColor2);
     }
-    ctx.rect(p.leftPad,p.RL_innerTopPad + p.RL_innerLineHeight * i - 16,p.innerWidth,p.RL_innerLineHeight)
+    ctx.rect(p.leftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i, p.innerWidth, p.RL_innerLineHeight)
     ctx.fill()
     ctx.draw(true)
 
@@ -224,23 +225,30 @@ const drawRoomList = (roomList, p) => {
  * roomlist :房间列表
  * r : 点击信息
  * t : 页面this对象
+ * @param t          Information about the object.
+ * @param t.data.roomList[].password   Information about the object's members.
  */
-const tapRoomList = (roomList, r, t) => {
+const tapRoomList = (r, t) => {
   // console.log(r)
   const x = r.detail.x
   const y = r.detail.y
   // console.log("鼠标指针坐标：" + x + "," + y);
 
   const p = t.data.canvasParam
+  const roomList = t.data.roomList
 
   for(let i = 0 ; i < roomList.length ; i++){
     if( x >= p.leftPad
       && x <= ( p.leftPad  + p.innerWidth )
       && y>= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16)
       && y <= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16 + p.RL_innerLineHeight ) ){
+
       let id = roomList[i].id
       id = id < 10 ? '00' + id : '0' + id
-      if(roomList[i].password ===''){
+
+      // let { password } = roomList[i]
+
+      if( roomList[i].password ===''){
         Api.enterRoom(roomList[i].id).then(function(re){
           if(re.success){
             clearInterval(t.data.roomListInterval)
@@ -249,7 +257,7 @@ const tapRoomList = (roomList, r, t) => {
             })
           }
         })
-      }else{
+      } else {
         wx.showToast({
           title: '[' + id + '] 不可进入'
         })
@@ -282,10 +290,8 @@ const drawMyRoom = (p) => {
     p.radius,
     ctx
   )
-
   drawPlayerInfo({}, true, p, ctx)
   drawPlayerInfo({}, false, p, ctx)
-
   // 绘制退出按钮
   ctx.fillStyle = p.MR_exitButtonColor
   drawRoundedRect(
@@ -298,7 +304,7 @@ const drawMyRoom = (p) => {
     p.radius,
     ctx
   )
-  ctx.font = p.fontSize
+  //ctx.setFontSize(40)
   ctx.fillStyle = '#FFFFFF'
   ctx.textAlign = 'center'
   ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnTextY)
@@ -320,32 +326,61 @@ const drawPlayerInfo = function (info, isHost,  p, ctx) {
     w: p.MR_playerAreaWidth - 40,
     h: 40
   }
+
   ctx.fillStyle = p.MR_playerInfoBgColor
-
   drawRoundedRect(rect, p.radius, ctx)
-  ctx.font = p.fontSize
-  ctx.fillStyle = p.MR_playerInfoTextColor
-  ctx.textAlign = 'left'
 
+  //ctx.setfont = p.fontSize
+  ctx.setFillStyle = p.MR_playerInfoTextColor
+  ctx.setTextAlign = 'left'
   const playerName = info.id > -1 ? info.name + (isHost === isHost ? ' (你)' : '') : '--'
   ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + playerName, p.MR_playerAreaX + 40, textYOffset)
   ctx.draw(true)
 }
 
-const tapMyRoom = (r, t) => {
+const tapMyRoom = (event, t) => {
   // console.log(r)
-  const x = r.detail.x
-  const y = r.detail.y
+  // const x = r.detail.x
+  // const y = r.detail.y
+  // console.log("鼠标指针坐标：" + x + "," + y);
+
+  const p = t.data.canvasParam
+
+  const isTapExitBtn = _isInPath('MyRoom', 'exit-btn', event, p)
+
+  if (isTapExitBtn){
+    Api.exitRoom().then(function(re){
+      if(re.success){
+        drawRoomList(t.data.roomList,t.data.canvasParam)
+        t.setData({
+          isInRoom : false
+        })
+      }
+    })
+  }
+
+}
+
+const _isInPath = (page, item, event, p) => {
+  const x = event.detail.x
+  const y = event.detail.y
   console.log("鼠标指针坐标：" + x + "," + y);
 
-  Api.exitRoom().then(function(re){
-    if(re.success){
-      drawRoomList(t.data.roomList,t.data.canvasParam)
-      t.setData({
-        isInRoom : false
-      })
+
+  if (page === 'MyRoom') {
+    if (item === 'exit-btn') {
+      if ( x >= p.MR_exitBtnX
+      && x <= p.MR_exitBtnX + p.MR_exitBtnW
+      && y <= p.MR_exitBtnY
+      && y >= p.MR_exitBtnY + p.MR_exitBtnH){
+        return true;
+      }
     }
-  })
+  }
+
+
+  return false;
+
 }
 
 module.exports = {

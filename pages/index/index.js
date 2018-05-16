@@ -128,11 +128,11 @@ Page({
       /*}*/
     })
   },
-  tapRoomList : function(r) {
-    Canvas.tapRoomList(this.data.roomList, r, this)
+  tapRoomList : function(event) {
+    Canvas.tapRoomList(event, this)
   },
-  tapMyRoom : function(r) {
-    Canvas.tapMyRoom(r, this)
+  tapMyRoom : function(event) {
+    Canvas.tapMyRoom(event, this)
   },
   tapMyGame : function(r) {
     console.log('my_game')
