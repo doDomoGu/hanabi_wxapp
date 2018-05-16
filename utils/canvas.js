@@ -5,7 +5,7 @@ let commonParam = (p) => {
   p.leftPad = p.rightPad =  10 // 左右边距
   p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右边距后的宽度
   p.radius = 10
-  p.fontSize = '10px sans-serif'  //全局文字尺寸
+  p.fontSize = '20px sans-serif'  //全局文字尺寸
 
   return p
 }
@@ -20,7 +20,7 @@ let roomListParam = (p) => {
 
   p.RL_innerHeight = 400 //区域高度
   p.RL_innerLeftPad = p.leftPad + 10 //区域左边距（相对整个画布）
-  p.RL_innerTopPad = p.topPad + 14  //区域上边距 （相对整个画布）
+  p.RL_innerTopPad = p.topPad + 30  //区域上边距 （相对整个画布）
   p.RL_innerLineHeight = 32 //列表行高
   p.RL_innerTitleLeftPad = p.RL_innerLeftPad + 50 //列表标题左边距（相对整个画布）
   p.RL_innerLockLeftPad = p.RL_innerLeftPad + 100 //上锁标志左边距（相对整个画布）
@@ -90,7 +90,7 @@ let myGameParam =  (p) => {
 const drawRoundedRect = function (rect, radius, ctx) {
   ctx.fillRect(rect.x,rect.y,rect.w,rect.h)
 
-  ctx.draw(true)
+  //ctx.draw(true)
 
   // const point = function (x, y) {
   //   return { x: x, y: y }
@@ -164,18 +164,18 @@ const initTest = (p) => {
   const ctxMG = wx.createCanvasContext('myGameCanvas')
 
   ctxRL.setFillStyle("#333333");
-  //ctxRL.setFontSize(p.fontSize)
+  ctxRL.setFontSize(p.fontSize)
   //ctxRL.setTextBaseline('top')
   ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
   ctxRL.draw()
 
   ctxMR.setFillStyle("#333333");
-  //ctxMR.setFontSize(p.fontSize)
+  ctxMR.setFontSize(p.fontSize)
   ctxMR.fillText('my room canvas', p.leftPad + 10, 10)
   ctxMR.draw()
 
   ctxMG.setFillStyle("#333333");
-  // ctxMG.setFontSize(p.fontSize)
+  ctxMG.setFontSize(p.fontSize)
   ctxMG.fillText('my game canvas', p.leftPad + 10, 10)
   ctxMG.draw()
 }
@@ -189,7 +189,7 @@ const drawRoomList = (roomList, p) => {
   ctx.setFillStyle(p.RL_bgColor);
   ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
   ctx.fill()
-  ctx.draw(true)
+  //ctx.draw(true)
   //列表文字绘制
   // ctx.setFontSize(p.fontSize)
   ctx.setTextAlign('left')
@@ -200,9 +200,9 @@ const drawRoomList = (roomList, p) => {
     } else {
       ctx.setFillStyle(p.RL_bgColor2);
     }
-    ctx.rect(p.leftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i, p.innerWidth, p.RL_innerLineHeight)
+    ctx.rect(p.leftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i - 16, p.innerWidth, p.RL_innerLineHeight)
     ctx.fill()
-    ctx.draw(true)
+    //ctx.draw(true)
 
     if (i % 2 === 0) {
       ctx.setFillStyle(p.RL_fontColor);
@@ -335,7 +335,7 @@ const drawPlayerInfo = function (info, isHost,  p, ctx) {
   ctx.setTextAlign = 'left'
   const playerName = info.id > -1 ? info.name + (isHost === isHost ? ' (你)' : '') : '--'
   ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + playerName, p.MR_playerAreaX + 40, textYOffset)
-  ctx.draw(true)
+  //ctx.draw(true)
 }
 
 const tapMyRoom = (event, t) => {
@@ -364,23 +364,23 @@ const tapMyRoom = (event, t) => {
 const _isInPath = (page, item, event, p) => {
   const x = event.detail.x
   const y = event.detail.y
-  console.log("鼠标指针坐标：" + x + "," + y);
 
+
+  let x1 = 0 , x2 = 0, y1 = 0, y2 = 0
 
   if (page === 'MyRoom') {
     if (item === 'exit-btn') {
-      if ( x >= p.MR_exitBtnX
-      && x <= p.MR_exitBtnX + p.MR_exitBtnW
-      && y <= p.MR_exitBtnY
-      && y >= p.MR_exitBtnY + p.MR_exitBtnH){
-        return true;
-      }
+      x1 = p.MR_exitBtnX
+      x2 = p.MR_exitBtnX + p.MR_exitBtnW
+      y1 = p.MR_exitBtnY
+      y2 = p.MR_exitBtnY + p.MR_exitBtnH
     }
   }
 
-
-  return false;
-
+  console.log("鼠标坐标：" + x + "," + y);
+  console.log("区域坐标：" + x1 + "," + x2 + "," + y1 + "," + y2);
+  console.log("结果：" + (x > x1 && x < x2 && y > y1 && y < y2) ? 'Y': 'N')
+  return x > x1 && x < x2 && y > y1 && y < y2
 }
 
 module.exports = {
