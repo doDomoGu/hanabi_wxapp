@@ -16,7 +16,7 @@ let roomListParam = (p) => {
   p.RL_fontColor = '#2510cc' //文字颜色
   p.RL_fontColor2 = '#FFFFFF' //文字颜色2
 
-  //p.RL_fontSize = 20  //文字尺寸
+  p.RL_fontSize = '18px'  //文字尺寸
 
   p.RL_innerHeight = 400 //区域高度
   p.RL_innerLeftPad = p.leftPad + 10 //区域左边距（相对整个画布）
