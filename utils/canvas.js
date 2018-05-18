@@ -374,6 +374,10 @@ const _isInPath = (page, item, event, p) => {
       x2 = p.MR_exitBtnX + p.MR_exitBtnW
       y1 = p.MR_exitBtnY
       y2 = p.MR_exitBtnY + p.MR_exitBtnH
+    } else if(item === 'do-ready'){
+
+    } else if(item === 'start-game'){
+      
     }
   }
 
