@@ -43,9 +43,9 @@ let myRoomParam = (p) => {
 
   p.MR_playerAreaX = p.leftPad // 玩家区域x偏移量(相对整个画布)
   p.MR_playerAreaHostY = 10 // 房主玩家区域y偏移量(相对整个画布)
-  p.MR_playerAreaGuestY = 160 // 访客玩家区域y偏移量(相对整个画布)
   p.MR_playerAreaHeight = 140 // 玩家区域的高度
   p.MR_playerAreaWidth = p.innerWidth // 玩家区域的宽度
+  p.MR_playerAreaGuestY = p.MR_playerAreaHostY + p.MR_playerAreaHeight + 10 // 访客玩家区域y偏移量(相对整个画布)
 
   p.MR_playerButtonXOffset = 20 // 玩家区域内按钮x偏移量(相对玩家区域)
   p.MR_playerButtonYOffset = 80 // 玩家区域内按钮y偏移量(相对玩家区域)
@@ -72,9 +72,9 @@ let myRoomParam = (p) => {
   p.MR_exitBtnY = 320 // 退出按钮y偏移量(相对整个画布)
   p.MR_exitBtnW = p.innerWidth // 退出按钮宽度
   p.MR_exitBtnH = p.MR_exitBtnW / 8 // 退出按钮高度
+  p.MR_exitTextFontSize = p.MR_exitBtnH / 2
 
-
-  p.MR_exitBtnTextY = 20 // 退出按钮内文字y偏移量(相对按钮区域)
+  //p.MR_exitBtnPad = 20 // 退出按钮内文字y偏移量(相对按钮区域)
 
   return p
 }
@@ -305,11 +305,14 @@ const drawMyRoom = (p) => {
     p.radius,
     ctx
   )
-  ctx.setFontSize(40)
+  ctx.setFontSize(p.MR_exitTextFontSize)
   ctx.fillStyle = '#FFFFFF'
   ctx.textAlign = 'center'
-  ctx.setTextBaseLine = 'middle'
-  ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnTextY)
+  console.log(ctx.textBaseline)
+
+  ctx.setTextBaseline('middle')
+  console.log(ctx.textBaseline)
+  ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnH / 2)
   ctx.draw(true)
 }
 
