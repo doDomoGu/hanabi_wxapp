@@ -70,8 +70,9 @@ let myRoomParam = (p) => {
 
   p.MR_exitBtnX = p.leftPad // 退出按钮x偏移量(相对整个画布)
   p.MR_exitBtnY = 320 // 退出按钮y偏移量(相对整个画布)
-  p.MR_exitBtnH = 30 // 退出按钮高度
   p.MR_exitBtnW = p.innerWidth // 退出按钮宽度
+  p.MR_exitBtnH = p.MR_exitBtnW / 8 // 退出按钮高度
+
 
   p.MR_exitBtnTextY = 20 // 退出按钮内文字y偏移量(相对按钮区域)
 
@@ -304,9 +305,10 @@ const drawMyRoom = (p) => {
     p.radius,
     ctx
   )
-  //ctx.setFontSize(40)
+  ctx.setFontSize(40)
   ctx.fillStyle = '#FFFFFF'
   ctx.textAlign = 'center'
+  ctx.setTextBaseLine = 'middle'
   ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnTextY)
   ctx.draw(true)
 }
@@ -377,7 +379,7 @@ const _isInPath = (page, item, event, p) => {
     } else if(item === 'do-ready'){
 
     } else if(item === 'start-game'){
-      
+
     }
   }
 
