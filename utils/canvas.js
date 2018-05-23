@@ -1,8 +1,9 @@
 const Api    = require('./api.js')
 
 let commonParam = (p) => {
-  p.topPad = 10 // 上边距
-  p.leftPad = p.rightPad =  10 // 左右边距
+  p.pad = 10 //一般间隔留白
+  p.topPad =  p.pad // 上边距
+  p.leftPad = p.rightPad =  p.pad// 左右边距
   p.innerWidth = p.width - p.leftPad - p.rightPad // 去除左右边距后的宽度
   p.radius = 10
   p.fontSize = '20px sans-serif'  //全局文字尺寸
@@ -42,10 +43,15 @@ let myRoomParam = (p) => {
   p.MR_exitButtonTouchColor = '#8d0917' // 退出按钮颜色(触摸时)
 
   p.MR_playerAreaX = p.leftPad // 玩家区域x偏移量(相对整个画布)
-  p.MR_playerAreaHostY = 10 // 房主玩家区域y偏移量(相对整个画布)
+  p.MR_playerAreaHostY = p.topPad// 房主玩家区域y偏移量(相对整个画布)
   p.MR_playerAreaHeight = 140 // 玩家区域的高度
   p.MR_playerAreaWidth = p.innerWidth // 玩家区域的宽度
-  p.MR_playerAreaGuestY = p.MR_playerAreaHostY + p.MR_playerAreaHeight + 10 // 访客玩家区域y偏移量(相对整个画布)
+  p.MR_playerAreaGuestY = p.MR_playerAreaHostY + p.MR_playerAreaHeight + p.pad // 访客玩家区域y偏移量(相对整个画布)
+  p.MR_playerInfoX = p.MR_playerAreaX + 20  //玩家信息区域x偏移量(相对整个画布)
+  p.MR_playerInfoHostY = p.MR_playerAreaHostY + 20 
+
+
+
 
   p.MR_playerButtonXOffset = 20 // 玩家区域内按钮x偏移量(相对玩家区域)
   p.MR_playerButtonYOffset = 80 // 玩家区域内按钮y偏移量(相对玩家区域)
@@ -308,10 +314,7 @@ const drawMyRoom = (p) => {
   ctx.setFontSize(p.MR_exitTextFontSize)
   ctx.fillStyle = '#FFFFFF'
   ctx.textAlign = 'center'
-  console.log(ctx.textBaseline)
-
   ctx.setTextBaseline('middle')
-  console.log(ctx.textBaseline)
   ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnH / 2)
   ctx.draw(true)
 }
@@ -325,6 +328,7 @@ const drawPlayerInfo = function (info, isHost,  p, ctx) {
     rectYOffset = p.MR_playerAreaGuestY + 20
     textYOffset = p.MR_playerAreaGuestY + 46
   }
+
   const rect = {
     x: p.MR_playerAreaX + 20,
     y: rectYOffset,
