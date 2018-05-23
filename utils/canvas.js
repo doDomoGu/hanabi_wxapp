@@ -369,7 +369,7 @@ const tapMyRoom = (event, t) => {
       Api.exitRoom().then(function (re) {
         if (re.success) {
           clearInterval(t.data.myRoomInterval)
-          drawRoomList(t.data.roomList, t.data.canvasParam)
+          //drawRoomList(t.data.roomList, t.data.canvasParam)
           t.setData({
             isInRoom: false
           })
