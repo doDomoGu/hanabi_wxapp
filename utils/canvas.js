@@ -279,7 +279,7 @@ const tapRoomList = (r, t) => {
   })
 }
 
-const drawMyRoom = (p) => {
+const drawMyRoom = (data,p) => {
   const ctx = wx.createCanvasContext('myRoomCanvas')
   // 绘制玩家1和玩家2区域
   ctx.fillStyle = p.MR_playerAreaBgColor
@@ -369,7 +369,6 @@ const tapMyRoom = (event, t) => {
       Api.exitRoom().then(function (re) {
         if (re.success) {
           clearInterval(t.data.myRoomInterval)
-          //drawRoomList(t.data.roomList, t.data.canvasParam)
           t.setData({
             isInRoom: false
           })

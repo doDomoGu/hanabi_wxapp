@@ -83,7 +83,7 @@ Page({
         //clearInterval(roomListInterval)
       }else if(that.data.isInRoom === true ){
         if(that.data.isInGame === false ) {
-          that.drawMyRoom()
+          that.drawMyRoom(true)
           let myRoomInterval = setInterval(that.drawMyRoom,1000)
           that.setData({
             myRoomInterval : myRoomInterval
@@ -134,23 +134,51 @@ Page({
       /*}*/
     })
   },
-  drawMyRoom : function(){
+  drawMyRoom : function(force=false){
     let that = this
-    console.log(139)
-    Canvas.drawMyRoom(that.data.canvasParam)
+    Api.getRoomInfo({force:force}).then((res)=> {
+      if (res){
+        if (res.success) {
+          if (!res.data.noUpdate) {
+            that.setData(res.data)
+          }
+        } else {
+          that.setData({
+            roomId: -1,
+            isHost: null,
+            hostPlayer: {
+              id: -1,
+              username: null,
+              name: null
+            },
+            guestPlayer: {
+              id: -1,
+              username: null,
+              name: null
+            },
+            isReady: null,
+          })
+        }
+      }else{
+        console.log('getroominfo wrong  155')
+      }
+      /*that.setData({
+        roomList: roomList
+      })*/
+      Canvas.drawMyRoom(that.data,that.data.canvasParam)
+    })
   },
   tapRoomList : function(event) {
     let that = this
     Canvas.tapRoomList(event, this).then(function(res){
       if(res===true){
-        that.drawMyRoom()
+        that.drawMyRoom(true)
         let myRoomInterval = setInterval(that.drawMyRoom,1000)
         that.setData({
           myRoomInterval : myRoomInterval
         })
       }
     })
-
   },
   tapMyRoom : function(event) {
     let that = this
