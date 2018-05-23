@@ -47,10 +47,18 @@ let myRoomParam = (p) => {
   p.MR_playerAreaHeight = 140 // 玩家区域的高度
   p.MR_playerAreaWidth = p.innerWidth // 玩家区域的宽度
   p.MR_playerAreaGuestY = p.MR_playerAreaHostY + p.MR_playerAreaHeight + p.pad // 访客玩家区域y偏移量(相对整个画布)
-  p.MR_playerInfoX = p.MR_playerAreaX + 20  //玩家信息区域x偏移量(相对整个画布)
-  p.MR_playerInfoHostY = p.MR_playerAreaHostY + 20 
 
+  p.MR_playerInfoPad = 10;
+  p.MR_playerInfoX = p.MR_playerAreaX + p.MR_playerInfoPad  //玩家信息区域x偏移量(相对整个画布)
+  p.MR_playerInfoHostY = p.MR_playerAreaHostY + p.MR_playerInfoPad
+  p.MR_playerInfoHeight = 40
+  p.MR_playerInfoWidth = p.MR_playerAreaWidth - p.MR_playerInfoPad * 2
+  p.MR_playerInfoGuestY = p.MR_playerAreaGuestY + p.MR_playerInfoPad
 
+  p.MR_playerInfoTextX = p.MR_playerInfoX + 20
+  //p.MR_playerInfoTextHostY = p.MR_playerInfoHostY + p.MR_playerInfoPad
+  //p.MR_playerInfoTextGuestY = p.MR_playerInfoGuestY + p.MR_playerInfoPad
+  p.MR_playerInfoTextFontSize = p.MR_playerInfoHeight / 2
 
 
   p.MR_playerButtonXOffset = 20 // 玩家区域内按钮x偏移量(相对玩家区域)
@@ -314,37 +322,38 @@ const drawMyRoom = (p) => {
   ctx.setFontSize(p.MR_exitTextFontSize)
   ctx.fillStyle = '#FFFFFF'
   ctx.textAlign = 'center'
-  ctx.setTextBaseline('middle')
+  ctx.textBaseline = 'middle'
   ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnH / 2)
   ctx.draw(true)
 }
 
 const drawPlayerInfo = function (info, isHost,  p, ctx) {
-  let rectYOffset, textYOffset
+  let rectY, textY
+
   if (isHost) {
-    rectYOffset = p.MR_playerAreaHostY + 20
-    textYOffset = p.MR_playerAreaHostY + 46
+    rectY = p.MR_playerInfoHostY
+    textY = p.MR_playerInfoHostY + p.MR_playerInfoHeight / 2
   } else {
-    rectYOffset = p.MR_playerAreaGuestY + 20
-    textYOffset = p.MR_playerAreaGuestY + 46
+    rectY = p.MR_playerInfoGuestY
+    textY = p.MR_playerInfoGuestY + p.MR_playerInfoHeight / 2
   }
 
   const rect = {
-    x: p.MR_playerAreaX + 20,
-    y: rectYOffset,
-    w: p.MR_playerAreaWidth - 40,
-    h: 40
+    x: p.MR_playerInfoX,
+    y: rectY,
+    w: p.MR_playerInfoWidth,
+    h: p.MR_playerInfoHeight
   }
 
   ctx.fillStyle = p.MR_playerInfoBgColor
   drawRoundedRect(rect, p.radius, ctx)
 
-  //ctx.setfont = p.fontSize
-  ctx.setFillStyle = p.MR_playerInfoTextColor
-  ctx.setTextAlign = 'left'
+  ctx.setFontSize(p.MR_playerInfoTextFontSize)
+  ctx.fillStyle = p.MR_playerInfoTextColor
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'middle'
   const playerName = info.id > -1 ? info.name + (isHost === isHost ? ' (你)' : '') : '--'
-  ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + playerName, p.MR_playerAreaX + 40, textYOffset)
-  //ctx.draw(true)
+  ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + playerName, p.MR_playerInfoTextX , textY)
 }
 
 const tapMyRoom = (event, t) => {
