@@ -169,6 +169,38 @@ const exitRoom = () => {
   })
 }
 
+const getRoomInfo  = (param) => {
+  if (!param.hasOwnProperty('mode')) { param.mode = 'all' }
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-room/get-info?token=' + token,
+      data:param,
+      success: res => {
+        resolve(res.data)
+        // const _res = res.data
+        // let ret = {}
+        // if (_res.success) {
+        //   if (!_res.data.noUpdate) {
+        //     if (param.mode === 'all') {
+        //       ret = _res.data
+        //     }else{
+        //       ret.room_id = _res.data.roomId
+        //     }
+        //   }
+        // }else{
+        //   ret = false
+        // }
+        // resolve(ret)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
 
 
 module.exports = {
@@ -178,5 +210,6 @@ module.exports = {
   getRoomId: getRoomId,
   getIsInGame: getIsInGame,
   enterRoom: enterRoom,
-  exitRoom: exitRoom
+  exitRoom: exitRoom,
+  getRoomInfo: getRoomInfo
 }
