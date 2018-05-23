@@ -17,7 +17,7 @@ let roomListParam = (p) => {
   p.RL_fontColor = '#2510cc' //文字颜色
   p.RL_fontColor2 = '#FFFFFF' //文字颜色2
 
-  p.RL_fontSize = '18px'  //文字尺寸
+  p.RL_fontSize = 18  //文字尺寸
 
   p.RL_innerHeight = 400 //区域高度
   p.RL_innerLeftPad = p.leftPad + 10 //区域左边距（相对整个画布）
@@ -201,14 +201,15 @@ const drawRoomList = (roomList, p) => {
   ctx.clearRect(0,0,p.width,p.height)
 
   //区域背景填充
-  ctx.setFillStyle(p.RL_bgColor);
+  ctx.setFontSize(p.RL_fontSize)
+  ctx.fillStyle = p.RL_bgColor;
   ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
   ctx.fill()
   //ctx.draw(true)
   //列表文字绘制
   // ctx.setFontSize(p.fontSize)
-  ctx.setTextAlign('left')
-  ctx.setTextBaseline('middle')
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'middle'
   for(let i = 0 ; i < roomList.length ; i++){
     if (i % 2 === 0) {
       ctx.setFillStyle(p.RL_bgColor);
@@ -244,41 +245,38 @@ const drawRoomList = (roomList, p) => {
  * @param t.data.roomList[].password   Information about the object's members.
  */
 const tapRoomList = (r, t) => {
-  // console.log(r)
-  const x = r.detail.x
-  const y = r.detail.y
-  // console.log("鼠标指针坐标：" + x + "," + y);
+  return new Promise(function (resolve, reject) {
+    // console.log(r)
+    /*const x = r.detail.x
+    const y = r.detail.y*/
+    // console.log("鼠标指针坐标：" + x + "," + y);
 
-  const p = t.data.canvasParam
-  const roomList = t.data.roomList
+    const p = t.data.canvasParam
+    const roomList = t.data.roomList
 
-  for(let i = 0 ; i < roomList.length ; i++){
-    if( x >= p.leftPad
-      && x <= ( p.leftPad  + p.innerWidth )
-      && y>= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16)
-      && y <= ( p.RL_innerTopPad + p.RL_innerLineHeight * i - 16 + p.RL_innerLineHeight ) ){
-
-      let id = roomList[i].id
-      id = id < 10 ? '00' + id : '0' + id
-
-      // let { password } = roomList[i]
-
-      if( roomList[i].password ===''){
-        Api.enterRoom(roomList[i].id).then(function(re){
-          if(re.success){
-            clearInterval(t.data.roomListInterval)
-            t.setData({
-              isInRoom : true
-            })
-          }
-        })
-      } else {
-        wx.showToast({
-          title: '[' + id + '] 不可进入'
-        })
+    for (let i = 0; i < roomList.length; i++) {
+      if (_isInPath({page: 'RoomList', item: 'list', ord: i}, r, p)) {
+        if (roomList[i].password === '') {
+          Api.enterRoom(roomList[i].id).then(function (re) {
+            if (re.success) {
+              clearInterval(t.data.roomListInterval)
+              t.setData({
+                isInRoom: true
+              })
+              resolve(true)
+            }
+          })
+        } else {
+          let id = roomList[i].id
+          id = id < 10 ? '00' + id : '0' + id
+          wx.showToast({
+            title: '[' + id + '] 不可进入'
+          })
+          resolve(false)
+        }
       }
     }
-  }
+  })
 }
 
 const drawMyRoom = (p) => {
@@ -357,32 +355,39 @@ const drawPlayerInfo = function (info, isHost,  p, ctx) {
 }
 
 const tapMyRoom = (event, t) => {
-  // console.log(r)
-  // const x = r.detail.x
-  // const y = r.detail.y
-  // console.log("鼠标指针坐标：" + x + "," + y);
+  return new Promise(function (resolve, reject) {
+    // console.log(r)
+    // const x = r.detail.x
+    // const y = r.detail.y
+    // console.log("鼠标指针坐标：" + x + "," + y);
 
-  const p = t.data.canvasParam
+    const p = t.data.canvasParam
 
-  const isTapExitBtn = _isInPath('MyRoom', 'exit-btn', event, p)
+    const isTapExitBtn = _isInPath({page: 'MyRoom', item: 'exit-btn'}, event, p)
 
-  if (isTapExitBtn){
-    Api.exitRoom().then(function(re){
-      if(re.success){
-        drawRoomList(t.data.roomList,t.data.canvasParam)
-        t.setData({
-          isInRoom : false
-        })
-      }
-    })
-  }
-
+    if (isTapExitBtn) {
+      Api.exitRoom().then(function (re) {
+        if (re.success) {
+          clearInterval(t.data.myRoomInterval)
+          drawRoomList(t.data.roomList, t.data.canvasParam)
+          t.setData({
+            isInRoom: false
+          })
+          resolve(true)
+        }else{
+          resolve(false)
+        }
+      })
+    }
+  })
 }
 
-const _isInPath = (page, item, event, p) => {
+const _isInPath = (obj, event, p) => {
   const x = event.detail.x
   const y = event.detail.y
 
+  const page = obj.page
+  const item = obj.item
 
   let x1 = 0 , x2 = 0, y1 = 0, y2 = 0
 
@@ -396,6 +401,14 @@ const _isInPath = (page, item, event, p) => {
 
     } else if(item === 'start-game'){
 
+    }
+  }else if (page === 'RoomList') {
+    if (item === 'list'){
+      let ord = obj.ord
+      x1 = p.leftPad
+      x2 = p.leftPad  + p.innerWidth
+      y1 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16
+      y2 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16 + p.RL_innerLineHeight
     }
   }
 

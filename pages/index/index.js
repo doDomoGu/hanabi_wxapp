@@ -83,7 +83,13 @@ Page({
         //clearInterval(roomListInterval)
       }else if(that.data.isInRoom === true ){
         if(that.data.isInGame === false ) {
-          Canvas.drawMyRoom(that.data.canvasParam)
+          that.drawMyRoom()
+          let myRoomInterval = setInterval(that.drawMyRoom,1000)
+          that.setData({
+            myRoomInterval : myRoomInterval
+          })
+
+          //Canvas.drawMyRoom(that.data.canvasParam)
         }else{
 
         }
@@ -128,11 +134,35 @@ Page({
       /*}*/
     })
   },
+  drawMyRoom : function(){
+    let that = this
+    console.log(139)
+    Canvas.drawMyRoom(that.data.canvasParam)
+  },
   tapRoomList : function(event) {
-    Canvas.tapRoomList(event, this)
+    let that = this
+    Canvas.tapRoomList(event, this).then(function(res){
+      if(res===true){
+        that.drawMyRoom()
+        let myRoomInterval = setInterval(that.drawMyRoom,1000)
+        that.setData({
+          myRoomInterval : myRoomInterval
+        })
+      }
+    })
+
   },
   tapMyRoom : function(event) {
-    Canvas.tapMyRoom(event, this)
+    let that = this
+    Canvas.tapMyRoom(event, this).then(function(res){
+      if (res===true) {
+        that.drawRoomList()
+        let roomListInterval = setInterval(that.drawRoomList,1000)
+        that.setData({
+          roomListInterval : roomListInterval
+        })
+      }
+    })
   },
   tapMyGame : function(r) {
     console.log('my_game')
