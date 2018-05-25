@@ -3,8 +3,8 @@
 const Api    = require('../../utils/api.js')
 const Auth   = require('../../utils/auth.js')
 const Canvas = require('../../utils/canvas.js')
-const Draw = require('../../utils/canvas.draw.js')
-const Tap = require('../../utils/canvas.tap.js')
+const Draw   = require('../../utils/canvas.draw.js')
+const Tap    = require('../../utils/canvas.tap.js')
 
 //获取应用实例
 //const app = getApp()
