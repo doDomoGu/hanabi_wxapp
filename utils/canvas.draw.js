@@ -28,9 +28,10 @@ const drawRoundedRect = function (rect, radius, ctx) {
   ctx.arcTo(ptC.x, ptC.y, ptD.x, ptD.y, radius)
   ctx.arcTo(ptD.x, ptD.y, ptE.x, ptE.y, radius)
   ctx.arcTo(ptE.x, ptE.y, ptA.x, ptA.y, radius)
+  ctx.closePath()
   // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
   ctx.fill()
-  ctx.draw(true)
+  //ctx.draw(true)
 }
 
 
@@ -102,8 +103,11 @@ const myRoom = (data,p) => {
     p.radius,
     ctx
   )
-  drawPlayerInfo({}, true, p, ctx)
-  drawPlayerInfo({}, false, p, ctx)
+  drawPlayerInfo(data.hostPlayer, true, p, ctx)
+  drawPlayerButton(data.hostPlayer, true, data.isReady, p , ctx)
+
+  drawPlayerInfo(data.guestPlayer, false, p, ctx)
+  drawPlayerButton(data.guestPlayer, false, data.isReady, p , ctx)
   // 绘制退出按钮
   ctx.fillStyle = p.MR_exitButtonColor
   drawRoundedRect(
@@ -127,7 +131,7 @@ const myRoom = (data,p) => {
 
 
 
-const drawPlayerInfo = function (info, isHost,  p, ctx) {
+const drawPlayerInfo = function (info, isHost, p, ctx) {
   let rectY, textY
 
   if (isHost) {
@@ -154,7 +158,66 @@ const drawPlayerInfo = function (info, isHost,  p, ctx) {
   ctx.textBaseline = 'middle'
   let playerName = info.id > -1 ? info.name + (isHost === isHost ? ' (你)' : '') : '--'
   ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + playerName, p.MR_playerInfoTextX , textY)
-  ctx.draw(true)
+  //ctx.draw(true)
+}
+
+
+const drawPlayerButton = function (player, isHost, isReady, p, ctx) {
+  // TODO绘制按钮还需要优化
+
+  if (isHost) {
+    if (player.id === -1) {
+      return false
+    }
+  } else {
+    if (player.id === -1) {
+      return false
+    }
+  }
+
+  const rectHost = {
+    x: p.MR_playerAreaX + p.MR_playerButtonXOffset,
+    y: p.MR_playerAreaHostY + p.MR_playerButtonYOffset,
+    w: p.MR_playerButtonWidth,
+    h: p.MR_playerButtonHeight
+  }
+  const rectGuest = {
+    x: p.MR_playerAreaX + p.MR_playerButtonXOffset,
+    y: p.MR_playerAreaGuestY + p.MR_playerButtonYOffset,
+    w: p.MR_playerButtonWidth,
+    h: p.MR_playerButtonHeight
+  }
+
+  ctx.setFontSize( p.MR_playerButtonHeight / 2)
+  ctx.textAlign = 'left'
+  ctx.fillStyle = p.MR_playerAreaBgColor
+  ctx.textBaseline = 'middle'
+
+  drawRoundedRect(rectHost, p.radius, ctx)
+  drawRoundedRect(rectGuest, p.radius, ctx)
+
+  if (isHost) {
+    if (isReady) {
+      ctx.fillStyle = p.MR_playerButtonBgColor
+      drawRoundedRect(rectHost, p.radius, ctx)
+      ctx.fillStyle = p.MR_playerButtonTextColor
+      ctx.fillText('开始游戏！', rectHost.x + p.MR_playerButtonTextXOffset, rectHost.y + p.MR_playerButtonHeight / 2)
+    } else {
+      ctx.fillStyle = p.MR_playerButtonDisableBgColor
+      drawRoundedRect(rectHost, p.radius, ctx)
+      ctx.fillStyle = p.MR_playerButtonDisableTextColor
+      ctx.fillText('开始游戏！', rectHost.x + p.MR_playerButtonTextXOffset, rectHost.y + p.MR_playerButtonHeight / 2)
+    }
+  } else {
+    ctx.fillStyle = p.MR_playerButtonBgColor
+    drawRoundedRect(rectGuest, p.radius, ctx)
+    ctx.fillStyle = p.MR_playerButtonTextColor
+    if (isReady) {
+      ctx.fillText('取消准备', rectGuest.x + p.MR_playerButtonTextXOffset, rectGuest.y + p.MR_playerButtonHeight / 2)
+    } else {
+      ctx.fillText('准备！'  , rectGuest.x + p.MR_playerButtonTextXOffset, rectGuest.y + p.MR_playerButtonHeight / 2)
+    }
+  }
 }
 
 

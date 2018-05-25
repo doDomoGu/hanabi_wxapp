@@ -67,18 +67,6 @@ let myRoomParam = (p) => {
   p.MR_playerButtonTextXOffset = 20 // 玩家区域内按钮内文字x偏移量(相对按钮区域)
   p.MR_playerButtonTextYOffset = 20 // 玩家区域内按钮内文字y偏移量(相对按钮区域)
 
-  p.MR_playerButtonRectHost = {
-    x: p.MR_playerAreaX + p.MR_playerButtonXOffset,
-    y: p.MR_playerAreaHostY + p.MR_playerButtonYOffset,
-    w: p.MR_playerButtonWidth,
-    h: p.MR_playerButtonHeight
-  }
-  p.MR_playerButtonRectGuest = {
-    x: p.MR_playerAreaX + p.MR_playerButtonXOffset,
-    y: p.MR_playerAreaGuestY + p.MR_playerButtonYOffset,
-    w: p.MR_playerButtonWidth,
-    h: p.MR_playerButtonHeight
-  }
 
   p.MR_exitBtnX = p.leftPad // 退出按钮x偏移量(相对整个画布)
   p.MR_exitBtnY = 320 // 退出按钮y偏移量(相对整个画布)
