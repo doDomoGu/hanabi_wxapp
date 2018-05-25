@@ -3,6 +3,8 @@
 const Api    = require('../../utils/api.js')
 const Auth   = require('../../utils/auth.js')
 const Canvas = require('../../utils/canvas.js')
+const Draw = require('../../utils/canvas.draw.js')
+const Tap = require('../../utils/canvas.tap.js')
 
 //获取应用实例
 //const app = getApp()
@@ -130,7 +132,7 @@ Page({
       that.setData({
         roomList: roomList
       })
-      Canvas.drawRoomList(roomList,that.data.canvasParam)
+      Draw.roomList(roomList,that.data.canvasParam)
       /*}*/
     })
   },
@@ -165,12 +167,12 @@ Page({
       /*that.setData({
         roomList: roomList
       })*/
-      Canvas.drawMyRoom(that.data,that.data.canvasParam)
+      Draw.myRoom(that.data,that.data.canvasParam)
     })
   },
   tapRoomList : function(event) {
     let that = this
-    Canvas.tapRoomList(event, this).then(function(res){
+    Tap.roomList(event, this).then(function(res){
       if(res===true){
         that.drawMyRoom(true)
         let myRoomInterval = setInterval(that.drawMyRoom,1000)
@@ -182,7 +184,7 @@ Page({
   },
   tapMyRoom : function(event) {
     let that = this
-    Canvas.tapMyRoom(event, this).then(function(res){
+    Tap.myRoom(event, this).then(function(res){
       if (res===true) {
         that.drawRoomList()
         let roomListInterval = setInterval(that.drawRoomList,1000)
