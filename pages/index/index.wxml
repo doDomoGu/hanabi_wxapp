@@ -22,8 +22,4 @@
 
   <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" bindtap="tapMyGame" />
 
-
-  <view wx:if="{{userMottoShow}}" class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
 </view>

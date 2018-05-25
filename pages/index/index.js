@@ -12,9 +12,7 @@ const Tap = require('../../utils/canvas.tap.js')
 Page({
   data: {
     containerClass:'',
-    motto: 'Hello World',
     userInfoShow: false,
-    userMottoShow: false,
     userInfo: {},
     userId: null,
     hasUserInfo: false,
@@ -53,13 +51,7 @@ Page({
     score: -1,
     successCards: [],
 
-    canvasParam: {
-      // width: 0,
-      // height: 0,
-      // ratio: 1,
-      // topLeftPad: 0,
-      // topWidth: 0,
-    }
+    canvasParam: {}
   },
   onLoad: function () {
     const that = this

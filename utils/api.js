@@ -16,7 +16,6 @@ const checkToken = () => {
             // //获得 用户ID
             // that.setData({
             //   userId: res.data.userid,
-            //   motto: that.data.motto + '(' + res.data.userid + ')'
             // })
             // console.log('token验证成功')
             resolve({result:'success',user_id:res.data.user_id})
@@ -49,7 +48,6 @@ const getToken = (code) => {
           //获得 用户ID
           // that.setData({
           //   userId: res.data.user_id,
-          //   motto: that.data.motto + '(' + res.data.user_id + ')'
           // })
 
           resolve({result: 'success', user_id: res.data.user_id})
