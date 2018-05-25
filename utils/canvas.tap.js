@@ -55,7 +55,23 @@ const myRoom = (event, t) => {
 
     const isTapExitBtn = _isInPath({page: 'MyRoom', item: 'exit-btn'}, event, p)
 
+    const isTapDoReady = _isInPath({page: 'MyRoom', item: 'do-ready'}, event, p)
+
+    const isTapStartGame = _isInPath({page: 'MyRoom', item: 'start-game'}, event, p)
+
     if (isTapExitBtn) {
+      Api.exitRoom().then(function (re) {
+        if (re.success) {
+          clearInterval(t.data.myRoomInterval)
+          t.setData({
+            isInRoom: false
+          })
+          resolve(true)
+        }else{
+          resolve(false)
+        }
+      })
+    } else if (isTapDoReady) {
       Api.exitRoom().then(function (re) {
         if (re.success) {
           clearInterval(t.data.myRoomInterval)
@@ -83,17 +99,23 @@ const _isInPath = (obj, event, p) => {
   if (page === 'MyRoom') {
     if (item === 'exit-btn') {
       x1 = p.MR_exitBtnX
-      x2 = p.MR_exitBtnX + p.MR_exitBtnW
+      x2 = x1 + p.MR_exitBtnW
       y1 = p.MR_exitBtnY
-      y2 = p.MR_exitBtnY + p.MR_exitBtnH
-    } else if(item === 'do-ready'){
-
-    } else if(item === 'start-game'){
-
+      y2 = y1 + p.MR_exitBtnH
+    } else if (item === 'do-ready') {
+      x1 = p.MR_playerAreaX + p.MR_playerButtonXOffset
+      x2 = x1 + p.MR_playerButtonWidth
+      y1 = p.MR_playerAreaGuestY + p.MR_playerButtonYOffset
+      y2 = y1 + p.MR_playerButtonHeight
+    } else if (item === 'start-game') {
+      x1 = p.MR_playerAreaX + p.MR_playerButtonXOffset
+      x2 = x1 + p.MR_playerButtonWidth
+      y1 = p.MR_playerAreaHostY + p.MR_playerButtonYOffset
+      y2 = y1 + p.MR_playerButtonHeight
     }
   }else if (page === 'RoomList') {
-    if (item === 'list'){
-      let ord = obj.ord
+    if (item === 'list') {
+      let ord = obj.ord  //房间列表页 特殊参数： 序号
       x1 = p.leftPad
       x2 = p.leftPad  + p.innerWidth
       y1 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16
