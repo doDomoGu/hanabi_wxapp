@@ -93,26 +93,6 @@ Page({
       console.log(err)
     })
   },
-  bindButtonTap: function(r) {
-    const page = parseInt(r.currentTarget.dataset.page)
-
-    let isInRoom
-    let isInGame
-    if (page === 1){
-      isInRoom = false
-      isInGame = false
-    } else if(page === 2){
-      isInRoom = true
-      isInGame = false
-    } else if(page === 3){
-      isInRoom = true
-      isInGame = true
-    }
-    this.setData({
-      isInRoom: isInRoom,
-      isInGame: isInGame
-    })
-  },
 
   drawRoomList : function(){
     let that = this
