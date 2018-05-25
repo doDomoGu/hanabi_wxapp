@@ -1,4 +1,3 @@
-
 let commonParam = (p) => {
   p.pad = 10 //一般间隔留白
   p.topPad =  p.pad // 上边距
@@ -87,14 +86,11 @@ let myRoomParam = (p) => {
   p.MR_exitBtnH = p.MR_exitBtnW / 8 // 退出按钮高度
   p.MR_exitTextFontSize = p.MR_exitBtnH / 2
 
-  //p.MR_exitBtnPad = 20 // 退出按钮内文字y偏移量(相对按钮区域)
-
   return p
 }
 
 
 let myGameParam =  (p) => {
-
 
   return p
 }
@@ -131,7 +127,7 @@ const init = (t) => {  // t = this
         })
 
         //测试用
-        initTest(p)
+        //initTest(p)
 
         resolve()
       }
@@ -139,27 +135,27 @@ const init = (t) => {  // t = this
   })
 }
 
-const initTest = (p) => {
-  const ctxRL = wx.createCanvasContext('roomListCanvas')
-  const ctxMR = wx.createCanvasContext('myRoomCanvas')
-  const ctxMG = wx.createCanvasContext('myGameCanvas')
-
-  ctxRL.setFillStyle("#333333");
-  ctxRL.setFontSize(p.fontSize)
-  //ctxRL.setTextBaseline('top')
-  ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
-  ctxRL.draw()
-
-  ctxMR.setFillStyle("#333333");
-  ctxMR.setFontSize(p.fontSize)
-  ctxMR.fillText('my room canvas', p.leftPad + 10, 10)
-  ctxMR.draw()
-
-  ctxMG.setFillStyle("#333333");
-  ctxMG.setFontSize(p.fontSize)
-  ctxMG.fillText('my game canvas', p.leftPad + 10, 10)
-  ctxMG.draw()
-}
+// const initTest = (p) => {
+//   const ctxRL = wx.createCanvasContext('roomListCanvas')
+//   const ctxMR = wx.createCanvasContext('myRoomCanvas')
+//   const ctxMG = wx.createCanvasContext('myGameCanvas')
+//
+//   ctxRL.setFillStyle("#333333");
+//   ctxRL.setFontSize(p.fontSize)
+//   //ctxRL.setTextBaseline('top')
+//   ctxRL.fillText('room list canvas', p.leftPad + 10, 10)
+//   ctxRL.draw()
+//
+//   ctxMR.setFillStyle("#333333");
+//   ctxMR.setFontSize(p.fontSize)
+//   ctxMR.fillText('my room canvas', p.leftPad + 10, 10)
+//   ctxMR.draw()
+//
+//   ctxMG.setFillStyle("#333333");
+//   ctxMG.setFontSize(p.fontSize)
+//   ctxMG.fillText('my game canvas', p.leftPad + 10, 10)
+//   ctxMG.draw()
+// }
 
 
 

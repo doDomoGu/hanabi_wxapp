@@ -14,8 +14,6 @@
     <button bindtap="bindButtonTap" disabled="{{isInRoom && isInGame}}" data-page="3">游戏页面</button>
   </view>
 
-
-
   <canvas class="{{(!isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="roomListCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" bindtap="tapRoomList" />
 
   <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" bindtap="tapMyRoom" />
