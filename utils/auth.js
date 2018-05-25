@@ -11,7 +11,7 @@ const login = () => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
           // console.log('获得code :'+ res.code )
           // console.log('开始 请求code换取token')
-          Api.getToken(res.code)
+          Api.Auth.getToken(res.code)
         },
         fail : error => {
           console.log(error)
@@ -24,7 +24,7 @@ const login = () => {
 
   // console.log('开始')
   return new Promise(function (resolve, reject) {
-    Api.checkToken().then(function(res){
+    Api.Auth.checkToken().then(function(res){
       if(res.result === 'success'){
         // console.log('153 返回userid')
         return res

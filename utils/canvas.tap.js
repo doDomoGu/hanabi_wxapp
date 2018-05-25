@@ -20,7 +20,7 @@ const roomList = (r, t) => {
     for (let i = 0; i < roomList.length; i++) {
       if (_isInPath({page: 'RoomList', item: 'list', ord: i}, r, p)) {
         if (roomList[i].password === '') {
-          Api.enterRoom(roomList[i].id).then(function (re) {
+          Api.MyRoom.enter(roomList[i].id).then(function (re) {
             if (re.success) {
               clearInterval(t.data.roomListInterval)
               t.setData({
@@ -60,7 +60,7 @@ const myRoom = (event, t) => {
     const isTapStartGame = _isInPath({page: 'MyRoom', item: 'start-game'}, event, p)
 
     if (isTapExitBtn) {
-      Api.exitRoom().then(function (re) {
+      Api.MyRoom.exit().then(function (re) {
         if (re.success) {
           clearInterval(t.data.myRoomInterval)
           t.setData({
@@ -72,7 +72,7 @@ const myRoom = (event, t) => {
         }
       })
     } else if (isTapDoReady) {
-      Api.exitRoom().then(function (re) {
+      Api.MyRoom.exit().then(function (re) {
         if (re.success) {
           clearInterval(t.data.myRoomInterval)
           t.setData({

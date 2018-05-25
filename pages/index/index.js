@@ -94,7 +94,7 @@ Page({
 
   drawRoomList : function(){
     let that = this
-    Api.getRoomList().then((roomList)=>{
+    Api.RoomList.getList().then((roomList)=>{
       //console.log(roomList)
       //console.log(that.data.roomList)
       /*if(roomList !== that.data.roomList){*/
@@ -108,7 +108,7 @@ Page({
   },
   drawMyRoom : function(force=false){
     let that = this
-    Api.getRoomInfo({force:force}).then((res)=> {
+    Api.MyRoom.getInfo({force:force}).then((res)=> {
       if (res){
         if (res.success) {
           if (!res.data.noUpdate) {
@@ -171,7 +171,7 @@ Page({
   getStatus: function () {
     const that = this
     return new Promise(function (resolve, reject) {
-      Api.getRoomId().then(function(room_id){
+      Api.MyRoom.getRoomId().then(function(room_id){
         if(room_id>0){
           return Api.getIsInGame().then(function(isInGame){
             that.setData({
