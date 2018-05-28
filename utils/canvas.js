@@ -50,11 +50,12 @@ let myRoomParam = (p) => {
   p.MR_playerAreaGuestY = p.MR_playerAreaHostY + p.MR_playerAreaHeight + p.pad // 访客玩家区域y偏移量(相对整个画布)
 
   p.MR_playerInfoPad = 10;
-  p.MR_playerInfoX = p.MR_playerAreaX + p.MR_playerInfoPad  //玩家信息区域x偏移量(相对整个画布)
-  p.MR_playerInfoHostY = p.MR_playerAreaHostY + p.MR_playerInfoPad
-  p.MR_playerInfoHeight = 40
-  p.MR_playerInfoWidth = p.MR_playerAreaWidth - p.MR_playerInfoPad * 2
-  p.MR_playerInfoGuestY = p.MR_playerAreaGuestY + p.MR_playerInfoPad
+  p.MR_playerInfoX = p.MR_playerAreaX + p.MR_playerInfoPad  // 玩家区域内信息x偏移量(相对整个画布)
+  p.MR_playerInfoHostY = p.MR_playerAreaHostY + p.MR_playerInfoPad  // 房主Y
+  p.MR_playerInfoGuestY = p.MR_playerAreaGuestY + p.MR_playerInfoPad // 玩家Y
+  p.MR_playerInfoWidth = p.MR_playerAreaWidth - p.MR_playerInfoPad * 2 // Width
+  p.MR_playerInfoHeight = 40  //Height
+
 
   p.MR_playerInfoTextX = p.MR_playerInfoX + 20
   //p.MR_playerInfoTextHostY = p.MR_playerInfoHostY + p.MR_playerInfoPad
@@ -62,17 +63,22 @@ let myRoomParam = (p) => {
   p.MR_playerInfoTextFontSize = p.MR_playerInfoHeight / 2
 
 
-  p.MR_playerButtonXOffset = 20 // 玩家区域内按钮x偏移量(相对玩家区域)
-  p.MR_playerButtonYOffset = 80 // 玩家区域内按钮y偏移量(相对玩家区域)
-  p.MR_playerButtonWidth = 100 // 玩家区域内按钮宽度
-  p.MR_playerButtonHeight = 30 // 玩家区域内按钮高度
 
-  p.MR_playerButtonTextXOffset = 20 // 玩家区域内按钮内文字x偏移量(相对按钮区域)
-  p.MR_playerButtonTextYOffset = 20 // 玩家区域内按钮内文字y偏移量(相对按钮区域)
+  p.MR_playerButtonPad = 10;
+  p.MR_playerButtonX = p.MR_playerAreaX + p.MR_playerButtonPad // 玩家区域内按钮x偏移量
+  p.MR_playerButtonHostY = p.MR_playerInfoHostY + p.MR_playerInfoHeight + p.MR_playerButtonPad // 房主Y
+  p.MR_playerButtonGuestY = p.MR_playerInfoGuestY + p.MR_playerInfoHeight + p.MR_playerButtonPad // 玩家Y
+  p.MR_playerButtonWidth = 100 // width
+  p.MR_playerButtonHeight = 30 // height
+
+  p.MR_playerButtonTextX = p.MR_playerButtonX + 20
+  p.MR_playerButtonTextFontSize = p.MR_playerButtonHeight / 2
+  // p.MR_playerButtonTextXOffset = 20 // 玩家区域内按钮内文字x偏移量(相对按钮区域)
+  // p.MR_playerButtonTextYOffset = 20 // 玩家区域内按钮内文字y偏移量(相对按钮区域)
 
 
   p.MR_exitBtnX = p.leftPad // 退出按钮x偏移量(相对整个画布)
-  p.MR_exitBtnY = 320 // 退出按钮y偏移量(相对整个画布)
+  p.MR_exitBtnY = p.MR_playerAreaGuestY + p.MR_playerAreaHeight + 20 // 退出按钮y偏移量(相对整个画布)
   p.MR_exitBtnW = p.innerWidth // 退出按钮宽度
   p.MR_exitBtnH = p.MR_exitBtnW / 8 // 退出按钮高度
   p.MR_exitTextFontSize = p.MR_exitBtnH / 2
