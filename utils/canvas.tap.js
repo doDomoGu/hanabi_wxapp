@@ -72,12 +72,8 @@ const myRoom = (event, t) => {
         }
       })
     } else if (isTapDoReady) {
-      Api.MyRoom.exit().then(function (re) {
+      Api.MyRoom.doReady().then(function (re) {
         if (re.success) {
-          clearInterval(t.data.myRoomInterval)
-          t.setData({
-            isInRoom: false
-          })
           resolve(true)
         }else{
           resolve(false)
@@ -103,14 +99,14 @@ const _isInPath = (obj, event, p) => {
       y1 = p.MR_exitBtnY
       y2 = y1 + p.MR_exitBtnH
     } else if (item === 'do-ready') {
-      x1 = p.MR_playerAreaX + p.MR_playerButtonXOffset
+      x1 = p.MR_playerButtonX
       x2 = x1 + p.MR_playerButtonWidth
-      y1 = p.MR_playerAreaGuestY + p.MR_playerButtonYOffset
+      y1 = p.MR_playerButtonGuestY
       y2 = y1 + p.MR_playerButtonHeight
     } else if (item === 'start-game') {
-      x1 = p.MR_playerAreaX + p.MR_playerButtonXOffset
+      x1 = p.MR_playerButtonX
       x2 = x1 + p.MR_playerButtonWidth
-      y1 = p.MR_playerAreaHostY + p.MR_playerButtonYOffset
+      y1 = p.MR_playerButtonHostY
       y2 = y1 + p.MR_playerButtonHeight
     }
   }else if (page === 'RoomList') {

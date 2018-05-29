@@ -68,6 +68,24 @@ const getInfo  = (param) => {
   })
 }
 
+const doReady = () => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-room/do-ready?token=' + token,
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
+
+
 
 const getRoomId = () => {
   const token = wx.getStorageSync('token') || ''
@@ -97,5 +115,6 @@ module.exports = {
   enter: enter,
   exit: exit,
   getInfo: getInfo,
-  getRoomId: getRoomId
+  getRoomId: getRoomId,
+  doReady: doReady
 }
