@@ -155,13 +155,16 @@ Page({
   tapMyRoom : function(event) {
     let that = this
     Canvas.Tap.myRoom(event, this).then(function(res){
-      if (res===true) {
-        that.drawRoomList()
-        let roomListInterval = setInterval(that.drawRoomList,1000)
-        that.setData({
-          roomListInterval : roomListInterval
-        })
-      }
+      console.log(res);
+
+
+      // if (res===true) {
+      //   that.drawRoomList()
+      //   let roomListInterval = setInterval(that.drawRoomList,1000)
+      //   that.setData({
+      //     roomListInterval : roomListInterval
+      //   })
+      // }
     })
   },
   tapMyGame : function(r) {

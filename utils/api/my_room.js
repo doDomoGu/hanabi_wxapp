@@ -85,8 +85,6 @@ const doReady = () => {
 }
 
 
-
-
 const getRoomId = () => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
@@ -116,5 +114,5 @@ module.exports = {
   exit: exit,
   getInfo: getInfo,
   getRoomId: getRoomId,
-  doReady: doReady
+  doReady: doReady,
 }

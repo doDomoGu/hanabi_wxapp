@@ -79,6 +79,21 @@ const myRoom = (event, t) => {
           resolve(false)
         }
       })
+    } else if (isTapStartGame) {
+      if (t.isReady && t.isHost && t.roomId > 0) {
+        Api.MyGame.start().then(function (re) {
+          if (re.success) {
+            resolve(true)
+          }else{
+            resolve(false)
+          }
+        })
+      } else {
+        console.log('tap start game')
+        console.log('isReady : '+ t.isReady)
+        console.log('isHost : '+ t.isHost)
+        console.log('roomId : '+ t.roomId)
+      }
     }
   })
 }
