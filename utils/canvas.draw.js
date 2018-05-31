@@ -79,7 +79,7 @@ const roomList = (roomList, p) => {
 }
 
 
-const myRoom = (data,p) => {
+const myRoom = (data, p) => {
   const ctx = wx.createCanvasContext('myRoomCanvas')
   // 绘制玩家1和玩家2区域
   ctx.fillStyle = p.MR_playerAreaBgColor
@@ -169,15 +169,13 @@ const drawPlayerButton = function (data, isHost, isReady, p, ctx) {
   if (isHost) {
     rectY = p.MR_playerButtonHostY
     player = data.hostPlayer
-
-    if (player.id === -1) {
+    if (!data.isHost || player.id === -1 ) {
       return false
     }
   } else {
     rectY = p.MR_playerButtonGuestY
     player = data.guestPlayer
-
-    if (player.id === -1) {
+    if (data.isHost || player.id === -1 ) {
       return false
     }
   }
