@@ -20,16 +20,7 @@ const drawRoundedRect = function (rect, radius, ctx) {
   const ptC = point(rect.x + rect.w, rect.y + rect.h)
   const ptD = point(rect.x, rect.y + rect.h)
   const ptE = point(rect.x, rect.y)
-  //
-  // // console.log('A:',ptA.x, ptA.y)
-  // // console.log('B:',ptB.x, ptB.y)
-  // // console.log('C:',ptC.x, ptC.y)
-  // // console.log('D:',ptD.x, ptD.y)
-  // // console.log('E:',ptE.x, ptE.y)
-  // // console.log('F:',ptF.x, ptF.y)
-  // // console.log('G:',ptG.x, ptG.y)
-  // // console.log('H:',ptH.x, ptH.y)
-  //
+
   ctx.beginPath()
   ctx.moveTo(ptA.x, ptA.y)
   ctx.arcTo(ptB.x, ptB.y, ptC.x, ptC.y, radius)
@@ -39,7 +30,7 @@ const drawRoundedRect = function (rect, radius, ctx) {
   ctx.closePath()
   // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
   ctx.fill()
-  //ctx.draw(true)
+  ctx.draw(true)
 }
 
 
@@ -49,29 +40,31 @@ const roomList = (roomList, p) => {
   ctx.clearRect(0,0,p.width,p.height)
 
   //区域背景填充
-  ctx.setFontSize(p.RL_fontSize)
   ctx.fillStyle = p.RL_bgColor;
   ctx.rect(p.leftPad,p.topPad,p.innerWidth,p.RL_innerHeight)
   ctx.fill()
-  //ctx.draw(true)
-  //列表文字绘制
-  // ctx.setFontSize(p.fontSize)
+  ctx.draw(true)
+
+  //列表文字设置字号/对齐方式等
+  ctx.setFontSize(p.RL_fontSize)
   ctx.textAlign = 'left'
   ctx.textBaseline = 'middle'
+
+  //列表文字绘制
   for(let i = 0 ; i < roomList.length ; i++){
     if (i % 2 === 0) {
-      ctx.setFillStyle(p.RL_bgColor);
+      ctx.fillStyle = p.RL_bgColor1;
     } else {
-      ctx.setFillStyle(p.RL_bgColor2);
+      ctx.fillStyle = p.RL_bgColor2;
     }
     ctx.rect(p.leftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i - 16, p.innerWidth, p.RL_innerLineHeight)
     ctx.fill()
-    //ctx.draw(true)
+    ctx.draw(true)
 
     if (i % 2 === 0) {
-      ctx.setFillStyle(p.RL_fontColor);
+      ctx.fillStyle = p.RL_fontColor1;
     } else {
-      ctx.setFillStyle(p.RL_fontColor2);
+      ctx.fillStyle = p.RL_fontColor2;
     }
     let id = roomList[i].id
     id = id < 10 ? '00' + id : '0' + id
