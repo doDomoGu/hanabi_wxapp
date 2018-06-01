@@ -7,7 +7,7 @@ const Api    = require('./api.js')
  * @param t          Information about the object.
  * @param t.data.roomList[].password   Information about the object's members.
  */
-const roomList = (r, t) => {
+const roomList = (e, t) => {
   return new Promise(function (resolve, reject) {
     // console.log(r)
     /*const x = r.detail.x
@@ -18,7 +18,7 @@ const roomList = (r, t) => {
     const roomList = t.data.roomList
 
     for (let i = 0; i < roomList.length; i++) {
-      if (_isInPath({page: 'RoomList', item: 'list', ord: i}, r, p)) {
+      if (_isInPath({page: 'RoomList', item: 'list', ord: i}, e, p)) {
         if (roomList[i].password === '') {
           Api.MyRoom.enter(roomList[i].id).then(function (re) {
             if (re.success) {
@@ -44,7 +44,7 @@ const roomList = (r, t) => {
 
 
 
-const myRoom = (event, t) => {
+const myRoom = (e, t) => {
   return new Promise(function (resolve, reject) {
     // console.log(r)
     // const x = r.detail.x
@@ -53,11 +53,11 @@ const myRoom = (event, t) => {
 
     const p = t.data.canvasParam
 
-    const isTapExitBtn = _isInPath({page: 'MyRoom', item: 'exit-btn'}, event, p)
+    const isTapExitBtn = _isInPath({page: 'MyRoom', item: 'exit-btn'}, e, p)
 
-    const isTapDoReady = _isInPath({page: 'MyRoom', item: 'do-ready'}, event, p)
+    const isTapDoReady = _isInPath({page: 'MyRoom', item: 'do-ready'}, e, p)
 
-    const isTapStartGame = _isInPath({page: 'MyRoom', item: 'start-game'}, event, p)
+    const isTapStartGame = _isInPath({page: 'MyRoom', item: 'start-game'}, e, p)
 
     if (isTapExitBtn) {
       Api.MyRoom.exit().then(function (re) {
@@ -67,9 +67,13 @@ const myRoom = (event, t) => {
             isInRoom: false
           })
           resolve(true)
-        }else{
+        }else {
           resolve(false)
         }
+        /*  resolve({success:true,action:'exitBtn'})
+        }else{
+          resolve({success:false})
+        }*/
       })
     } else if (isTapDoReady) {
       Api.MyRoom.doReady().then(function (re) {
@@ -78,29 +82,32 @@ const myRoom = (event, t) => {
         }else{
           resolve(false)
         }
+        /*  resolve({success:true,action:'doReady'})
+        }else{
+          resolve({success:false})
+        }*/
       })
     } else if (isTapStartGame) {
-      if (t.isReady && t.isHost && t.roomId > 0) {
+      if (t.data.isReady && t.data.isHost && t.data.roomId > 0) {
         Api.MyGame.start().then(function (re) {
           if (re.success) {
             resolve(true)
-          }else{
+          }else {
             resolve(false)
           }
+          /*  resolve({success:true,action:'startGame'})
+          }else{
+            resolve({success:false})
+          }*/
         })
-      } else {
-        console.log('tap start game')
-        console.log('isReady : '+ t.isReady)
-        console.log('isHost : '+ t.isHost)
-        console.log('roomId : '+ t.roomId)
       }
     }
   })
 }
 
-const _isInPath = (obj, event, p) => {
-  const x = event.detail.x
-  const y = event.detail.y
+const _isInPath = (obj, e, p) => {
+  const x = e.detail.x
+  const y = e.detail.y
 
   const page = obj.page
   const item = obj.item

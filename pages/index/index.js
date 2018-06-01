@@ -140,37 +140,42 @@ Page({
       Canvas.Draw.myRoom(that.data,that.data.canvasParam)
     })
   },
-  tapRoomList : function(event) {
+
+  tap: function(e) {
     let that = this
-    Canvas.Tap.roomList(event, this).then(function(res){
-      if(res===true){
-        that.drawMyRoom(true)
-        let myRoomInterval = setInterval(that.drawMyRoom,1000)
-        that.setData({
-          myRoomInterval : myRoomInterval
-        })
-      }
-    })
-  },
-  tapMyRoom : function(event) {
-    let that = this
-    Canvas.Tap.myRoom(event, this).then(function(res){
-      console.log(res);
+    const canvas_name = e.currentTarget.dataset.canvas
+    let tap
+
+    if (canvas_name === 'room_list') {
+      Canvas.Tap.roomList(e, this).then(function(res){
+        if(res===true){
+          that.drawMyRoom(true)
+          let myRoomInterval = setInterval(that.drawMyRoom,1000)
+          that.setData({
+            myRoomInterval : myRoomInterval
+          })
+        }
+      })
+    } else if (canvas_name === 'my_room') {
+      Canvas.Tap.myRoom(e, this).then(function(res){
+        console.log(res);
 
 
-      // if (res===true) {
-      //   that.drawRoomList()
-      //   let roomListInterval = setInterval(that.drawRoomList,1000)
-      //   that.setData({
-      //     roomListInterval : roomListInterval
-      //   })
-      // }
-    })
+        // if (res===true) {
+        //   that.drawRoomList()
+        //   let roomListInterval = setInterval(that.drawRoomList,1000)
+        //   that.setData({
+        //     roomListInterval : roomListInterval
+        //   })
+        // }
+      })
+    } else if (canvas_name === 'my_game') {
+      console.log('tap my game')
+
+
+    }
   },
-  tapMyGame : function(r) {
-    console.log('my_game')
-    console.log(r)
-  },
+
   getStatus: function () {
     const that = this
     return new Promise(function (resolve, reject) {

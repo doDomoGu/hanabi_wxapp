@@ -1,4 +1,12 @@
+const run = (t) => {
+  const d = t.data
+  const p = t.data.canvasParam
 
+  // if() {
+  //
+  // }
+
+}
 
 // 函数：绘制圆角矩形
 const drawRoundedRect = function (rect, radius, ctx) {
@@ -233,5 +241,6 @@ const drawPlayerButton = function (data, isHost, isReady, p, ctx) {
 
 module.exports = {
   roomList : roomList,
-  myRoom : myRoom
+  myRoom : myRoom,
+  run : run
 }
