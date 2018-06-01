@@ -141,6 +141,41 @@ Page({
     })
   },
 
+  drawMyGame : function(force=false){
+    let that = this
+    Api.MyGame.getInfo({force:force}).then((res)=> {
+      if (res){
+        if (res.success) {
+          if (!res.data.noUpdate) {
+            that.setData(res.data)
+          }
+        } else {
+          that.setData({
+            isPlaying: null,
+            logList: [],
+            hostHands: [],
+            guestHands: [],
+            roundNum: -1,
+            roundPlayerIsHost: -1,
+            libraryCardsNum: -1,
+            discardCardsNum: -1,
+            lastUpdated: null,
+            cueNum: -1,
+            chanceNum: -1,
+            score: -1,
+            successCards: [],
+          })
+        }
+      }else{
+        console.log('getgameinfo wrong  170')
+      }
+      /*that.setData({
+        roomList: roomList
+      })*/
+      Canvas.Draw.myGame(that.data,that.data.canvasParam)
+    })
+  },
+
   tap: function(e) {
     let that = this
     const canvas_name = e.currentTarget.dataset.canvas
@@ -158,16 +193,21 @@ Page({
       })
     } else if (canvas_name === 'my_room') {
       Canvas.Tap.myRoom(e, this).then(function(res){
-        console.log(res);
-
-
-        // if (res===true) {
-        //   that.drawRoomList()
-        //   let roomListInterval = setInterval(that.drawRoomList,1000)
-        //   that.setData({
-        //     roomListInterval : roomListInterval
-        //   })
-        // }
+        if (res === true) {
+          if (!that.data.isInRoom === true) {
+            that.drawRoomList()
+            let roomListInterval = setInterval(that.drawRoomList,1000)
+            that.setData({
+              roomListInterval : roomListInterval
+            })
+          } else if (that.data.isInGame === true) {
+            that.drawMyGame(true)
+            let myGameInterval = setInterval(that.drawMyGame,1000)
+            that.setData({
+              myGameInterval : myGameInterval
+            })
+          }
+        }
       })
     } else if (canvas_name === 'my_game') {
       console.log('tap my game')

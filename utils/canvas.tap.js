@@ -91,6 +91,12 @@ const myRoom = (e, t) => {
       if (t.data.isReady && t.data.isHost && t.data.roomId > 0) {
         Api.MyGame.start().then(function (re) {
           if (re.success) {
+            clearInterval(t.data.myRoomInterval)
+            t.setData({
+              isInGame: true
+            })
+
+
             resolve(true)
           }else {
             resolve(false)

@@ -17,6 +17,26 @@ const start = () => {
   })
 }
 
+
+const getInfo  = (param) => {
+  if (!param.hasOwnProperty('mode')) { param.mode = 'all' }
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-game/get-info?token=' + token,
+      data:param,
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
 module.exports = {
-  start: start
+  start: start,
+  getInfo: getInfo
 }
