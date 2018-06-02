@@ -11,7 +11,9 @@ const login = () => {
           // 发送 res.code 到后台换取 openId, sessionKey, unionId
           // console.log('获得code :'+ res.code )
           // console.log('开始 请求code换取token')
-          Api.Auth.getToken(res.code)
+          Api.Auth.getToken(res.code).then(function(res){
+            resolve(resolve({result:'success',user_id:res.user_id}))
+          })
         },
         fail : error => {
           console.log(error)
