@@ -35,19 +35,25 @@ Page({
     },
     isReady: null,
 
+
+    card : {
+      score: -1,
+      cueNum: -1,
+      chanceNum: -1,
+      hostHands: [],
+      guestHands: [],
+      libraryCardsNum: -1,
+      discardCardsNum: -1,
+      successCards: []
+    },
+    game : {
+      roundNum: -1,
+      roundPlayerIsHost: null,
+      lastUpdated: null
+    },
     isPlaying: null,
-    logList: [],
-    hostHands: [],
-    guestHands: [],
-    roundNum: -1,
-    roundPlayerIsHost: -1,
-    libraryCardsNum: -1,
-    discardCardsNum: -1,
-    lastUpdated: null,
-    cueNum: -1,
-    chanceNum: -1,
-    score: -1,
-    successCards: [],
+    log: [],
+
 
     canvasParam: {}
   },
@@ -83,7 +89,11 @@ Page({
 
           //Canvas.drawMyRoom(that.data.canvasParam)
         }else{
-
+          that.drawMyGame(true)
+          let myGameInterval = setInterval(that.drawMyGame,1000)
+          that.setData({
+            myGameInterval : myGameInterval
+          })
         }
       }
     }).catch(function(err){
@@ -147,23 +157,32 @@ Page({
       if (res){
         if (res.success) {
           if (!res.data.noUpdate) {
-            that.setData(res.data)
+            that.setData({
+              card: res.data.card,
+              game: res.data.game,
+              isPlaying: res.data.isPlaying,
+              log: res.data.log
+            })
           }
         } else {
           that.setData({
+            card : {
+              score: -1,
+              cueNum: -1,
+              chanceNum: -1,
+              hostHands: [],
+              guestHands: [],
+              libraryCardsNum: -1,
+              discardCardsNum: -1,
+              successCards: []
+            },
+            game : {
+              roundNum: -1,
+              roundPlayerIsHost: null,
+              lastUpdated: null
+            },
             isPlaying: null,
-            logList: [],
-            hostHands: [],
-            guestHands: [],
-            roundNum: -1,
-            roundPlayerIsHost: -1,
-            libraryCardsNum: -1,
-            discardCardsNum: -1,
-            lastUpdated: null,
-            cueNum: -1,
-            chanceNum: -1,
-            score: -1,
-            successCards: [],
+            log: [],
           })
         }
       }else{
