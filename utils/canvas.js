@@ -100,7 +100,7 @@ let myGameParam =  (p) => {
 
   // 区块的宽高(尺寸)
   //p.MG_playerAreaX = p.leftPad // 玩家区域x偏移量(相对整个画布)
-  p.MG_playerAreaW = p.innerWidth // 玩家区域的宽度
+  p.MG_playerAreaW = p.width // 玩家区域的宽度
   p.MG_playerAreaH = 140 // 玩家区域的高度
 
   p.MG_playerInfoPad = 10;
@@ -113,7 +113,7 @@ let myGameParam =  (p) => {
   p.MG_playerHandsW = cardW // 手牌宽度
   p.MG_playerHandsH = cardH // 手牌高度
 
-  p.MG_tableAreaW = p.innerWidth // 桌面区域的宽度
+  p.MG_tableAreaW = p.width // 桌面区域的宽度
   p.MG_tableAreaH = 90 // 桌面区域的高度
 
   p.MG_tableLibraryW = cardW // 桌面牌库的宽度
@@ -125,7 +125,7 @@ let myGameParam =  (p) => {
   p.MG_tableDiscardW = cardW // 桌面弃牌堆的宽度
   p.MG_tableDiscardH = cardH // 桌面弃牌堆的高度
 
-  p.MG_historyAreaW = p.innerWidth // 游戏历史区域的高度
+  p.MG_historyAreaW = p.width // 游戏历史区域的高度
   p.MG_historyAreaH = 80 // 游戏历史区域的高度
 
   /* 颜色 */
@@ -168,9 +168,9 @@ let myGameParam =  (p) => {
 
   p.MG_playerHandsPad = 16 // 手牌之间的留白距离
 
-  p.MG_playerHandsHostRects = [] // (房主)玩家的全部手牌路径信息
+  p.MG_playerHandsHostRectList = [] // (房主)玩家的全部手牌路径信息
   for (let n = 0; n < 5; n++) {
-    p.MG_playerHandsHostRects.push(
+    p.MG_playerHandsHostRectList.push(
       {
         x: p.MG_playerHandsFirstX + (p.MG_playerHandsW + p.MG_playerHandsPad) * n,
         y: p.MG_playerHandsHostY,
@@ -180,9 +180,9 @@ let myGameParam =  (p) => {
     )
   }
 
-  p.MG_playerHandsGuestRects = [] // (访客)玩家的全部手牌路径信息
+  p.MG_playerHandsGuestRectList = [] // (访客)玩家的全部手牌路径信息
   for (let n = 0; n < 5; n++) {
-    p.MG_playerHandsGuestRects.push(
+    p.MG_playerHandsGuestRectList.push(
       {
         x: p.MG_playerHandsFirstX + (p.MG_playerHandsW + p.MG_playerHandsPad) * n,
         y: p.MG_playerHandsGuestY,

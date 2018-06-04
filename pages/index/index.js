@@ -55,6 +55,10 @@ Page({
     log: [],
 
 
+    colors: ['white', 'blue', 'yellow', 'red', 'green'],
+    numbers: [1, 1, 1, 2, 2, 3, 3, 4, 4, 5],
+
+
     canvasParam: {}
   },
   onLoad: function () {
@@ -153,46 +157,78 @@ Page({
 
   drawMyGame : function(force=false){
     let that = this
-    Api.MyGame.getInfo({force:force}).then((res)=> {
+    Api.MyRoom.getInfo({force:force}).then((res)=> {
       if (res){
         if (res.success) {
           if (!res.data.noUpdate) {
-            that.setData({
-              card: res.data.card,
-              game: res.data.game,
-              isPlaying: res.data.isPlaying,
-              log: res.data.log
-            })
+            that.setData(res.data)
           }
+
+          Api.MyGame.getInfo({force:force}).then((res)=> {
+            if (res){
+              if (res.success) {
+                if (!res.data.noUpdate) {
+                  that.setData({
+                    card: res.data.card,
+                    game: res.data.game,
+                    isPlaying: res.data.isPlaying,
+                    log: res.data.log
+                  })
+                }
+              } else {
+                that.setData({
+                  card : {
+                    score: -1,
+                    cueNum: -1,
+                    chanceNum: -1,
+                    hostHands: [],
+                    guestHands: [],
+                    libraryCardsNum: -1,
+                    discardCardsNum: -1,
+                    successCards: []
+                  },
+                  game : {
+                    roundNum: -1,
+                    roundPlayerIsHost: null,
+                    lastUpdated: null
+                  },
+                  isPlaying: null,
+                  log: [],
+                })
+              }
+            }else{
+              console.log('getgameinfo wrong  170')
+            }
+            /*that.setData({
+              roomList: roomList
+            })*/
+            Canvas.Draw.myGame(that.data,that.data.canvasParam)
+          })
+
         } else {
           that.setData({
-            card : {
-              score: -1,
-              cueNum: -1,
-              chanceNum: -1,
-              hostHands: [],
-              guestHands: [],
-              libraryCardsNum: -1,
-              discardCardsNum: -1,
-              successCards: []
+            roomId: -1,
+            isHost: null,
+            hostPlayer: {
+              id: -1,
+              username: null,
+              name: null
             },
-            game : {
-              roundNum: -1,
-              roundPlayerIsHost: null,
-              lastUpdated: null
+            guestPlayer: {
+              id: -1,
+              username: null,
+              name: null
             },
-            isPlaying: null,
-            log: [],
+            isReady: null,
           })
         }
       }else{
-        console.log('getgameinfo wrong  170')
+        console.log('getroominfo wrong  155')
       }
-      /*that.setData({
-        roomList: roomList
-      })*/
-      Canvas.Draw.myGame(that.data,that.data.canvasParam)
     })
+
+
+
   },
 
   tap: function(e) {

@@ -132,6 +132,30 @@ const myRoom = (data, p) => {
 const myGame = (data, p) => {
   const ctx = wx.createCanvasContext('myGameCanvas')
 
+  // 绘制玩家1和玩家2区域
+  ctx.fillStyle = p.MG_playerAreaBgColor
+  ctx.fillRect(p.MG_playerAreaX, p.MG_playerAreaHostY, p.MG_playerAreaW, p.MG_playerAreaH)
+  ctx.fillRect(p.MG_playerAreaX, p.MG_playerAreaGuestY, p.MG_playerAreaW, p.MG_playerAreaH)
+
+  // 绘制桌面
+  ctx.fillStyle = p.MG_tableAreaBgColor
+  ctx.fillRect(p.MG_tableAreaX, p.MG_tableAreaY, p.MG_tableAreaW, p.MG_tableAreaH)
+
+  // 绘制游戏历史区域
+  ctx.fillStyle = p.MG_historyAreaBgColor
+  ctx.fillRect(p.MG_historyAreaX, p.MG_historyAreaY, p.MG_historyAreaW, p.MG_historyAreaH)
+
+
+  drawHands(data, true, p, ctx)
+  drawHands(data, false, p, ctx)
+
+  // drawHands(data.card.hostHands, data.isHost, true, p, ctx)
+  // drawHands(data.card.guestHands, data.isHost, false, p, ctx)
+
+
+
+  ctx.draw(true)
+
 }
 
 
@@ -233,7 +257,52 @@ const drawPlayerButton = function (data, isHost, isReady, p, ctx) {
   }
 }
 
+const drawHands = function (data, isHost, p, ctx) {
+  const numbers = data.numbers
 
+  let drawHandOne = function (rect, isVisible, color, num) {
+    if (isVisible) {
+      ctx.fillStyle = p.MG_playerHandsColors[color]
+    } else {
+      ctx.fillStyle = p.MG_playerHandsBackColor
+    }
+    drawRoundedRect(rect, p.radius, ctx)
+    ctx.strokeStyle = p.MG_playerHandsStrokeColor
+    ctx.stroke()
+
+    if (isVisible) {
+      ctx.font = '30px Microsoft JhengHei'
+      ctx.fillStyle = p.MG_playerInfoTextColor
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(numbers[num], rect.x + rect.w / 2, rect.y + rect.h / 2)
+    } else {
+      ctx.font = '30px Microsoft JhengHei'
+      ctx.fillStyle = p.MG_playerInfoTextColor
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(num, rect.x + rect.w / 2, rect.y + rect.h / 2)
+    }
+  }
+
+  let rect_list, cards
+  if (isHost) {
+    rect_list = p.MG_playerHandsHostRectList
+    cards = data.card.hostHands
+  } else {
+    rect_list = p.MG_playerHandsGuestRectList
+    cards = data.card.guestHands
+  }
+
+  for (const c in cards) {
+    // isVisible //是你的牌  牌面不可见
+    if (data.isHost !== isHost) {
+      drawHandOne(rect_list[c], true, cards[c].color, cards[c].num)
+    } else {
+      drawHandOne(rect_list[c], false, cards[c].color, parseInt(c) + 1)
+    }
+  }
+}
 
 module.exports = {
   roomList : roomList,
