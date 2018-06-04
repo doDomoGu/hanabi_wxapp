@@ -211,7 +211,7 @@ let myGameParam =  (p) => {
   p.MG_historyAreaX = 0 // 游戏历史区域x偏移量
   p.MG_historyAreaY = p.MG_playerAreaH + p.MG_tableAreaH // 游戏历史区域y偏移量
 
-  p.MG_infoFontSize = 36
+  p.MG_infoFontSize = 16
 
 
 

@@ -145,13 +145,21 @@ const myGame = (data, p) => {
   ctx.fillStyle = p.MG_historyAreaBgColor
   ctx.fillRect(p.MG_historyAreaX, p.MG_historyAreaY, p.MG_historyAreaW, p.MG_historyAreaH)
 
-
+  // 绘制玩家手牌
   drawHands(data, true, p, ctx)
   drawHands(data, false, p, ctx)
 
-  // drawHands(data.card.hostHands, data.isHost, true, p, ctx)
-  // drawHands(data.card.guestHands, data.isHost, false, p, ctx)
+  // 绘制牌库
+  drawLibraryCardsNum(data.card.libraryCardsNum, p, ctx)
 
+  // 绘制弃牌堆
+  drawDiscardCardsNum(data.card.discardCardsNum, p, ctx)
+
+
+  // 绘制数字
+  drawCueNum(data.card.cueNum, p, ctx)
+  drawChanceNum(data.card.chanceNum, p, ctx)
+  drawScore(data.card.score, p, ctx)
 
 
   ctx.draw(true)
@@ -302,6 +310,88 @@ const drawHands = function (data, isHost, p, ctx) {
       drawHandOne(rect_list[c], false, cards[c].color, parseInt(c) + 1)
     }
   }
+}
+
+const drawLibraryCardsNum = (num, p, ctx) => {
+  ctx.fillStyle = p.MG_tableLibraryBgColor
+  drawRoundedRect(
+    {
+      x: p.MG_tableLibraryX,
+      y: p.MG_tableLibraryY,
+      w: p.MG_tableLibraryW,
+      h: p.MG_tableLibraryH
+    },
+    p.radius,
+    ctx
+  )
+  ctx.stroke()
+
+  ctx.font = '18px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'bottom'
+  ctx.fillText('剩余', p.MG_tableLibraryX + p.MG_tableLibraryW / 2, p.MG_tableLibraryY + p.MG_tableLibraryH / 2)
+  ctx.textBaseline = 'top'
+  ctx.fillText(num + '张', p.MG_tableLibraryX + p.MG_tableLibraryW / 2, p.MG_tableLibraryY + p.MG_tableLibraryH / 2)
+}
+
+const drawDiscardCardsNum = (num, p, ctx) => {
+  const that = this
+  ctx.fillStyle = p.MG_tableDiscardBgColor
+  drawRoundedRect(
+    {
+      x: p.MG_tableDiscardX,
+      y: p.MG_tableDiscardY,
+      w: p.MG_tableDiscardW,
+      h: p.MG_tableDiscardH
+    },
+    p.radius,
+    ctx
+  )
+  ctx.stroke()
+
+  ctx.font = '20px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'bottom'
+  ctx.fillText('弃牌', p.MG_tableDiscardX + p.MG_tableDiscardW / 2, p.MG_tableDiscardY + p.MG_tableDiscardH / 2)
+  ctx.textBaseline = 'top'
+  ctx.fillText(num + '张', p.MG_tableDiscardX + p.MG_tableDiscardW / 2, p.MG_tableDiscardY + p.MG_tableDiscardH / 2)
+}
+
+
+const drawCueNum = (num, p, ctx) => {
+  ctx.fillStyle = p.MG_tableAreaBgColor
+  ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 4, 40, 20)
+
+  ctx.font = p.MG_infoFontSize+ 'px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'top'
+  ctx.fillText('提示:' + num, p.MG_tableNumX, p.MG_tableNumY + 4)
+}
+
+const drawChanceNum = (num, p, ctx) => {
+  ctx.fillStyle = p.MG_tableAreaBgColor
+  ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 24, 40, 20)
+
+  ctx.font = p.MG_infoFontSize + 'px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'top'
+  ctx.fillText('机会:' + num, p.MG_tableNumX, p.MG_tableNumY + 24)
+}
+
+const drawScore = (score, p, ctx) => {
+  const that = this
+  ctx.fillStyle = p.MG_tableAreaBgColor
+  ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 44, 40, 20)
+
+  ctx.font = p.MG_infoFontSize + 'px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'top'
+  ctx.fillText('分数:' + score, p.MG_tableNumX, p.MG_tableNumY + 44)
 }
 
 module.exports = {
