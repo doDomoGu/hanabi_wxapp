@@ -161,7 +161,14 @@ const myGame = (data, p) => {
   drawChanceNum(data.card.chanceNum, p, ctx)
   drawScore(data.card.score, p, ctx)
 
+  // 成功燃放的卡片
+  drawSuccessCards(data.card.successCards, p, ctx)
 
+  // 绘制玩家是否当前回合
+  drawRoundPlayerIsHost(data.game.roundPlayerIsHost, p, ctx)
+  drawRoundCountdown(data.game.roundPlayerIsHost, p, ctx)
+  
+  
   ctx.draw(true)
 
 }
@@ -392,6 +399,109 @@ const drawScore = (score, p, ctx) => {
   ctx.textAlign = 'left'
   ctx.textBaseline = 'top'
   ctx.fillText('分数:' + score, p.MG_tableNumX, p.MG_tableNumY + 44)
+}
+
+const drawSuccessCards = (cards, p, ctx) => {
+  for (const c in cards) {
+    const rect = {
+      x: p.MG_tableSuccessCardsX + (p.MG_tableSuccessCardsW + p.MG_tableSuccessCardsPad) * c,
+      y: p.MG_tableSuccessCardsY,
+      w: p.MG_tableSuccessCardsW,
+      h: p.MG_tableSuccessCardsH
+    }
+
+    ctx.fillStyle = p.MG_playerHandsColors[c]
+    drawRoundedRect(rect, p.radius, ctx)
+    ctx.strokeStyle = p.MG_playerHandsStrokeColor
+    ctx.stroke()
+
+    ctx.font = '15px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(cards[c], rect.x + rect.w / 2, rect.y + rect.h / 2)
+  }
+}
+
+const drawRoundPlayerIsHost = (isHost, p, ctx) => {
+  const x = p.MG_playerInfoX + p.MG_playerInfoW - 120
+  const w = 120
+  const h = p.MG_playerInfoH
+
+  const rectHost = {
+    x: x,
+    y: p.MG_playerInfoHostY,
+    w: w,
+    h: h
+  }
+
+  const rectGuest = {
+    x: x,
+    y: p.MG_playerInfoGuestY,
+    w: w,
+    h: h
+  }
+
+  let rect
+  let textY
+  if (isHost) {
+    rect = rectHost
+    textY = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
+  } else {
+    rect = rectGuest
+    textY = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
+  }
+
+  ctx.fillStyle = p.MG_playerInfoBgColor
+  drawRoundedRect(rectHost, p.radius, ctx)
+  drawRoundedRect(rectGuest, p.radius, ctx)
+
+  ctx.font = '13px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('(当前回合玩家)', rect.x, textY)
+}
+
+const drawRoundCountdown = (isHost ,p ,ctx) => {
+  const x = p.MG_playerInfoX + p.MG_playerInfoW - 50
+  const w = 30
+  const h = p.MG_playerInfoH
+
+  const rectHost = {
+    x: x,
+    y: p.MG_playerInfoHostY,
+    w: w,
+    h: h
+  }
+
+  const rectGuest = {
+    x: x,
+    y: p.MG_playerInfoGuestY,
+    w: w,
+    h: h
+  }
+
+  let rect
+  let textY
+  if (isHost) {
+    rect = rectHost
+    textY = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
+  } else {
+    rect = rectGuest
+    textY = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
+  }
+
+  ctx.fillStyle = p.MG_playerInfoBgColor
+  drawRoundedRect(rectHost, p.radius, ctx)
+  drawRoundedRect(rectGuest, p.radius, ctx)
+
+  ctx.font = '13px Microsoft JhengHei'
+  ctx.fillStyle = p.MG_playerInfoTextColor
+  ctx.textAlign = 'left'
+  ctx.textBaseline = 'middle'
+  //ctx.fillText((30 - (parseInt(moment().format('X')) - parseInt(moment(this.lastUpdated).format('X')))), rect.x, textY)
+  ctx.fillText('22', rect.x, textY)
 }
 
 module.exports = {
