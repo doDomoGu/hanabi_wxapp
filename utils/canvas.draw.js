@@ -131,57 +131,7 @@ const myRoom = (data, p) => {
 
 const myGame = (data, p) => {
   const ctx = wx.createCanvasContext('myGameCanvas')
-  // 绘制玩家1和玩家2区域
-  console.log(ctx)
 
-  console.log('draw myGame')
-
-  return true
-
-  ctx.fillStyle = p.MR_playerAreaBgColor
-  drawRoundedRect(
-    {
-      x: p.MR_playerAreaX,
-      y: p.MR_playerAreaHostY,
-      w: p.MR_playerAreaWidth,
-      h: p.MR_playerAreaHeight
-    },
-    p.radius,
-    ctx
-  )
-  drawRoundedRect(
-    {
-      x: p.MR_playerAreaX,
-      y: p.MR_playerAreaGuestY,
-      w: p.MR_playerAreaWidth,
-      h: p.MR_playerAreaHeight
-    },
-    p.radius,
-    ctx
-  )
-  drawPlayerInfo(data, true, p, ctx)
-  drawPlayerButton(data, true, data.isReady, p , ctx)
-
-  drawPlayerInfo(data, false, p, ctx)
-  drawPlayerButton(data, false, data.isReady, p , ctx)
-  // 绘制退出按钮
-  ctx.fillStyle = p.MR_exitButtonColor
-  drawRoundedRect(
-    {
-      x: p.MR_exitBtnX,
-      y: p.MR_exitBtnY,
-      w: p.MR_exitBtnW,
-      h: p.MR_exitBtnH
-    },
-    p.radius,
-    ctx
-  )
-  ctx.setFontSize(p.MR_exitTextFontSize)
-  ctx.fillStyle = '#FFFFFF'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText('退出房间', p.width / 2, p.MR_exitBtnY + p.MR_exitBtnH / 2)
-  ctx.draw(true)
 }
 
 
