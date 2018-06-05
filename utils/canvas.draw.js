@@ -30,6 +30,7 @@ const drawRoundedRect = function (rect, radius, ctx) {
   ctx.closePath()
   // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
   ctx.fill()
+
   ctx.draw(true)
 }
 
@@ -130,6 +131,265 @@ const myRoom = (data, p) => {
 }
 
 const myGame = (data, p) => {
+  const drawPlayerInfo = (info, isHost, p, ctx) => {
+    let rectYOffset, textYOffset
+    if (isHost) {
+      rectYOffset = p.MG_playerInfoHostY
+      textYOffset = this.playerInfoHostY + this.playerInfoH / 2
+      // textYOffset = this.playerInfoTextHostY
+    } else {
+      rectYOffset = this.playerInfoGuestY
+      textYOffset = this.playerInfoGuestY + this.playerInfoH / 2
+      // textYOffset = this.playerInfoTextGuestY
+    }
+    const rect = {
+      x: this.playerInfoX,
+      y: rectYOffset,
+      w: this.playerInfoW,
+      h: this.playerInfoH
+    }
+    this.ctx.fillStyle = this.playerInfoBgColor
+
+    MyCanvas.drawRoundedRect(rect, this.radius, this.ctx)
+    this.ctx.font = MyCanvas.px2Rem(36) + 'px Microsoft JhengHei'
+    this.ctx.fillStyle = this.playerInfoTextColor
+    this.ctx.textAlign = 'left'
+    this.ctx.textBaseline = 'middle'
+    this.ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + info.name + (this.isHost === isHost ? ' (你)' : ''), this.playerInfoTextX, textYOffset)
+  }
+
+
+  const drawHands = function (data, isHost, p, ctx) {
+    const numbers = data.numbers
+
+    let drawHandOne = function (rect, isInvisible, card) {
+      if (isInvisible) {
+        ctx.fillStyle = p.MG_playerHandsBackColor
+      } else {
+        ctx.fillStyle = p.MG_playerHandsColors[card.color]
+      }
+      console.log(rect)
+      console.log('')
+      drawRoundedRect(rect, p.radius, ctx)
+      /*ctx.strokeStyle = p.MG_playerHandsStrokeColor
+      ctx.stroke()*/
+
+      ctx.setFontSize(30)
+      ctx.fillStyle = p.MG_playerInfoTextColor
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+
+      let cardText
+      if (isInvisible) {
+        cardText = (parseInt(card.ord) + 1).toString()
+      } else {
+        cardText = numbers[card.num]
+      }
+      ctx.fillText(cardText, rect.x + rect.w / 2, rect.y + rect.h / 2)
+      ctx.draw(true)
+    }
+
+    let rect_list, cards
+    if (isHost) {
+      rect_list = p.MG_playerHandsHostRectList
+      cards = data.card.hostHands
+    } else {
+      rect_list = p.MG_playerHandsGuestRectList
+      cards = data.card.guestHands
+    }
+
+    for (const c in cards) {
+      console.log(cards[c])
+      // data.isHost === isHost 是你的牌  牌面不可见 牌背灰色
+      // data.isHost !== isHost 对方的牌  牌面可见 颜色对应
+      drawHandOne(rect_list[c], data.isHost === isHost, cards[c])
+    }
+  }
+
+  const drawLibraryCardsNum = (num, p, ctx) => {
+    ctx.fillStyle = p.MG_tableLibraryBgColor
+    drawRoundedRect(
+      {
+        x: p.MG_tableLibraryX,
+        y: p.MG_tableLibraryY,
+        w: p.MG_tableLibraryW,
+        h: p.MG_tableLibraryH
+      },
+      p.radius,
+      ctx
+    )
+    ctx.stroke()
+
+    ctx.font = '18px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'bottom'
+    ctx.fillText('剩余', p.MG_tableLibraryX + p.MG_tableLibraryW / 2, p.MG_tableLibraryY + p.MG_tableLibraryH / 2)
+    ctx.textBaseline = 'top'
+    ctx.fillText(num + '张', p.MG_tableLibraryX + p.MG_tableLibraryW / 2, p.MG_tableLibraryY + p.MG_tableLibraryH / 2)
+  }
+
+  const drawDiscardCardsNum = (num, p, ctx) => {
+    const that = this
+    ctx.fillStyle = p.MG_tableDiscardBgColor
+    drawRoundedRect(
+      {
+        x: p.MG_tableDiscardX,
+        y: p.MG_tableDiscardY,
+        w: p.MG_tableDiscardW,
+        h: p.MG_tableDiscardH
+      },
+      p.radius,
+      ctx
+    )
+    ctx.stroke()
+
+    ctx.font = '20px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'bottom'
+    ctx.fillText('弃牌', p.MG_tableDiscardX + p.MG_tableDiscardW / 2, p.MG_tableDiscardY + p.MG_tableDiscardH / 2)
+    ctx.textBaseline = 'top'
+    ctx.fillText(num + '张', p.MG_tableDiscardX + p.MG_tableDiscardW / 2, p.MG_tableDiscardY + p.MG_tableDiscardH / 2)
+  }
+
+
+  const drawCueNum = (num, p, ctx) => {
+    ctx.fillStyle = p.MG_tableAreaBgColor
+    ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 4, 40, 20)
+
+    ctx.font = p.MG_infoFontSize+ 'px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'top'
+    ctx.fillText('提示:' + num, p.MG_tableNumX, p.MG_tableNumY + 4)
+  }
+
+  const drawChanceNum = (num, p, ctx) => {
+    ctx.fillStyle = p.MG_tableAreaBgColor
+    ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 24, 40, 20)
+
+    ctx.font = p.MG_infoFontSize + 'px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'top'
+    ctx.fillText('机会:' + num, p.MG_tableNumX, p.MG_tableNumY + 24)
+  }
+
+  const drawScore = (score, p, ctx) => {
+    const that = this
+    ctx.fillStyle = p.MG_tableAreaBgColor
+    ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 44, 40, 20)
+
+    ctx.font = p.MG_infoFontSize + 'px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'top'
+    ctx.fillText('分数:' + score, p.MG_tableNumX, p.MG_tableNumY + 44)
+  }
+
+  const drawSuccessCards = (cards, p, ctx) => {
+    for (const c in cards) {
+      const rect = {
+        x: p.MG_tableSuccessCardsX + (p.MG_tableSuccessCardsW + p.MG_tableSuccessCardsPad) * c,
+        y: p.MG_tableSuccessCardsY,
+        w: p.MG_tableSuccessCardsW,
+        h: p.MG_tableSuccessCardsH
+      }
+
+      ctx.fillStyle = p.MG_playerHandsColors[c]
+      drawRoundedRect(rect, p.radius, ctx)
+      ctx.strokeStyle = p.MG_playerHandsStrokeColor
+      ctx.stroke()
+
+      ctx.font = '15px Microsoft JhengHei'
+      ctx.fillStyle = p.MG_playerInfoTextColor
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'middle'
+      ctx.fillText(cards[c], rect.x + rect.w / 2, rect.y + rect.h / 2)
+    }
+  }
+
+  const drawRoundPlayerIsHost = (isHost, p, ctx) => {
+    const x = p.MG_playerInfoX + p.MG_playerInfoW - 120
+    const w = 120
+    const h = p.MG_playerInfoH
+
+    const rectHost = {
+      x: x,
+      y: p.MG_playerInfoHostY,
+      w: w,
+      h: h
+    }
+
+    const rectGuest = {
+      x: x,
+      y: p.MG_playerInfoGuestY,
+      w: w,
+      h: h
+    }
+
+    let rect
+    let textY
+    if (isHost) {
+      rect = rectHost
+      textY = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
+    } else {
+      rect = rectGuest
+      textY = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
+    }
+
+    ctx.fillStyle = p.MG_playerInfoBgColor
+    drawRoundedRect(rectHost, p.radius, ctx)
+    drawRoundedRect(rectGuest, p.radius, ctx)
+
+    ctx.font = '13px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('(当前回合玩家)', rect.x, textY)
+  }
+
+  const drawRoundCountdown = (isHost, lastUpdated, p, ctx) => {
+    const x = p.MG_playerInfoX + p.MG_playerInfoW - 50
+    const w = 30
+    const h = p.MG_playerInfoH
+
+    let rect
+
+    if (isHost) {
+      rect = {
+        x: x,
+        y: p.MG_playerInfoHostY,
+        w: w,
+        h: h
+      }
+    } else {
+      rect = {
+        x: x,
+        y: p.MG_playerInfoGuestY,
+        w: w,
+        h: h
+      }
+    }
+
+    let textY = rect.y + rect.h / 2
+
+    ctx.fillStyle = p.MG_playerInfoBgColor
+    drawRoundedRect(rect, p.radius, ctx)
+    /*drawRoundedRect(rectHost, p.radius, ctx)
+    drawRoundedRect(rectGuest, p.radius, ctx)*/
+
+    ctx.font = '13px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'middle'
+    ctx.fillText((30 - parseInt((Date.parse(new Date().toString()) - Date.parse(lastUpdated)) / 1000 )).toString(), rect.x, textY)
+  }
+
+
+
+
   const ctx = wx.createCanvasContext('myGameCanvas')
 
   // 绘制玩家1和玩家2区域
@@ -144,32 +404,33 @@ const myGame = (data, p) => {
   // 绘制游戏历史区域
   ctx.fillStyle = p.MG_historyAreaBgColor
   ctx.fillRect(p.MG_historyAreaX, p.MG_historyAreaY, p.MG_historyAreaW, p.MG_historyAreaH)
-
+console.log(this)
   // 绘制玩家手牌
   drawHands(data, true, p, ctx)
   drawHands(data, false, p, ctx)
 
   // 绘制牌库
-  drawLibraryCardsNum(data.card.libraryCardsNum, p, ctx)
-
+  // drawLibraryCardsNum(data.card.libraryCardsNum, p, ctx)
+1
   // 绘制弃牌堆
-  drawDiscardCardsNum(data.card.discardCardsNum, p, ctx)
+  // drawDiscardCardsNum(data.card.discardCardsNum, p, ctx)
 
 
   // 绘制数字
-  drawCueNum(data.card.cueNum, p, ctx)
-  drawChanceNum(data.card.chanceNum, p, ctx)
-  drawScore(data.card.score, p, ctx)
+  // drawCueNum(data.card.cueNum, p, ctx)
+  // drawChanceNum(data.card.chanceNum, p, ctx)
+  // drawScore(data.card.score, p, ctx)
 
   // 成功燃放的卡片
-  drawSuccessCards(data.card.successCards, p, ctx)
+  // drawSuccessCards(data.card.successCards, p, ctx)
 
   // 绘制玩家是否当前回合
-  drawRoundPlayerIsHost(data.game.roundPlayerIsHost, p, ctx)
-  drawRoundCountdown(data.game.roundPlayerIsHost, data.game.lastUpdated, p, ctx)
+  // drawRoundPlayerIsHost(data.game.roundPlayerIsHost, p, ctx)
+  // drawRoundCountdown(data.game.roundPlayerIsHost, data.game.lastUpdated, p, ctx)
   
   
   ctx.draw(true)
+
 
 }
 
@@ -272,236 +533,7 @@ const drawPlayerButton = function (data, isHost, isReady, p, ctx) {
   }
 }
 
-const drawHands = function (data, isHost, p, ctx) {
-  const numbers = data.numbers
 
-  let drawHandOne = function (rect, isVisible, color, num) {
-    if (isVisible) {
-      ctx.fillStyle = p.MG_playerHandsColors[color]
-    } else {
-      ctx.fillStyle = p.MG_playerHandsBackColor
-    }
-    drawRoundedRect(rect, p.radius, ctx)
-    ctx.strokeStyle = p.MG_playerHandsStrokeColor
-    ctx.stroke()
-
-    if (isVisible) {
-      ctx.font = '30px Microsoft JhengHei'
-      ctx.fillStyle = p.MG_playerInfoTextColor
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText(numbers[num], rect.x + rect.w / 2, rect.y + rect.h / 2)
-    } else {
-      ctx.font = '30px Microsoft JhengHei'
-      ctx.fillStyle = p.MG_playerInfoTextColor
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'middle'
-      ctx.fillText(num, rect.x + rect.w / 2, rect.y + rect.h / 2)
-    }
-  }
-
-  let rect_list, cards
-  if (isHost) {
-    rect_list = p.MG_playerHandsHostRectList
-    cards = data.card.hostHands
-  } else {
-    rect_list = p.MG_playerHandsGuestRectList
-    cards = data.card.guestHands
-  }
-
-  for (const c in cards) {
-    // isVisible //是你的牌  牌面不可见
-    if (data.isHost !== isHost) {
-      drawHandOne(rect_list[c], true, cards[c].color, cards[c].num)
-    } else {
-      drawHandOne(rect_list[c], false, cards[c].color, parseInt(c) + 1)
-    }
-  }
-}
-
-const drawLibraryCardsNum = (num, p, ctx) => {
-  ctx.fillStyle = p.MG_tableLibraryBgColor
-  drawRoundedRect(
-    {
-      x: p.MG_tableLibraryX,
-      y: p.MG_tableLibraryY,
-      w: p.MG_tableLibraryW,
-      h: p.MG_tableLibraryH
-    },
-    p.radius,
-    ctx
-  )
-  ctx.stroke()
-
-  ctx.font = '18px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'bottom'
-  ctx.fillText('剩余', p.MG_tableLibraryX + p.MG_tableLibraryW / 2, p.MG_tableLibraryY + p.MG_tableLibraryH / 2)
-  ctx.textBaseline = 'top'
-  ctx.fillText(num + '张', p.MG_tableLibraryX + p.MG_tableLibraryW / 2, p.MG_tableLibraryY + p.MG_tableLibraryH / 2)
-}
-
-const drawDiscardCardsNum = (num, p, ctx) => {
-  const that = this
-  ctx.fillStyle = p.MG_tableDiscardBgColor
-  drawRoundedRect(
-    {
-      x: p.MG_tableDiscardX,
-      y: p.MG_tableDiscardY,
-      w: p.MG_tableDiscardW,
-      h: p.MG_tableDiscardH
-    },
-    p.radius,
-    ctx
-  )
-  ctx.stroke()
-
-  ctx.font = '20px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'bottom'
-  ctx.fillText('弃牌', p.MG_tableDiscardX + p.MG_tableDiscardW / 2, p.MG_tableDiscardY + p.MG_tableDiscardH / 2)
-  ctx.textBaseline = 'top'
-  ctx.fillText(num + '张', p.MG_tableDiscardX + p.MG_tableDiscardW / 2, p.MG_tableDiscardY + p.MG_tableDiscardH / 2)
-}
-
-
-const drawCueNum = (num, p, ctx) => {
-  ctx.fillStyle = p.MG_tableAreaBgColor
-  ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 4, 40, 20)
-
-  ctx.font = p.MG_infoFontSize+ 'px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'top'
-  ctx.fillText('提示:' + num, p.MG_tableNumX, p.MG_tableNumY + 4)
-}
-
-const drawChanceNum = (num, p, ctx) => {
-  ctx.fillStyle = p.MG_tableAreaBgColor
-  ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 24, 40, 20)
-
-  ctx.font = p.MG_infoFontSize + 'px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'top'
-  ctx.fillText('机会:' + num, p.MG_tableNumX, p.MG_tableNumY + 24)
-}
-
-const drawScore = (score, p, ctx) => {
-  const that = this
-  ctx.fillStyle = p.MG_tableAreaBgColor
-  ctx.fillRect(p.MG_tableNumX, p.MG_tableNumY + 44, 40, 20)
-
-  ctx.font = p.MG_infoFontSize + 'px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'top'
-  ctx.fillText('分数:' + score, p.MG_tableNumX, p.MG_tableNumY + 44)
-}
-
-const drawSuccessCards = (cards, p, ctx) => {
-  for (const c in cards) {
-    const rect = {
-      x: p.MG_tableSuccessCardsX + (p.MG_tableSuccessCardsW + p.MG_tableSuccessCardsPad) * c,
-      y: p.MG_tableSuccessCardsY,
-      w: p.MG_tableSuccessCardsW,
-      h: p.MG_tableSuccessCardsH
-    }
-
-    ctx.fillStyle = p.MG_playerHandsColors[c]
-    drawRoundedRect(rect, p.radius, ctx)
-    ctx.strokeStyle = p.MG_playerHandsStrokeColor
-    ctx.stroke()
-
-    ctx.font = '15px Microsoft JhengHei'
-    ctx.fillStyle = p.MG_playerInfoTextColor
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(cards[c], rect.x + rect.w / 2, rect.y + rect.h / 2)
-  }
-}
-
-const drawRoundPlayerIsHost = (isHost, p, ctx) => {
-  const x = p.MG_playerInfoX + p.MG_playerInfoW - 120
-  const w = 120
-  const h = p.MG_playerInfoH
-
-  const rectHost = {
-    x: x,
-    y: p.MG_playerInfoHostY,
-    w: w,
-    h: h
-  }
-
-  const rectGuest = {
-    x: x,
-    y: p.MG_playerInfoGuestY,
-    w: w,
-    h: h
-  }
-
-  let rect
-  let textY
-  if (isHost) {
-    rect = rectHost
-    textY = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
-  } else {
-    rect = rectGuest
-    textY = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
-  }
-
-  ctx.fillStyle = p.MG_playerInfoBgColor
-  drawRoundedRect(rectHost, p.radius, ctx)
-  drawRoundedRect(rectGuest, p.radius, ctx)
-
-  ctx.font = '13px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'middle'
-  ctx.fillText('(当前回合玩家)', rect.x, textY)
-}
-
-const drawRoundCountdown = (isHost, lastUpdated, p, ctx) => {
-  const x = p.MG_playerInfoX + p.MG_playerInfoW - 50
-  const w = 30
-  const h = p.MG_playerInfoH
-
-  const rectHost = {
-    x: x,
-    y: p.MG_playerInfoHostY,
-    w: w,
-    h: h
-  }
-
-  const rectGuest = {
-    x: x,
-    y: p.MG_playerInfoGuestY,
-    w: w,
-    h: h
-  }
-
-  let rect
-  let textY
-  if (isHost) {
-    rect = rectHost
-    textY = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
-  } else {
-    rect = rectGuest
-    textY = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
-  }
-
-  ctx.fillStyle = p.MG_playerInfoBgColor
-  drawRoundedRect(rectHost, p.radius, ctx)
-  drawRoundedRect(rectGuest, p.radius, ctx)
-
-  ctx.font = '13px Microsoft JhengHei'
-  ctx.fillStyle = p.MG_playerInfoTextColor
-  ctx.textAlign = 'left'
-  ctx.textBaseline = 'middle'
-  ctx.fillText((30 - parseInt((Date.parse(new Date().toString()) - Date.parse(lastUpdated)) / 1000 )).toString(), rect.x, textY)
-}
 
 module.exports = {
   roomList : roomList,
