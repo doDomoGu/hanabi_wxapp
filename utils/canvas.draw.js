@@ -166,7 +166,7 @@ const myGame = (data, p) => {
 
   // 绘制玩家是否当前回合
   drawRoundPlayerIsHost(data.game.roundPlayerIsHost, p, ctx)
-  drawRoundCountdown(data.game.roundPlayerIsHost, p, ctx)
+  drawRoundCountdown(data.game.roundPlayerIsHost, data.game.lastUpdated, p, ctx)
   
   
   ctx.draw(true)
@@ -463,7 +463,7 @@ const drawRoundPlayerIsHost = (isHost, p, ctx) => {
   ctx.fillText('(当前回合玩家)', rect.x, textY)
 }
 
-const drawRoundCountdown = (isHost ,p ,ctx) => {
+const drawRoundCountdown = (isHost, lastUpdated, p, ctx) => {
   const x = p.MG_playerInfoX + p.MG_playerInfoW - 50
   const w = 30
   const h = p.MG_playerInfoH
@@ -500,8 +500,7 @@ const drawRoundCountdown = (isHost ,p ,ctx) => {
   ctx.fillStyle = p.MG_playerInfoTextColor
   ctx.textAlign = 'left'
   ctx.textBaseline = 'middle'
-  //ctx.fillText((30 - (parseInt(moment().format('X')) - parseInt(moment(this.lastUpdated).format('X')))), rect.x, textY)
-  ctx.fillText('22', rect.x, textY)
+  ctx.fillText((30 - parseInt((Date.parse(new Date().toString()) - Date.parse(lastUpdated)) / 1000 )).toString(), rect.x, textY)
 }
 
 module.exports = {
