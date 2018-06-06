@@ -131,31 +131,31 @@ const myRoom = (data, p) => {
 }
 
 const myGame = (data, p) => {
-  const drawPlayerInfo = (info, isHost, p, ctx) => {
-    let rectYOffset, textYOffset
+  const drawPlayerInfo = (data, isHost, p, ctx) => {
+    let rectYOffset, textYOffset, player
     if (isHost) {
       rectYOffset = p.MG_playerInfoHostY
-      textYOffset = this.playerInfoHostY + this.playerInfoH / 2
-      // textYOffset = this.playerInfoTextHostY
+      textYOffset = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
+      player = data.hostPlayer
     } else {
-      rectYOffset = this.playerInfoGuestY
-      textYOffset = this.playerInfoGuestY + this.playerInfoH / 2
-      // textYOffset = this.playerInfoTextGuestY
+      rectYOffset = p.MG_playerInfoGuestY
+      textYOffset = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
+      player = data.guestPlayer
     }
     const rect = {
-      x: this.playerInfoX,
+      x: p.MG_playerInfoX,
       y: rectYOffset,
-      w: this.playerInfoW,
-      h: this.playerInfoH
+      w: p.MG_playerInfoW,
+      h: p.MG_playerInfoH
     }
-    this.ctx.fillStyle = this.playerInfoBgColor
+    ctx.fillStyle = p.MG_playerInfoBgColor
 
-    MyCanvas.drawRoundedRect(rect, this.radius, this.ctx)
-    this.ctx.font = MyCanvas.px2Rem(36) + 'px Microsoft JhengHei'
-    this.ctx.fillStyle = this.playerInfoTextColor
-    this.ctx.textAlign = 'left'
-    this.ctx.textBaseline = 'middle'
-    this.ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + info.name + (this.isHost === isHost ? ' (你)' : ''), this.playerInfoTextX, textYOffset)
+    drawRoundedRect(rect, p.radius, ctx)
+    ctx.font = '18px Microsoft JhengHei'
+    ctx.fillStyle = p.MG_playerInfoTextColor
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'middle'
+    ctx.fillText((isHost ? '房主' : '玩家') + ' : ' + player.name + (data.isHost === isHost ? ' (你)' : ''), p.MG_playerInfoTextX, textYOffset)
   }
 
 
@@ -168,8 +168,6 @@ const myGame = (data, p) => {
       } else {
         ctx.fillStyle = p.MG_playerHandsColors[card.color]
       }
-      console.log(rect)
-      console.log('')
       drawRoundedRect(rect, p.radius, ctx)
       /*ctx.strokeStyle = p.MG_playerHandsStrokeColor
       ctx.stroke()*/
@@ -199,7 +197,6 @@ const myGame = (data, p) => {
     }
 
     for (const c in cards) {
-      console.log(cards[c])
       // data.isHost === isHost 是你的牌  牌面不可见 牌背灰色
       // data.isHost !== isHost 对方的牌  牌面可见 颜色对应
       drawHandOne(rect_list[c], data.isHost === isHost, cards[c])
@@ -404,7 +401,11 @@ const myGame = (data, p) => {
   // 绘制游戏历史区域
   ctx.fillStyle = p.MG_historyAreaBgColor
   ctx.fillRect(p.MG_historyAreaX, p.MG_historyAreaY, p.MG_historyAreaW, p.MG_historyAreaH)
-console.log(this)
+
+  // 绘制玩家信息
+  drawPlayerInfo(data, true, p, ctx)
+  drawPlayerInfo(data, false, p, ctx)
+
   // 绘制玩家手牌
   drawHands(data, true, p, ctx)
   drawHands(data, false, p, ctx)
