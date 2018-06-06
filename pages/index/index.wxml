@@ -4,6 +4,11 @@
 
   <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_room" bindtap="tap" />
 
+  <canvas class="{{(isInRoom && isInGame && GameOperation) ? '':'hidden'}}" canvas-id="myGameOperationCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;background:#0f4000;" data-canvas="my_game_operation" bindtap="tap" />
+
   <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_game" bindtap="tap" />
+
+
+
 
 </view>

@@ -1,5 +1,5 @@
 /**index.wxss**/
-.userinfo {
+/*.userinfo {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,7 @@
 
 .userinfo-nickname {
   color: #aaa;
-}
+}*/
 
 /* .canvas-view {
   height:200rpx;

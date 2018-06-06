@@ -9,13 +9,13 @@ const Canvas = require('../../utils/canvas.js')
 
 Page({
   data: {
-    containerClass:'',
-    userInfoShow: false,
     userInfo: {},
     userId: null,
     hasUserInfo: false,
+
     isInRoom: false,
     isInGame: false,
+    GameOperation: false,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
 
@@ -234,7 +234,7 @@ Page({
   tap: function(e) {
     let that = this
     const canvas_name = e.currentTarget.dataset.canvas
-    let tap
+    //let tap
 
     if (canvas_name === 'room_list') {
       Canvas.Tap.roomList(e, this).then(function(res){
@@ -265,9 +265,14 @@ Page({
         }
       })
     } else if (canvas_name === 'my_game') {
-      console.log('tap mygame start')
       Canvas.Tap.myGame(e, this).then(function(res){
-        console.log('tap mygame end')
+        if(res.item === 'hands'){
+          that.setData({
+            GameOperation : true
+          })
+          console.log('tap my game end')
+        }
+
       })
     }
   },

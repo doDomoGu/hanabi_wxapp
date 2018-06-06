@@ -129,11 +129,16 @@ const myGame = (e, t) => {
       console.log('你是guest')
     }
 
+    let result = {}
+
     if (isYourRound) {
       console.log('当前是你的回合')
       for (let i = 0; i < hostHands.length; i++) {
         if ( _isInPath({page: 'MyGame', item: 'hands', ord: hostHands[i].ord}, e, p)) {
           console.log('点击了host的牌')
+
+          result.item = 'hands'
+
           if(isHost){
             console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
           }else{
@@ -145,6 +150,9 @@ const myGame = (e, t) => {
       for (let i = 0; i < guestHands.length; i++) {
         if ( _isInPath({page: 'MyGame', item: 'hands', ord: guestHands[i].ord}, e, p)) {
           console.log('点击了guest的牌')
+
+          result.item = 'hands'
+
           if(isHost){
             console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
           }else{
@@ -156,6 +164,8 @@ const myGame = (e, t) => {
     } else {
       console.log('当前不是你的回合')
     }
+
+    resolve(result)
 
 
 
