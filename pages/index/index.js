@@ -265,9 +265,10 @@ Page({
         }
       })
     } else if (canvas_name === 'my_game') {
-      console.log('tap my game')
-
-
+      console.log('tap mygame start')
+      Canvas.Tap.myGame(e, this).then(function(res){
+        console.log('tap mygame end')
+      })
     }
   },
 

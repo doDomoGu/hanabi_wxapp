@@ -509,7 +509,7 @@ const myGame = (data, p) => {
 
   // 绘制牌库
   drawLibraryCardsNum(data.card.libraryCardsNum, p, ctx)
-1
+
   // 绘制弃牌堆
   drawDiscardCardsNum(data.card.discardCardsNum, p, ctx)
 

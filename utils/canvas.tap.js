@@ -111,6 +111,96 @@ const myRoom = (e, t) => {
   })
 }
 
+
+const myGame = (e, t) => {
+  return new Promise(function (resolve, reject) {
+
+    const p = t.data.canvasParam
+    const isHost = t.data.isHost
+    const roundPlayerIsHost = t.data.game.roundPlayerIsHost
+    const isYourRound = isHost === roundPlayerIsHost
+
+    const hostHands = t.data.card.hostHands
+    const guestHands = t.data.card.guestHands
+
+    if( t.data.isHost ){
+      console.log('你是host')
+    }else{
+      console.log('你是guest')
+    }
+
+    if (isYourRound) {
+      console.log('当前是你的回合')
+      for (let i = 0; i < hostHands.length; i++) {
+        if ( _isInPath({page: 'MyGame', item: 'hands', ord: hostHands[i].ord}, e, p)) {
+          console.log('点击了host的牌')
+          if(isHost){
+            console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
+          }else{
+            console.log('牌: 颜色：'+ hostHands[i].color + ' 数字'+ hostHands[i].num)
+          }
+        }
+      }
+
+      for (let i = 0; i < guestHands.length; i++) {
+        if ( _isInPath({page: 'MyGame', item: 'hands', ord: guestHands[i].ord}, e, p)) {
+          console.log('点击了guest的牌')
+          if(isHost){
+            console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
+          }else{
+            console.log('顺序 ：'+ (guestHands[i].ord +1 ) )
+
+          }
+        }
+      }
+    } else {
+      console.log('当前不是你的回合')
+    }
+
+
+
+
+
+    // if (isTapExitBtn) {
+    //   Api.MyRoom.exit().then(function (re) {
+    //     if (re.success) {
+    //       clearInterval(t.data.myRoomInterval)
+    //       t.setData({
+    //         isInRoom: false
+    //       })
+    //       resolve(true)
+    //     }else {
+    //       resolve(false)
+    //     }
+    //   })
+    // } else if (isTapDoReady) {
+    //   Api.MyRoom.doReady().then(function (re) {
+    //     if (re.success) {
+    //       resolve(true)
+    //     }else{
+    //       resolve(false)
+    //     }
+    //   })
+    // } else if (isTapStartGame) {
+    //   if (t.data.isReady && t.data.isHost && t.data.roomId > 0) {
+    //     Api.MyGame.start().then(function (re) {
+    //       if (re.success) {
+    //         clearInterval(t.data.myRoomInterval)
+    //         t.setData({
+    //           isInGame: true
+    //         })
+    //         resolve(true)
+    //       }else {
+    //         resolve(false)
+    //       }
+    //     })
+    //   }
+    // }
+
+
+  })
+}
+
 const _isInPath = (obj, e, p) => {
   const x = e.detail.x
   const y = e.detail.y
@@ -145,11 +235,25 @@ const _isInPath = (obj, e, p) => {
       y1 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16
       y2 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16 + p.RL_innerLineHeight
     }
+  }else if (page === 'MyGame') {
+    if (item === 'hands') {
+      let ord = obj.ord  //手牌顺序
+      let rect
+      if ([0,1,2,3,4].indexOf(ord)) {
+        rect = p.MG_playerHandsHostRectList[ord]
+      }else if ([5,6,7,8,9].indexOf(ord)) {
+        rect = p.MG_playerHandsGuestRectList[ord]
+      }
+      x1 = rect.x
+      x2 = rect.x + rect.w
+      y1 = rect.y
+      y2 = rect.y + rect.h
+    }
   }
 
-  console.log("鼠标坐标：" + x + "," + y);
-  console.log("区域坐标：" + x1 + "," + x2 + "," + y1 + "," + y2);
-  console.log("结果：" + (x > x1 && x < x2 && y > y1 && y < y2) ? 'Y': 'N')
+  // console.log("鼠标坐标：" + x + "," + y);
+  // console.log("区域坐标：" + x1 + "," + x2 + "," + y1 + "," + y2);
+  // console.log("结果：" + (x > x1 && x < x2 && y > y1 && y < y2) ? 'Y': 'N')
   return x > x1 && x < x2 && y > y1 && y < y2
 }
 
@@ -157,5 +261,6 @@ const _isInPath = (obj, e, p) => {
 
 module.exports = {
   roomList : roomList,
-  myRoom : myRoom
+  myRoom : myRoom,
+  myGame : myGame
 }
