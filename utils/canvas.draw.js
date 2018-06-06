@@ -532,15 +532,15 @@ const myGame = (data, p) => {
 
 const gameOperation = (ord, data, p) => {
   const ctx = wx.createCanvasContext('gameOperationCanvas')
-  ctx.setGlobalAlpha(0.2)
+  //ctx.setGlobalAlpha(0.2)
 
-  ctx.fillStyle = '#ff4ff5'
+  ctx.fillStyle = '#4f4ff5'
   drawRoundedRect(
     {
-      x:10,
-      y:10,
-      w:200,
-      h:200
+      x:100,
+      y:100,
+      w:100,
+      h:100
     },
     p.radius,
     ctx
