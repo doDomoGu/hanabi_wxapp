@@ -21,7 +21,7 @@
 } */
 
 .container {
-  background:#eeeeee;
+  background:#eeeeae;
 }
 
 .container.not-in-room {

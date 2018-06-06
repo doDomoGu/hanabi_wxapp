@@ -530,9 +530,29 @@ const myGame = (data, p) => {
   ctx.draw(true)
 }
 
+const gameOperation = (ord, data, p) => {
+  const ctx = wx.createCanvasContext('gameOperationCanvas')
+  ctx.setGlobalAlpha(0.2)
+
+  ctx.fillStyle = '#ff4ff5'
+  drawRoundedRect(
+    {
+      x:10,
+      y:10,
+      w:200,
+      h:200
+    },
+    p.radius,
+    ctx
+  )
+
+
+}
+
 module.exports = {
   roomList : roomList,
   myRoom : myRoom,
   myGame : myGame,
+  gameOperation : gameOperation,
   run : run
 }

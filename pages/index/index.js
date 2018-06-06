@@ -231,6 +231,11 @@ Page({
 
   },
 
+  drawGameOperation : function(handsOrd) {
+    let that = this
+    Canvas.Draw.gameOperation(handsOrd,that.data,that.data.canvasParam)
+  },
+
   tap: function(e) {
     let that = this
     const canvas_name = e.currentTarget.dataset.canvas
@@ -270,7 +275,7 @@ Page({
           that.setData({
             GameOperation : true
           })
-          console.log('tap my game end')
+          that.drawGameOperation(res.ord)
         }
 
       })

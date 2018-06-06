@@ -138,7 +138,7 @@ const myGame = (e, t) => {
           console.log('点击了host的牌')
 
           result.item = 'hands'
-
+          result.ord = i
           if(isHost){
             console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
           }else{
@@ -152,7 +152,7 @@ const myGame = (e, t) => {
           console.log('点击了guest的牌')
 
           result.item = 'hands'
-
+          result.ord = i + 5
           if(isHost){
             console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
           }else{
