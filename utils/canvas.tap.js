@@ -238,16 +238,19 @@ const _isInPath = (obj, e, p) => {
   }else if (page === 'MyGame') {
     if (item === 'hands') {
       let ord = obj.ord  //手牌顺序
-      let rect
-      if ([0,1,2,3,4].indexOf(ord)) {
+      let rect = false
+      if ([0,1,2,3,4].indexOf(ord) > -1) {
         rect = p.MG_playerHandsHostRectList[ord]
-      }else if ([5,6,7,8,9].indexOf(ord)) {
-        rect = p.MG_playerHandsGuestRectList[ord]
+      }else if ([5,6,7,8,9].indexOf(ord) > -1) {
+        rect = p.MG_playerHandsGuestRectList[ord-5]
       }
-      x1 = rect.x
-      x2 = rect.x + rect.w
-      y1 = rect.y
-      y2 = rect.y + rect.h
+
+      if (rect !== false) {
+        x1 = rect.x
+        x2 = rect.x + rect.w
+        y1 = rect.y
+        y2 = rect.y + rect.h
+      }
     }
   }
 
