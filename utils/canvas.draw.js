@@ -549,7 +549,6 @@ const gameOperation = (tap, data, p) => {
     ctx
   )
 
-
   if (isHost === tapIsHost) {
     //点击了自己的手牌
 
@@ -564,6 +563,9 @@ const gameOperation = (tap, data, p) => {
       p.radius,
       ctx
     )
+    ctx.draw(true)
+
+
 
     ctx.fillStyle = p.GO_cancelBtnBgColor
     drawRoundedRect(
@@ -576,16 +578,19 @@ const gameOperation = (tap, data, p) => {
       p.radius,
       ctx
     )
+    ctx.draw(true)
 
 
+    ctx.font = '13px Microsoft JhengHei'
+    ctx.fillStyle = p.GO_okBtnTextColor
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('确定', p.GO_okBtnX + p.GO_okBtnW / 2, p.GO_okBtnY + p.GO_okBtnH / 2)
 
-    // drawRoundedRect(rectGuest, p.radius, ctx)
-    //
-    // ctx.font = '13px Microsoft JhengHei'
-    // ctx.fillStyle = p.MG_playerInfoTextColor
-    // ctx.textAlign = 'left'
-    // ctx.textBaseline = 'middle'
-    // ctx.fillText('(当前回合玩家)', rect.x, textY)
+    ctx.fillStyle = p.GO_cancelBtnTextColor
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText('取消', p.GO_cancelBtnX + p.GO_cancelBtnW / 2, p.GO_cancelBtnY + p.GO_cancelBtnH / 2)
 
   } else {
     //点击了对面的手牌
@@ -593,8 +598,7 @@ const gameOperation = (tap, data, p) => {
 
   }
 
-
-
+  ctx.draw(true)
 }
 
 module.exports = {
