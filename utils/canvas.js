@@ -218,7 +218,33 @@ let myGameParam =  (p) => {
   return p
 }
 
+// 操作框
+let gameOperationParam =  (p) => {
+  p.GO_areaBgColor = '#5fc0f3'        //区域背景色
+  p.GO_okBtnBgColor = '#5cb85c'       //确定按钮背景
+  p.GO_okBtnTextColor = '#ffffff'     //确定按钮文字
+  p.GO_cancelBtnBgColor = '#d9534f'   //取消按钮背景
+  p.GO_cancelBtnTextColor = '#ffffff' //取消按钮文字
 
+
+  p.GO_areaX = p.width / 4            //区域X偏移量
+  p.GO_areaY = 200                    //区域Y偏移量
+  p.GO_areaW = p.width / 2            //区域宽度
+  p.GO_areaH = p.GO_areaW / 1.5       //区域高度
+
+
+  p.GO_okBtnX = p.GO_areaX + 20
+  p.GO_okBtnY = p.GO_areaY + 100
+  p.GO_okBtnW = 40
+  p.GO_okBtnH = p.GO_okBtnW / 2
+  p.GO_cancelBtnX = p.GO_okBtnX + 100
+  p.GO_cancelBtnY = p.GO_okBtnY
+  p.GO_cancelBtnW = p.GO_okBtnW
+  p.GO_cancelBtnH = p.GO_okBtnH
+
+
+  return p;
+}
 
 
 // 画布初始化 ：获得并设置高度/宽度/像素比  设置绘图的各种参数 位置/高度/宽度/颜色/样式
@@ -243,6 +269,8 @@ const init = (t) => {  // t = this
         p = myRoomParam(p)
         //4.游戏页面参数
         p = myGameParam(p)
+        //5.游戏操作框参数
+        p = gameOperationParam(p)
 
 
         t.setData({

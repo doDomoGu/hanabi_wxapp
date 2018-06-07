@@ -530,21 +530,69 @@ const myGame = (data, p) => {
   ctx.draw(true)
 }
 
-const gameOperation = (ord, data, p) => {
+const gameOperation = (tap, data, p) => {
   const ctx = wx.createCanvasContext('gameOperationCanvas')
-  //ctx.setGlobalAlpha(0.2)
 
-  ctx.fillStyle = '#4f4ff5'
+  const isHost = data.isHost
+  const tapIsHost = tap.isHost
+  const cardOrd = tap.ord
+
+  ctx.fillStyle = p.GO_areaBgColor
   drawRoundedRect(
     {
-      x:100,
-      y:100,
-      w:100,
-      h:100
+      x:p.GO_areaX,
+      y:p.GO_areaY,
+      w:p.GO_areaW,
+      h:p.GO_areaH
     },
     p.radius,
     ctx
   )
+
+
+  if (isHost === tapIsHost) {
+    //点击了自己的手牌
+
+    ctx.fillStyle = p.GO_okBtnBgColor
+    drawRoundedRect(
+      {
+        x:p.GO_okBtnX,
+        y:p.GO_okBtnY,
+        w:p.GO_okBtnW,
+        h:p.GO_okBtnH
+      },
+      p.radius,
+      ctx
+    )
+
+    ctx.fillStyle = p.GO_cancelBtnBgColor
+    drawRoundedRect(
+      {
+        x:p.GO_cancelBtnX,
+        y:p.GO_cancelBtnY,
+        w:p.GO_cancelBtnW,
+        h:p.GO_cancelBtnH
+      },
+      p.radius,
+      ctx
+    )
+
+
+
+    // drawRoundedRect(rectGuest, p.radius, ctx)
+    //
+    // ctx.font = '13px Microsoft JhengHei'
+    // ctx.fillStyle = p.MG_playerInfoTextColor
+    // ctx.textAlign = 'left'
+    // ctx.textBaseline = 'middle'
+    // ctx.fillText('(当前回合玩家)', rect.x, textY)
+
+  } else {
+    //点击了对面的手牌
+
+
+  }
+
 
 
 }

@@ -138,6 +138,7 @@ const myGame = (e, t) => {
           console.log('点击了host的牌')
 
           result.item = 'hands'
+          result.isHost = true
           result.ord = i
           if(isHost){
             console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
@@ -152,7 +153,8 @@ const myGame = (e, t) => {
           console.log('点击了guest的牌')
 
           result.item = 'hands'
-          result.ord = i + 5
+          result.isHost = false
+          result.ord = i
           if(isHost){
             console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
           }else{
@@ -166,86 +168,68 @@ const myGame = (e, t) => {
     }
 
     resolve(result)
-
-
-
-
-
-    // if (isTapExitBtn) {
-    //   Api.MyRoom.exit().then(function (re) {
-    //     if (re.success) {
-    //       clearInterval(t.data.myRoomInterval)
-    //       t.setData({
-    //         isInRoom: false
-    //       })
-    //       resolve(true)
-    //     }else {
-    //       resolve(false)
-    //     }
-    //   })
-    // } else if (isTapDoReady) {
-    //   Api.MyRoom.doReady().then(function (re) {
-    //     if (re.success) {
-    //       resolve(true)
-    //     }else{
-    //       resolve(false)
-    //     }
-    //   })
-    // } else if (isTapStartGame) {
-    //   if (t.data.isReady && t.data.isHost && t.data.roomId > 0) {
-    //     Api.MyGame.start().then(function (re) {
-    //       if (re.success) {
-    //         clearInterval(t.data.myRoomInterval)
-    //         t.setData({
-    //           isInGame: true
-    //         })
-    //         resolve(true)
-    //       }else {
-    //         resolve(false)
-    //       }
-    //     })
-    //   }
-    // }
-
-
   })
 }
 
+
+
+
+const gameOperation = (e, t) => {
+  return new Promise(function (resolve, reject) {
+    let result = {}
+    const p = t.data.canvasParam
+
+    const isTapInArea = _isInPath({page: 'GameOperation', item: 'in-area'}, e, p)
+
+    if (isTapInArea) {
+
+
+
+    }else{
+      result.item = 'outer-area'
+      result.success = true
+    }
+
+    resolve(result)
+  })
+}
+
+
 const _isInPath = (obj, e, p) => {
-  const x = e.detail.x
-  const y = e.detail.y
+  const _x = e.detail.x
+  const _y = e.detail.y
 
   const page = obj.page
   const item = obj.item
 
-  let x1 = 0 , x2 = 0, y1 = 0, y2 = 0
+  let x = 0, y =0, w = 0, h = 0
 
   if (page === 'MyRoom') {
     if (item === 'exit-btn') {
-      x1 = p.MR_exitBtnX
-      x2 = x1 + p.MR_exitBtnW
-      y1 = p.MR_exitBtnY
-      y2 = y1 + p.MR_exitBtnH
+      x = p.MR_exitBtnX
+      y = p.MR_exitBtnY
+      w = p.MR_exitBtnW
+      h = p.MR_exitBtnH
     } else if (item === 'do-ready') {
-      x1 = p.MR_playerButtonX
-      x2 = x1 + p.MR_playerButtonWidth
-      y1 = p.MR_playerButtonGuestY
-      y2 = y1 + p.MR_playerButtonHeight
+      x = p.MR_playerButtonX
+      y = p.MR_playerButtonGuestY
+      w = p.MR_playerButtonWidth
+      h = p.MR_playerButtonHeight
     } else if (item === 'start-game') {
-      x1 = p.MR_playerButtonX
-      x2 = x1 + p.MR_playerButtonWidth
-      y1 = p.MR_playerButtonHostY
-      y2 = y1 + p.MR_playerButtonHeight
+      x = p.MR_playerButtonX
+      y = p.MR_playerButtonHostY
+      w = p.MR_playerButtonWidth
+      h = p.MR_playerButtonHeight
     }
-  }else if (page === 'RoomList') {
+  } else if (page === 'RoomList') {
     if (item === 'list') {
       let ord = obj.ord  //房间列表页 特殊参数： 序号
-      x1 = p.leftPad
-      x2 = p.leftPad  + p.innerWidth
-      y1 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16
-      y2 = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16 + p.RL_innerLineHeight
+      x = p.leftPad
+      y = p.RL_innerTopPad + p.RL_innerLineHeight * ord - 16
+      w = p.innerWidth
+      h = p.RL_innerLineHeight
     }
-  }else if (page === 'MyGame') {
+  } else if (page === 'MyGame') {
     if (item === 'hands') {
       let ord = obj.ord  //手牌顺序
       let rect = false
@@ -256,24 +240,30 @@ const _isInPath = (obj, e, p) => {
       }
 
       if (rect !== false) {
-        x1 = rect.x
-        x2 = rect.x + rect.w
-        y1 = rect.y
-        y2 = rect.y + rect.h
+        x = rect.x
+        y = rect.y
+        w = rect.w
+        h = rect.h
       }
+    }
+  } else if (page === 'GameOperation') {
+    if (item === 'in-area') {
+      x = p.GO_areaX
+      y = p.GO_areaY
+      w = p.GO_areaW
+      h = p.GO_areaH
     }
   }
 
   // console.log("鼠标坐标：" + x + "," + y);
   // console.log("区域坐标：" + x1 + "," + x2 + "," + y1 + "," + y2);
   // console.log("结果：" + (x > x1 && x < x2 && y > y1 && y < y2) ? 'Y': 'N')
-  return x > x1 && x < x2 && y > y1 && y < y2
+  return _x > x && _x < x + w && _y > y && _y < y + h
 }
-
-
 
 module.exports = {
   roomList : roomList,
   myRoom : myRoom,
-  myGame : myGame
+  myGame : myGame,
+  gameOperation : gameOperation
 }

@@ -15,7 +15,7 @@ Page({
 
     isInRoom: false,
     isInGame: false,
-    GameOperation: false,
+    gameOperation: false,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
 
@@ -231,9 +231,9 @@ Page({
 
   },
 
-  drawGameOperation : function(handsOrd) {
+  drawGameOperation : function(tap) {
     let that = this
-    Canvas.Draw.gameOperation(handsOrd,that.data,that.data.canvasParam)
+    Canvas.Draw.gameOperation(tap, that.data, that.data.canvasParam)
   },
 
   tap: function(e) {
@@ -273,11 +273,19 @@ Page({
       Canvas.Tap.myGame(e, this).then(function(res){
         if(res.item === 'hands'){
           that.setData({
-            GameOperation : true
+            gameOperation : true
           })
-          that.drawGameOperation(res.ord)
+          that.drawGameOperation(res)
         }
 
+      })
+    } else if (canvas_name === 'game_operation') {
+      Canvas.Tap.gameOperation(e, this).then(function(res){
+        if(res.item === 'outer-area'){
+          that.setData({
+            gameOperation : false
+          })
+        }
       })
     }
   },
