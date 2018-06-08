@@ -1,14 +1,11 @@
 <view class="container" style="position:relative;">
 
-  <canvas class="{{(!isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="roomListCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="room_list" bindtap="tap" />
+  <canvas class="{{(!isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="roomListCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="room_list" bindtap="tap" />
 
-  <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_room" bindtap="tap" />
+  <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_room" bindtap="tap" />
+
+  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:1;" data-canvas="my_game" bindtap="tap" />
 
   <canvas class="{{(isInRoom && isInGame && gameOperation) ? '':'hidden'}}" canvas-id="gameOperationCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:2;background:rgba(10,10,10,0.5);" data-canvas="game_operation" bindtap="tap" />
-
-  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_game" bindtap="tap" />
-
-
-
 
 </view>
