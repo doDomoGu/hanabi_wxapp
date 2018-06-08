@@ -50,12 +50,22 @@ const _isInPath = (obj, e, p) => {
         h = rect.h
       }
     }
-  } else if (page === 'GameOperation') {
+  } else if (page === 'GameOperationSelf') {
     if (item === 'in-area') {
       x = p.GO_areaX
       y = p.GO_areaY
       w = p.GO_areaW
       h = p.GO_areaH
+    } else if (item === 'play-btn') {
+      x = p.GO_playBtnX
+      y = p.GO_playBtnY
+      w = p.GO_playBtnW
+      h = p.GO_playBtnH
+    } else if (item === 'discard-btn') {
+      x = p.GO_discardBtnX
+      y = p.GO_discardBtnY
+      w = p.GO_discardBtnW
+      h = p.GO_discardBtnH
     }
   }
 

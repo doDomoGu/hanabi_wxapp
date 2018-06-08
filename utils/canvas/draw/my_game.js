@@ -85,7 +85,7 @@ module.exports = (data, p) => {
       p.radius,
       ctx
     )
-    ctx.stroke()
+    //ctx.stroke()
 
     ctx.font = '18px Microsoft JhengHei'
     ctx.fillStyle = p.MG_playerInfoTextColor

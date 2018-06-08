@@ -4,7 +4,6 @@ module.exports = (tap, data, p) => {
   const ctx = wx.createCanvasContext('gameOperationSelfCanvas')
 
   const isHost = data.isHost
-  const tapIsHost = tap.isHost
   //const cardOrd = tap.ord
 
   ctx.fillStyle = p.GO_areaBgColor
@@ -19,9 +18,8 @@ module.exports = (tap, data, p) => {
     ctx
   )
 
-  if (isHost === tapIsHost) {
+  if (tap.gameOperation === 'self') {
     //点击了自己的手牌
-
     ctx.fillStyle = p.GO_playBtnBgColor
     drawRoundedRect(
       {
@@ -62,7 +60,7 @@ module.exports = (tap, data, p) => {
     ctx.fillStyle = p.GO_discardBtnTextColor
     ctx.fillText(p.GO_discardBtnText, p.GO_discardBtnX + p.GO_discardBtnW / 2, p.GO_discardBtnY + p.GO_discardBtnH / 2)
 
-  } else {
+  } else if (tap.gameOperation === 'opposite') {
     //点击了对面的手牌
 
 

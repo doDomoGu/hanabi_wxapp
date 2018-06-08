@@ -36,7 +36,48 @@ const getInfo  = (param) => {
   })
 }
 
+const doPlay = (cardSelectOrd) => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-game/do-play?token=' + token,
+      data:{
+        cardSelectOrd: cardSelectOrd
+      },
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
+
+const doDiscard = (cardSelectOrd) => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-game/do-discard?token=' + token,
+      data:{
+        cardSelectOrd: cardSelectOrd
+      },
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
 module.exports = {
   start: start,
-  getInfo: getInfo
+  getInfo: getInfo,
+  doPlay: doPlay,
+  doDiscard: doDiscard
 }

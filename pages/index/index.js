@@ -16,6 +16,7 @@ Page({
     isInRoom: false,
     isInGame: false,
     gameOperation: null,
+    cardSelectOrd: -1,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
 
@@ -280,7 +281,8 @@ Page({
       Canvas.Tap.myGame(e, this).then(function(res){
         if(res.item === 'hands'){
           that.setData({
-            gameOperation : res.gameOperation
+            gameOperation : res.gameOperation,
+            cardSelectOrd : res.ord
           })
           that.drawGameOperation(res)
         }
@@ -290,20 +292,30 @@ Page({
       Canvas.Tap.gameOperationSelf(e, this).then(function(res){
         if (res.item === 'outer-area') {
           that.setData({
-            gameOperation : null
+            gameOperation : null,
+            cardSelectOrd : -1
           })
-        } else {
-
+        } else if (res.item === 'play-btn') {
+          that.setData({
+            gameOperation : null,
+            cardSelectOrd : -1
+          })
+        } else if (res.item === 'discard-btn') {
+          that.setData({
+            gameOperation : null,
+            cardSelectOrd : -1
+          })
         }
       })
     } else if (canvas_name === 'game_operation_opposite') {
       Canvas.Tap.gameOperationOpposite(e, this).then(function(res){
-        if (res.item === 'outer-area') {
-          that.setData({
-            gameOperation : null
-          })
-        } else {
-
+        if(res.success){
+          if (res.item === 'outer-area') {
+            that.setData({
+              gameOperation : null,
+              cardSelectOrd : -1
+            })
+          }
         }
       })
     }
