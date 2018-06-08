@@ -1,4 +1,4 @@
-const Api    = require('../../api.js')
+const Api    = require('../../api')
 const {_isInPath}   = require('./common_func')
 
 module.exports = (e, t) => {

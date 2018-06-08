@@ -1,10 +1,10 @@
 const Url = getApp().gData.apiBaseUrl
 
 
-const Auth = require('./api/auth.js')
-const RoomList = require('./api/room_list.js')
-const MyRoom = require('./api/my_room.js')
-const MyGame = require('./api/my_game.js')
+const Auth = require('./api/auth')
+const RoomList = require('./api/room_list')
+const MyRoom = require('./api/my_room')
+const MyGame = require('./api/my_game')
 
 
 

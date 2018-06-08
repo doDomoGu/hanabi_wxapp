@@ -1,8 +1,8 @@
 //index.js
 
-const Api    = require('../../utils/api.js')
-const Auth   = require('../../utils/auth.js')
-const Canvas = require('../../utils/canvas.js')
+const Api    = require('../../utils/api')
+const Auth   = require('../../utils/auth')
+const Canvas = require('../../utils/canvas')
 
 //获取应用实例
 //const app = getApp()
@@ -234,7 +234,13 @@ Page({
 
   drawGameOperation : function(tap) {
     let that = this
-    Canvas.Draw.gameOperationSelf(tap, that.data, that.data.canvasParam)
+    if(that.data.gameOperation === 'self') {
+      Canvas.Draw.gameOperationSelf(tap, that.data, that.data.canvasParam)
+    } else if(that.data.gameOperation === 'opposite') {
+      Canvas.Draw.gameOperationOpposite(tap, that.data, that.data.canvasParam)
+    } else {
+      console.log('draw go wrong')
+    }
   },
 
   tap: function(e) {
@@ -274,7 +280,7 @@ Page({
       Canvas.Tap.myGame(e, this).then(function(res){
         if(res.item === 'hands'){
           that.setData({
-            gameOperation : true
+            gameOperation : res.gameOperation
           })
           that.drawGameOperation(res)
         }

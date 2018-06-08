@@ -1,11 +1,11 @@
 const {drawRoundedRect}   = require('./common_func')
 
 module.exports = (tap, data, p) => {
-  const ctx = wx.createCanvasContext('gameOperationCanvas')
+  const ctx = wx.createCanvasContext('gameOperationSelfCanvas')
 
   const isHost = data.isHost
   const tapIsHost = tap.isHost
-  const cardOrd = tap.ord
+  //const cardOrd = tap.ord
 
   ctx.fillStyle = p.GO_areaBgColor
   drawRoundedRect(
@@ -54,7 +54,7 @@ module.exports = (tap, data, p) => {
     ctx.textBaseline = 'middle'
 
     ctx.fillStyle = p.GO_areaTextColor
-    ctx.fillText('确定要打出这张牌么', p.GO_areaX + p.GO_areaW / 2, p.GO_areaY + 30)
+    ctx.fillText('选择要进行的操作', p.GO_areaX + p.GO_areaW / 2, p.GO_areaY + 30)
 
     ctx.fillStyle = p.GO_okBtnTextColor
     ctx.fillText('确定', p.GO_okBtnX + p.GO_okBtnW / 2, p.GO_okBtnY + p.GO_okBtnH / 2)

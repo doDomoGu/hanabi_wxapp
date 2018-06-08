@@ -1,61 +1,69 @@
-//const Api    = require('../../api.js')
+const Api    = require('../../api')
 const {_isInPath}   = require('./common_func')
 
 module.exports = (e, t) => {
   return new Promise(function (resolve, reject) {
+    // console.log(r)
+    // const x = r.detail.x
+    // const y = r.detail.y
+    // console.log("鼠标指针坐标：" + x + "," + y);
 
     const p = t.data.canvasParam
-    const isHost = t.data.isHost
-    const roundPlayerIsHost = t.data.game.roundPlayerIsHost
-    const isYourRound = isHost === roundPlayerIsHost
 
-    const hostHands = t.data.card.hostHands
-    const guestHands = t.data.card.guestHands
+    const isTapExitBtn = _isInPath({page: 'MyRoom', item: 'exit-btn'}, e, p)
 
-    if( t.data.isHost ){
-      console.log('你是host')
-    }else{
-      console.log('你是guest')
-    }
+    const isTapDoReady = _isInPath({page: 'MyRoom', item: 'do-ready'}, e, p)
 
-    let result = {}
+    const isTapStartGame = _isInPath({page: 'MyRoom', item: 'start-game'}, e, p)
 
-    if (isYourRound) {
-      console.log('当前是你的回合')
-      for (let i = 0; i < hostHands.length; i++) {
-        if ( _isInPath({page: 'MyGame', item: 'hands', ord: hostHands[i].ord}, e, p)) {
-          console.log('点击了host的牌')
-
-          result.item = 'hands'
-          result.isHost = true
-          result.ord = i
-          if(isHost){
-            console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
-          }else{
-            console.log('牌: 颜色：'+ hostHands[i].color + ' 数字'+ hostHands[i].num)
-          }
+    if (isTapExitBtn) {
+      Api.MyRoom.exit().then(function (re) {
+        if (re.success) {
+          clearInterval(t.data.myRoomInterval)
+          t.setData({
+            isInRoom: false
+          })
+          resolve(true)
+        }else {
+          resolve(false)
         }
-      }
-
-      for (let i = 0; i < guestHands.length; i++) {
-        if ( _isInPath({page: 'MyGame', item: 'hands', ord: guestHands[i].ord}, e, p)) {
-          console.log('点击了guest的牌')
-
-          result.item = 'hands'
-          result.isHost = false
-          result.ord = i
-          if(isHost){
-            console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
-          }else{
-            console.log('顺序 ：'+ (guestHands[i].ord +1 ) )
-
-          }
+        /*  resolve({success:true,action:'exitBtn'})
+        }else{
+          resolve({success:false})
+        }*/
+      })
+    } else if (isTapDoReady) {
+      Api.MyRoom.doReady().then(function (re) {
+        if (re.success) {
+          resolve(true)
+        }else{
+          resolve(false)
         }
-      }
-    } else {
-      console.log('当前不是你的回合')
-    }
+        /*  resolve({success:true,action:'doReady'})
+        }else{
+          resolve({success:false})
+        }*/
+      })
+    } else if (isTapStartGame) {
+      if (t.data.isReady && t.data.isHost && t.data.roomId > 0) {
+        Api.MyGame.start().then(function (re) {
+          if (re.success) {
+            clearInterval(t.data.myRoomInterval)
+            t.setData({
+              isInGame: true
+            })
 
-    resolve(result)
+
+            resolve(true)
+          }else {
+            resolve(false)
+          }
+          /*  resolve({success:true,action:'startGame'})
+          }else{
+            resolve({success:false})
+          }*/
+        })
+      }
+    }
   })
 }

@@ -4,8 +4,8 @@ const myGameParam     = require('./canvas/param/my_game')
 const gameOperationSelfParam     = require('./canvas/param/game_operation_self')
 //const gameOperationOppositeParam     = require('./canvas/param/game_operation_opposite')
 
-const Draw   = require('./canvas/draw.js')
-const Tap    = require('./canvas/tap.js')
+const Draw   = require('./canvas/draw')
+const Tap    = require('./canvas/tap')
 
 let commonParam = (p) => {
   p.pad = 10 //一般间隔留白

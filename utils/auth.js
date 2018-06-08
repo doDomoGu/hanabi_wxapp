@@ -1,4 +1,4 @@
-const Api = require('./api.js')
+const Api = require('./api')
 
 // 微信登录验证
 const login = () => {
