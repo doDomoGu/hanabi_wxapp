@@ -233,7 +233,7 @@ Page({
 
   drawGameOperation : function(tap) {
     let that = this
-    Canvas.Draw.gameOperation(tap, that.data, that.data.canvasParam)
+    Canvas.Draw.gameOperationSelf(tap, that.data, that.data.canvasParam)
   },
 
   tap: function(e) {
