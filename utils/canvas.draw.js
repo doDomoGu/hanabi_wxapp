@@ -31,7 +31,7 @@ const drawRoundedRect = function (rect, radius, ctx) {
   // ctx.stroke();  //边框绘制 根据笔触样式(strokeStyle)
   ctx.fill()
 
-  ctx.draw(true)
+  //ctx.draw(true)
 }
 
 
@@ -563,7 +563,6 @@ const gameOperation = (tap, data, p) => {
       p.radius,
       ctx
     )
-    ctx.draw(true)
 
 
 
@@ -578,18 +577,19 @@ const gameOperation = (tap, data, p) => {
       p.radius,
       ctx
     )
-    ctx.draw(true)
 
 
-    ctx.font = '13px Microsoft JhengHei'
-    ctx.fillStyle = p.GO_okBtnTextColor
+    ctx.setFontSize(13)
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
+
+    ctx.fillStyle = p.GO_areaTextColor
+    ctx.fillText('确定要打出这张牌么', p.GO_areaX + p.GO_areaW / 2, p.GO_areaY + 30)
+
+    ctx.fillStyle = p.GO_okBtnTextColor
     ctx.fillText('确定', p.GO_okBtnX + p.GO_okBtnW / 2, p.GO_okBtnY + p.GO_okBtnH / 2)
 
     ctx.fillStyle = p.GO_cancelBtnTextColor
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
     ctx.fillText('取消', p.GO_cancelBtnX + p.GO_cancelBtnW / 2, p.GO_cancelBtnY + p.GO_cancelBtnH / 2)
 
   } else {

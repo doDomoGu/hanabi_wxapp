@@ -281,10 +281,12 @@ Page({
       })
     } else if (canvas_name === 'game_operation') {
       Canvas.Tap.gameOperation(e, this).then(function(res){
-        if(res.item === 'outer-area'){
+        if (res.item === 'outer-area') {
           that.setData({
             gameOperation : false
           })
+        } else {
+
         }
       })
     }

@@ -221,6 +221,7 @@ let myGameParam =  (p) => {
 // 操作框
 let gameOperationParam =  (p) => {
   p.GO_areaBgColor = '#5fc0f3'        //区域背景色
+  p.GO_areaTextColor = '#333'         //区域文字颜色
   p.GO_okBtnBgColor = '#5cb85c'       //确定按钮背景
   p.GO_okBtnTextColor = '#ffffff'     //确定按钮文字
   p.GO_cancelBtnBgColor = '#d9534f'   //取消按钮背景
@@ -234,7 +235,7 @@ let gameOperationParam =  (p) => {
 
 
   p.GO_okBtnX = p.GO_areaX + 20
-  p.GO_okBtnY = p.GO_areaY + 100
+  p.GO_okBtnY = p.GO_areaY + p.GO_areaH - 40
   p.GO_okBtnW = 40
   p.GO_okBtnH = p.GO_okBtnW / 2
   p.GO_cancelBtnX = p.GO_okBtnX + 100
