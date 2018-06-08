@@ -22,13 +22,13 @@ module.exports = (tap, data, p) => {
   if (isHost === tapIsHost) {
     //点击了自己的手牌
 
-    ctx.fillStyle = p.GO_okBtnBgColor
+    ctx.fillStyle = p.GO_playBtnBgColor
     drawRoundedRect(
       {
-        x:p.GO_okBtnX,
-        y:p.GO_okBtnY,
-        w:p.GO_okBtnW,
-        h:p.GO_okBtnH
+        x:p.GO_playBtnX,
+        y:p.GO_playBtnY,
+        w:p.GO_playBtnW,
+        h:p.GO_playBtnH
       },
       p.radius,
       ctx
@@ -36,13 +36,13 @@ module.exports = (tap, data, p) => {
 
 
 
-    ctx.fillStyle = p.GO_cancelBtnBgColor
+    ctx.fillStyle = p.GO_discardBtnBgColor
     drawRoundedRect(
       {
-        x:p.GO_cancelBtnX,
-        y:p.GO_cancelBtnY,
-        w:p.GO_cancelBtnW,
-        h:p.GO_cancelBtnH
+        x:p.GO_discardBtnX,
+        y:p.GO_discardBtnY,
+        w:p.GO_discardBtnW,
+        h:p.GO_discardBtnH
       },
       p.radius,
       ctx
@@ -56,11 +56,11 @@ module.exports = (tap, data, p) => {
     ctx.fillStyle = p.GO_areaTextColor
     ctx.fillText('选择要进行的操作', p.GO_areaX + p.GO_areaW / 2, p.GO_areaY + 30)
 
-    ctx.fillStyle = p.GO_okBtnTextColor
-    ctx.fillText('确定', p.GO_okBtnX + p.GO_okBtnW / 2, p.GO_okBtnY + p.GO_okBtnH / 2)
+    ctx.fillStyle = p.GO_playBtnTextColor
+    ctx.fillText(p.GO_playBtnText, p.GO_playBtnX + p.GO_playBtnW / 2, p.GO_playBtnY + p.GO_playBtnH / 2)
 
-    ctx.fillStyle = p.GO_cancelBtnTextColor
-    ctx.fillText('取消', p.GO_cancelBtnX + p.GO_cancelBtnW / 2, p.GO_cancelBtnY + p.GO_cancelBtnH / 2)
+    ctx.fillStyle = p.GO_discardBtnTextColor
+    ctx.fillText(p.GO_discardBtnText, p.GO_discardBtnX + p.GO_discardBtnW / 2, p.GO_discardBtnY + p.GO_discardBtnH / 2)
 
   } else {
     //点击了对面的手牌
