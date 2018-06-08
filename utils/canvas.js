@@ -1,8 +1,8 @@
-const roomListParam   = require('./canvas/param/room_list')
-const myRoomParam     = require('./canvas/param/my_room')
-const myGameParam     = require('./canvas/param/my_game')
-const gameOperationSelfParam     = require('./canvas/param/game_operation_self')
-//const gameOperationOppositeParam     = require('./canvas/param/game_operation_opposite')
+const roomListParam                 = require('./canvas/param/room_list')
+const myRoomParam                   = require('./canvas/param/my_room')
+const myGameParam                   = require('./canvas/param/my_game')
+const gameOperationSelfParam        = require('./canvas/param/game_operation_self')
+const gameOperationOppositeParam    = require('./canvas/param/game_operation_opposite')
 
 const Draw   = require('./canvas/draw')
 const Tap    = require('./canvas/tap')
@@ -43,7 +43,7 @@ const init = (t) => {  // t = this
         //5.游戏操作框参数 (点击自己手牌）
         p = gameOperationSelfParam(p)
         //6.游戏操作框参数 (点击对面手牌）
-        //p = gameOperationOppositeParam(p)
+        p = gameOperationOppositeParam(p)
 
         t.setData({
           canvasParam: p
