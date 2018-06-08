@@ -6,6 +6,8 @@
 
   <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:1;" data-canvas="my_game" bindtap="tap" />
 
-  <canvas class="{{(isInRoom && isInGame && gameOperation) ? '':'hidden'}}" canvas-id="gameOperationCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:2;background:rgba(10,10,10,0.5);" data-canvas="game_operation" bindtap="tap" />
+  <canvas class="{{(isInRoom && isInGame && gameOperation==='self') ? '':'hidden'}}" canvas-id="gameOperationSelfCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:2;background:rgba(10,10,10,0.5);" data-canvas="game_operation_self" bindtap="tap" />
+
+  <canvas class="{{(isInRoom && isInGame && gameOperation==='opposite') ? '':'hidden'}}" canvas-id="gameOperationSelfCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:2;background:rgba(10,10,10,0.5);" data-canvas="game_operation_opposite" bindtap="tap" />
 
 </view>

@@ -15,7 +15,7 @@ Page({
 
     isInRoom: false,
     isInGame: false,
-    gameOperation: false,
+    gameOperation: null,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
 
@@ -53,6 +53,7 @@ Page({
     },
     isPlaying: null,
     log: [],
+
 
 
     colors: ['white', 'blue', 'yellow', 'red', 'green'],
@@ -279,11 +280,21 @@ Page({
         }
 
       })
-    } else if (canvas_name === 'game_operation') {
-      Canvas.Tap.gameOperation(e, this).then(function(res){
+    } else if (canvas_name === 'game_operation_self') {
+      Canvas.Tap.gameOperationSelf(e, this).then(function(res){
         if (res.item === 'outer-area') {
           that.setData({
-            gameOperation : false
+            gameOperation : null
+          })
+        } else {
+
+        }
+      })
+    } else if (canvas_name === 'game_operation_opposite') {
+      Canvas.Tap.gameOperationOpposite(e, this).then(function(res){
+        if (res.item === 'outer-area') {
+          that.setData({
+            gameOperation : null
           })
         } else {
 
