@@ -10,7 +10,8 @@ module.exports = (e, t) => {
     if (isTapInArea) {
       if (_isInPath({page: 'GameOperationSelf', item: 'play-btn'}, e, p)){
         console.log('play')
-        Api.MyGame.doPlay(t.data.cardSelectOrd).then(function (re) {
+        let cardSeletedOrd = t.data.isHost ? t.data.cardSelectOrd : t.data.cardSelectOrd + 5
+        Api.MyGame.doPlay(cardSeletedOrd).then(function (re) {
           if (re.success) {
             resolve(true)
           }
