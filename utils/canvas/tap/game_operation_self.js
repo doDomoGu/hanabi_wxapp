@@ -7,10 +7,11 @@ module.exports = (e, t) => {
     const p = t.data.canvasParam
 
     const isTapInArea = _isInPath({page: 'GameOperationSelf', item: 'in-area'}, e, p)
+
+    let cardSeletedOrd = t.data.isHost ? t.data.cardSelectOrd : t.data.cardSelectOrd + 5
+
     if (isTapInArea) {
       if (_isInPath({page: 'GameOperationSelf', item: 'play-btn'}, e, p)){
-        console.log('play')
-        let cardSeletedOrd = t.data.isHost ? t.data.cardSelectOrd : t.data.cardSelectOrd + 5
         Api.MyGame.doPlay(cardSeletedOrd).then(function (re) {
           if (re.success) {
             resolve(true)
@@ -19,7 +20,7 @@ module.exports = (e, t) => {
         result.item = 'play-btn'
         result.success = true
       } else if (_isInPath({page: 'GameOperationSelf', item: 'discard-btn'}, e, p)){
-        Api.MyGame.doDiscard(t.data.cardSelectOrd).then(function (re) {
+        Api.MyGame.doDiscard(cardSeletedOrd).then(function (re) {
           if (re.success) {
             resolve(true)
           }
