@@ -92,8 +92,6 @@ Page({
           that.setData({
             myRoomInterval : myRoomInterval
           })
-
-          //Canvas.drawMyRoom(that.data.canvasParam)
         }else{
           that.drawMyGame(true)
           let myGameInterval = setInterval(that.drawMyGame,1000)
@@ -128,7 +126,19 @@ Page({
       if (res){
         if (res.success) {
           if (!res.data.noUpdate) {
-            that.setData(res.data)
+            if(res.data.gameStart){
+              clearInterval(that.data.myRoomInterval)
+              that.setData({
+                isInGame : true
+              })
+              that.drawMyGame(true)
+              let myGameInterval = setInterval(that.drawMyGame,1000)
+              that.setData({
+                myGameInterval : myGameInterval
+              })
+            }else{
+              that.setData(res.data)
+            }
           }
         } else {
           that.setData({
