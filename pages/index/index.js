@@ -176,6 +176,8 @@ Page({
                     isPlaying: res.data.isPlaying,
                     log: res.data.log
                   })
+
+                  Canvas.Draw.myGame(that.data,that.data.canvasParam)
                 }
               } else {
                 that.setData({
@@ -204,7 +206,7 @@ Page({
             /*that.setData({
               roomList: roomList
             })*/
-            Canvas.Draw.myGame(that.data,that.data.canvasParam)
+
           })
 
         } else {
