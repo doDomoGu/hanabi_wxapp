@@ -196,15 +196,8 @@ module.exports = (data, p) => {
       h: h
     }
 
-    let rect
-    let textY
-    if (isHost) {
-      rect = rectHost
-      textY = p.MG_playerInfoHostY + p.MG_playerInfoH / 2
-    } else {
-      rect = rectGuest
-      textY = p.MG_playerInfoGuestY + p.MG_playerInfoH / 2
-    }
+    let rect = isHost ? rectHost : rectGuest
+    let textY = rect.y + p.MG_playerInfoH / 2
 
     ctx.fillStyle = p.MG_playerInfoBgColor
     drawRoundedRect(rectHost, p.radius, ctx)
