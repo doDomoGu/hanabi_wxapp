@@ -1,6 +1,6 @@
 const Url = getApp().gData.apiBaseUrl
 
-
+// 进入房间
 const enter = (roomId) => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
@@ -20,6 +20,7 @@ const enter = (roomId) => {
   })
 }
 
+// 退出房间
 const exit = () => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
@@ -36,6 +37,8 @@ const exit = () => {
   })
 }
 
+// 获取房间信息
+// 参数 mode:  all 返回完整信息 | simple 只返回roomId
 const getInfo  = (param) => {
   if (!param.hasOwnProperty('mode')) { param.mode = 'all' }
   const token = wx.getStorageSync('token') || ''
@@ -46,20 +49,6 @@ const getInfo  = (param) => {
       data:param,
       success: res => {
         resolve(res.data)
-        // const _res = res.data
-        // let ret = {}
-        // if (_res.success) {
-        //   if (!_res.data.noUpdate) {
-        //     if (param.mode === 'all') {
-        //       ret = _res.data
-        //     }else{
-        //       ret.room_id = _res.data.roomId
-        //     }
-        //   }
-        // }else{
-        //   ret = false
-        // }
-        // resolve(ret)
       },
       fail: error => {
         reject(error)
@@ -68,6 +57,7 @@ const getInfo  = (param) => {
   })
 }
 
+// 准备操作
 const doReady = () => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
@@ -85,34 +75,9 @@ const doReady = () => {
 }
 
 
-const getRoomId = () => {
-  const token = wx.getStorageSync('token') || ''
-  return new Promise(function (resolve, reject) {
-    wx.request({
-      method: "POST",
-      url: Url + '/my-room/get-info?token=' + token,
-      data: {
-        mode: 'simple',
-        force: true
-      },
-      success: res => {
-        if (res.data && res.data.success) {
-          resolve(res.data.data.roomId)
-        } else {
-          resolve(res.data.data.roomId)
-        }
-      },
-      fail: error => {
-        reject(error)
-      }
-    })
-  })
-}
-
 module.exports = {
   enter: enter,
   exit: exit,
   getInfo: getInfo,
-  getRoomId: getRoomId,
   doReady: doReady,
 }

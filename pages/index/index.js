@@ -336,8 +336,8 @@ Page({
   getStatus: function () {
     const that = this
     return new Promise(function (resolve, reject) {
-      Api.MyRoom.getRoomId().then(function(room_id){
-        if(room_id>0){
+      Api.MyRoom.getInfo({mode:'simple',force: true}).then(function(res){
+        if(res.data.roomId > 0){
           return Api.getIsInGame().then(function(isInGame){
             that.setData({
               isInRoom: true,
