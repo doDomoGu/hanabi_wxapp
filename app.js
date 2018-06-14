@@ -35,8 +35,8 @@ App({
     // })
 
     // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.push({id:logs.length+1 , logTime:Date.now()})
-    wx.setStorageSync('logs', logs)
+    // var logs = wx.getStorageSync('logs') || []
+    // logs.push({id:logs.length+1 , logTime:Date.now()})
+    // wx.setStorageSync('logs', logs)
   }
 })
