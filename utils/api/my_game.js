@@ -1,6 +1,6 @@
 const Url = getApp().gData.apiBaseUrl
 
-
+// 开始游戏
 const start = () => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
@@ -17,7 +17,7 @@ const start = () => {
   })
 }
 
-
+// 获得信息
 const getInfo  = (param) => {
   if (!param.hasOwnProperty('mode')) { param.mode = 'all' }
   const token = wx.getStorageSync('token') || ''
@@ -36,6 +36,7 @@ const getInfo  = (param) => {
   })
 }
 
+// 打出（自己的）手牌
 const doPlay = (cardSelectOrd) => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
@@ -55,7 +56,7 @@ const doPlay = (cardSelectOrd) => {
   })
 }
 
-
+// 弃掉（自己的）手牌
 const doDiscard = (cardSelectOrd) => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
