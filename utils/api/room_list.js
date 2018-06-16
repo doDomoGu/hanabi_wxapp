@@ -1,10 +1,12 @@
 const Url = getApp().gData.apiBaseUrl
 
-const getList = () => {
+const getList = (param) => {
   const token = wx.getStorageSync('token') || ''
   return new Promise(function (resolve, reject) {
     wx.request({
-      url: Url + '/room?token=' + token,
+      method: "POST",
+      url: Url + '/room/list?token=' + token,
+      data:param,
       success: function (res) {
         if (res.data) {
           resolve(res.data)

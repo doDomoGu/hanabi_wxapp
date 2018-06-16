@@ -33,7 +33,7 @@ module.exports = (roomList, p) => {
     let id = roomList[i].id
     id = id < 10 ? '00' + id : '0' + id
     let title = roomList[i].title
-    let isLocked = roomList[i].password!==''
+    let isLocked = roomList[i].isLocked
 
     ctx.fillText(id, p.RL_innerLeftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i)
     ctx.fillText(title, p.RL_innerTitleLeftPad, p.RL_innerTopPad + p.RL_innerLineHeight * i)

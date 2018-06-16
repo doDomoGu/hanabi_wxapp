@@ -78,7 +78,7 @@ Page({
       return Canvas.init(that)
     }).then(function(){
       if ( that.data.isInRoom === false ) {
-        that.drawRoomList()
+        that.drawRoomList(true)
         let roomListInterval = setInterval(that.drawRoomList,1000)
         that.setData({
           roomListInterval : roomListInterval
@@ -106,18 +106,20 @@ Page({
     })
   },
 
-  drawRoomList : function(){
+  drawRoomList : function(force = false){
     let that = this
-    Api.RoomList.getList().then((roomList)=>{
-      //console.log(roomList)
-      //console.log(that.data.roomList)
-      /*if(roomList !== that.data.roomList){*/
-      //TODO roomList不变化不用重新绘制
-      that.setData({
-        roomList: roomList
-      })
-      Canvas.Draw.roomList(roomList,that.data.canvasParam)
-      /*}*/
+    Api.RoomList.getList({force: force}).then((res)=>{
+      if (res) {
+        if (res.success) {
+          if (!res.data.noUpdate) {
+            that.setData({
+              roomList: res.data.list
+            })
+
+            Canvas.Draw.roomList(that.data.roomList,that.data.canvasParam)
+          }
+        }
+      }
     })
   },
   drawMyRoom : function(force=false){

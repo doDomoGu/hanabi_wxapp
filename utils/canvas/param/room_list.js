@@ -1,8 +1,8 @@
 module.exports = (p) => {
   p.RL_bgColor = '#a2fff8'  //区域背景色
   p.RL_bgColor1 = '#FFFFFF'  //区域背景色1
-  p.RL_bgColor2 = '#2510cc'  //区域背景色2
-  p.RL_fontColor1 = '#2510cc' //文字颜色2
+  p.RL_bgColor2 = '#5290cc'  //区域背景色2
+  p.RL_fontColor1 = '#5290cc' //文字颜色2
   p.RL_fontColor2 = '#FFFFFF' //文字颜色2
 
   p.RL_fontSize = 18  //文字尺寸
