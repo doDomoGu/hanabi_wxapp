@@ -19,6 +19,10 @@ Page({
     cardSelectOrd: -1,
     //canIUse: wx.canIUse('button.open-type.getUserInfo'),
 
+    roomListInterval: -1,
+    myRoomInterval: -1,
+    myGameInterval: -1,
+
 
     roomList:[],
 
@@ -276,13 +280,17 @@ Page({
     } else if (canvas_name === 'my_room') {
       Canvas.Tap.myRoom(e, this).then(function(res){
         if (res === true) {
-          if (!that.data.isInRoom === true) {
-            that.drawRoomList()
+          if (!that.data.isInRoom) {
+
+            clearInterval(that.data.myRoomInterval)
+            that.drawRoomList(true)
             let roomListInterval = setInterval(that.drawRoomList,1000)
             that.setData({
-              roomListInterval : roomListInterval
+             // isInRoom: false,
+              roomListInterval : roomListInterval,
+              myRoomInterval : -1
             })
-          } else if (that.data.isInGame === true) {
+          } else if (that.data.isInGame) {
             that.drawMyGame(true)
             let myGameInterval = setInterval(that.drawMyGame,1000)
             that.setData({

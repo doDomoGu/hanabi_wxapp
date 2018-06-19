@@ -20,9 +20,8 @@ module.exports = (e, t) => {
     if (isTapExitBtn) {
       Api.MyRoom.exit().then(function (re) {
         if (re.success) {
-          clearInterval(t.data.myRoomInterval)
           t.setData({
-            isInRoom: false
+            isInRoom: false,
           })
           resolve(true)
         }else {
