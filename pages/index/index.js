@@ -62,6 +62,7 @@ Page({
 
 
     colors: ['white', 'blue', 'yellow', 'red', 'green'],
+    colorsCn: ['白', '蓝', '黄', '红', '绿'],
     numbers: [1, 1, 1, 2, 2, 3, 3, 4, 4, 5],
 
 

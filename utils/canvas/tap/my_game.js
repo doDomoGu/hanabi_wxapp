@@ -13,41 +13,46 @@ module.exports = (e, t) => {
     const guestHands = t.data.card.guestHands
 
     if( t.data.isHost ){
-      console.log('你是host')
+      // console.log('你是host')
     }else{
-      console.log('你是guest')
+      // console.log('你是guest')
     }
 
     let result = {}
 
     if (isYourRound) {
-      console.log('当前是你的回合')
+      // console.log('当前是你的回合')
       for (let i = 0; i < hostHands.length; i++) {
         if ( _isInPath({page: 'MyGame', item: 'hands', ord: hostHands[i].ord}, e, p)) {
-          console.log('点击了host的牌')
+          // console.log('点击了host的牌')
 
           result.item = 'hands'
           result.gameOperation = isHost ? 'self' : 'opposite'
           result.ord = i
           if(isHost){
-            console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
+            // console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
           }else{
-            console.log('牌: 颜色：'+ hostHands[i].color + ' 数字'+ hostHands[i].num)
+            // console.log('牌: 颜色：'+ hostHands[i].color + ' 数字'+ hostHands[i].num)
+            result.color = guestHands[i].color
+            result.num   = guestHands[i].num
           }
         }
       }
 
       for (let i = 0; i < guestHands.length; i++) {
         if ( _isInPath({page: 'MyGame', item: 'hands', ord: guestHands[i].ord}, e, p)) {
-          console.log('点击了guest的牌')
+          // console.log('点击了guest的牌')
 
           result.item = 'hands'
           result.gameOperation = isHost ? 'opposite' : 'self'
           result.ord = i
           if(isHost){
-            console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
+            result.color = guestHands[i].color
+            result.num   = guestHands[i].num
+
+            // console.log('牌: 颜色：'+ guestHands[i].color + ' 数字'+ guestHands[i].num)
           }else{
-            console.log('顺序 ：'+ (guestHands[i].ord +1 ) )
+            // console.log('顺序 ：'+ (guestHands[i].ord +1 ) )
 
           }
         }
