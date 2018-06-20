@@ -1,72 +1,65 @@
 const {drawRoundedRect}   = require('./common_func')
 
 module.exports = (tap, data, p) => {
-  const ctx = wx.createCanvasContext('gameOperationCanvas')
+  const ctx = wx.createCanvasContext('gameOperationOppositeCanvas')
 
-  const isHost = data.isHost
-  const tapIsHost = tap.isHost
-  const cardOrd = tap.ord
+  // const isHost = data.isHost
+  //const cardOrd = tap.ord
 
-  ctx.fillStyle = p.GO_areaBgColor
+  ctx.fillStyle = p.GOO_areaBgColor
   drawRoundedRect(
     {
-      x:p.GO_areaX,
-      y:p.GO_areaY,
-      w:p.GO_areaW,
-      h:p.GO_areaH
+      x:p.GOO_areaX,
+      y:p.GOO_areaY,
+      w:p.GOO_areaW,
+      h:p.GOO_areaH
     },
     p.radius,
     ctx
   )
 
-  if (isHost === tapIsHost) {
-    //点击了自己的手牌
 
-    ctx.fillStyle = p.GO_okBtnBgColor
-    drawRoundedRect(
-      {
-        x:p.GO_okBtnX,
-        y:p.GO_okBtnY,
-        w:p.GO_okBtnW,
-        h:p.GO_okBtnH
-      },
-      p.radius,
-      ctx
-    )
-
-
-
-    ctx.fillStyle = p.GO_cancelBtnBgColor
-    drawRoundedRect(
-      {
-        x:p.GO_cancelBtnX,
-        y:p.GO_cancelBtnY,
-        w:p.GO_cancelBtnW,
-        h:p.GO_cancelBtnH
-      },
-      p.radius,
-      ctx
-    )
-
-
-    ctx.setFontSize(13)
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-
-    ctx.fillStyle = p.GO_areaTextColor
-    ctx.fillText('确定要打出这张牌么', p.GO_areaX + p.GO_areaW / 2, p.GO_areaY + 30)
-
-    ctx.fillStyle = p.GO_okBtnTextColor
-    ctx.fillText('确定', p.GO_okBtnX + p.GO_okBtnW / 2, p.GO_okBtnY + p.GO_okBtnH / 2)
-
-    ctx.fillStyle = p.GO_cancelBtnTextColor
-    ctx.fillText('取消', p.GO_cancelBtnX + p.GO_cancelBtnW / 2, p.GO_cancelBtnY + p.GO_cancelBtnH / 2)
-
-  } else {
-    //点击了对面的手牌
+  // ctx.fillStyle = p.GOO_playBtnBgColor
+  // drawRoundedRect(
+  //   {
+  //     x:p.GOO_playBtnX,
+  //     y:p.GOO_playBtnY,
+  //     w:p.GOO_playBtnW,
+  //     h:p.GOO_playBtnH
+  //   },
+  //   p.radius,
+  //   ctx
+  // )
+  //
+  //
+  //
+  // ctx.fillStyle = p.GOO_discardBtnBgColor
+  // drawRoundedRect(
+  //   {
+  //     x:p.GOO_discardBtnX,
+  //     y:p.GOO_discardBtnY,
+  //     w:p.GOO_discardBtnW,
+  //     h:p.GOO_discardBtnH
+  //   },
+  //   p.radius,
+  //   ctx
+  // )
+  //
+  //
+  // ctx.setFontSize(13)
+  // ctx.textAlign = 'center'
+  // ctx.textBaseline = 'middle'
+  //
+  // ctx.fillStyle = p.GOO_areaTextColor
+  // ctx.fillText('选择要进行的操作', p.GOO_areaX + p.GOO_areaW / 2, p.GOO_areaY + 30)
+  //
+  // ctx.fillStyle = p.GOO_playBtnTextColor
+  // ctx.fillText(p.GOO_playBtnText, p.GOO_playBtnX + p.GOO_playBtnW / 2, p.GOO_playBtnY + p.GOO_playBtnH / 2)
+  //
+  // ctx.fillStyle = p.GOO_discardBtnTextColor
+  // ctx.fillText(p.GOO_discardBtnText, p.GOO_discardBtnX + p.GOO_discardBtnW / 2, p.GOO_discardBtnY + p.GOO_discardBtnH / 2)
 
 
-  }
 
   ctx.draw(true)
 }

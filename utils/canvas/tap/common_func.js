@@ -94,6 +94,32 @@ const _isInPath = (obj, e, p) => {
           break
       }
       break;
+    // 点击对面手牌后出现的界面
+    case 'GameOperationOpposite':
+      switch (item) {
+        // 在界面区域内 (点击区域外，隐藏(取消)界面)
+        case 'in-area':
+          x = p.GOO_areaX
+          y = p.GOO_areaY
+          w = p.GOO_areaW
+          h = p.GOO_areaH
+          break;
+        // // "打出"按钮
+        // case 'play-btn':
+        //   x = p.GOS_playBtnX
+        //   y = p.GOS_playBtnY
+        //   w = p.GOS_playBtnW
+        //   h = p.GOS_playBtnH
+        //   break;
+        // // "弃牌"按钮
+        // case 'discard-btn':
+        //   x = p.GOS_discardBtnX
+        //   y = p.GOS_discardBtnY
+        //   w = p.GOS_discardBtnW
+        //   h = p.GOS_discardBtnH
+        //   break
+      }
+      break;
   }
 
   // console.log("鼠标坐标：" + x + "," + y);
