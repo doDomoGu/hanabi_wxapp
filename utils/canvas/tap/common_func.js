@@ -73,24 +73,24 @@ const _isInPath = (obj, e, p) => {
       switch (item) {
         // 在界面区域内 (点击区域外，隐藏(取消)界面)
         case 'in-area':
-          x = p.GO_areaX
-          y = p.GO_areaY
-          w = p.GO_areaW
-          h = p.GO_areaH
+          x = p.GOS_areaX
+          y = p.GOS_areaY
+          w = p.GOS_areaW
+          h = p.GOS_areaH
           break;
         // "打出"按钮
         case 'play-btn':
-          x = p.GO_playBtnX
-          y = p.GO_playBtnY
-          w = p.GO_playBtnW
-          h = p.GO_playBtnH
+          x = p.GOS_playBtnX
+          y = p.GOS_playBtnY
+          w = p.GOS_playBtnW
+          h = p.GOS_playBtnH
           break;
         // "弃牌"按钮
         case 'discard-btn':
-          x = p.GO_discardBtnX
-          y = p.GO_discardBtnY
-          w = p.GO_discardBtnW
-          h = p.GO_discardBtnH
+          x = p.GOS_discardBtnX
+          y = p.GOS_discardBtnY
+          w = p.GOS_discardBtnW
+          h = p.GOS_discardBtnH
           break
       }
       break;

@@ -6,13 +6,13 @@ module.exports = (tap, data, p) => {
   const isHost = data.isHost
   //const cardOrd = tap.ord
 
-  ctx.fillStyle = p.GO_areaBgColor
+  ctx.fillStyle = p.GOS_areaBgColor
   drawRoundedRect(
     {
-      x:p.GO_areaX,
-      y:p.GO_areaY,
-      w:p.GO_areaW,
-      h:p.GO_areaH
+      x:p.GOS_areaX,
+      y:p.GOS_areaY,
+      w:p.GOS_areaW,
+      h:p.GOS_areaH
     },
     p.radius,
     ctx
@@ -20,13 +20,13 @@ module.exports = (tap, data, p) => {
 
   if (tap.gameOperation === 'self') {
     //点击了自己的手牌
-    ctx.fillStyle = p.GO_playBtnBgColor
+    ctx.fillStyle = p.GOS_playBtnBgColor
     drawRoundedRect(
       {
-        x:p.GO_playBtnX,
-        y:p.GO_playBtnY,
-        w:p.GO_playBtnW,
-        h:p.GO_playBtnH
+        x:p.GOS_playBtnX,
+        y:p.GOS_playBtnY,
+        w:p.GOS_playBtnW,
+        h:p.GOS_playBtnH
       },
       p.radius,
       ctx
@@ -34,13 +34,13 @@ module.exports = (tap, data, p) => {
 
 
 
-    ctx.fillStyle = p.GO_discardBtnBgColor
+    ctx.fillStyle = p.GOS_discardBtnBgColor
     drawRoundedRect(
       {
-        x:p.GO_discardBtnX,
-        y:p.GO_discardBtnY,
-        w:p.GO_discardBtnW,
-        h:p.GO_discardBtnH
+        x:p.GOS_discardBtnX,
+        y:p.GOS_discardBtnY,
+        w:p.GOS_discardBtnW,
+        h:p.GOS_discardBtnH
       },
       p.radius,
       ctx
@@ -51,14 +51,14 @@ module.exports = (tap, data, p) => {
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
 
-    ctx.fillStyle = p.GO_areaTextColor
-    ctx.fillText('选择要进行的操作', p.GO_areaX + p.GO_areaW / 2, p.GO_areaY + 30)
+    ctx.fillStyle = p.GOS_areaTextColor
+    ctx.fillText('选择要进行的操作', p.GOS_areaX + p.GOS_areaW / 2, p.GOS_areaY + 30)
 
-    ctx.fillStyle = p.GO_playBtnTextColor
-    ctx.fillText(p.GO_playBtnText, p.GO_playBtnX + p.GO_playBtnW / 2, p.GO_playBtnY + p.GO_playBtnH / 2)
+    ctx.fillStyle = p.GOS_playBtnTextColor
+    ctx.fillText(p.GOS_playBtnText, p.GOS_playBtnX + p.GOS_playBtnW / 2, p.GOS_playBtnY + p.GOS_playBtnH / 2)
 
-    ctx.fillStyle = p.GO_discardBtnTextColor
-    ctx.fillText(p.GO_discardBtnText, p.GO_discardBtnX + p.GO_discardBtnW / 2, p.GO_discardBtnY + p.GO_discardBtnH / 2)
+    ctx.fillStyle = p.GOS_discardBtnTextColor
+    ctx.fillText(p.GOS_discardBtnText, p.GOS_discardBtnX + p.GOS_discardBtnW / 2, p.GOS_discardBtnY + p.GOS_discardBtnH / 2)
 
   } else if (tap.gameOperation === 'opposite') {
     //点击了对面的手牌
