@@ -338,6 +338,16 @@ Page({
               gameOperation : null,
               cardSelectOrd : -1
             })
+          } else if (res.item === 'cue-num') {
+            that.setData({
+              gameOperation : null,
+              cardSelectOrd : -1
+            })
+          } else if (res.item === 'cue-color') {
+            that.setData({
+              gameOperation : null,
+              cardSelectOrd : -1
+            })
           }
         }
       })

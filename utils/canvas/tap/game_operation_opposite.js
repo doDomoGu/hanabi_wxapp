@@ -8,26 +8,26 @@ module.exports = (e, t) => {
 
     const isTapInArea = _isInPath({page: 'GameOperationOpposite', item: 'in-area'}, e, p)
 
-    let cardSeletedOrd = t.data.isHost ? t.data.cardSelectOrd : t.data.cardSelectOrd + 5
+    let cardSeletedOrd = t.data.isHost ? t.data.cardSelectOrd + 5 : t.data.cardSelectOrd
 
     if (isTapInArea) {
-      /*if (_isInPath({page: 'GameOperationOpposite', item: 'play-btn'}, e, p)){
-        Api.MyGame.doPlay(cardSeletedOrd).then(function (re) {
+      if (_isInPath({page: 'GameOperationOpposite', item: 'cue-num'}, e, p)){
+        Api.MyGame.doCue('num', cardSeletedOrd).then(function (re) {
           if (re.success) {
             resolve(true)
           }
         })
-        result.item = 'play-btn'
+        result.item = 'cue-num'
         result.success = true
-      } else if (_isInPath({page: 'GameOperationOpposite', item: 'discard-btn'}, e, p)){
-        Api.MyGame.doDiscard(cardSeletedOrd).then(function (re) {
+      } else if (_isInPath({page: 'GameOperationOpposite', item: 'cue-color'}, e, p)){
+        Api.MyGame.doCue('color', cardSeletedOrd).then(function (re) {
           if (re.success) {
             resolve(true)
           }
         })
-        result.item = 'discard-btn'
+        result.item = 'cue-color'
         result.success = true
-      }*/
+      }
     }else{
       result.item = 'outer-area'
       result.success = true

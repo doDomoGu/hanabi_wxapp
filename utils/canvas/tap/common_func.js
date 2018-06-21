@@ -104,20 +104,20 @@ const _isInPath = (obj, e, p) => {
           w = p.GOO_areaW
           h = p.GOO_areaH
           break;
-        // // "打出"按钮
-        // case 'play-btn':
-        //   x = p.GOS_playBtnX
-        //   y = p.GOS_playBtnY
-        //   w = p.GOS_playBtnW
-        //   h = p.GOS_playBtnH
-        //   break;
-        // // "弃牌"按钮
-        // case 'discard-btn':
-        //   x = p.GOS_discardBtnX
-        //   y = p.GOS_discardBtnY
-        //   w = p.GOS_discardBtnW
-        //   h = p.GOS_discardBtnH
-        //   break
+        // 提示数字
+        case 'cue-num':
+          x = p.GOO_cueNumX
+          y = p.GOO_cueNumY
+          w = p.GOO_cueNumW
+          h = p.GOO_cueNumH
+          break;
+        // 提示颜色
+        case 'cue-color':
+          x = p.GOO_cueColorX
+          y = p.GOO_cueColorY
+          w = p.GOO_cueColorW
+          h = p.GOO_cueColorH
+          break;
       }
       break;
   }

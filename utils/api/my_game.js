@@ -76,9 +76,32 @@ const doDiscard = (cardSelectOrd) => {
   })
 }
 
+// 提示手牌
+// 参数 type : 提示类型 ，'num' 或 'color'
+const doCue = (cueType, cardSelectOrd) => {
+  const token = wx.getStorageSync('token') || ''
+  return new Promise(function (resolve, reject) {
+    wx.request({
+      method: "POST",
+      url: Url + '/my-game/do-cue?token=' + token,
+      data:{
+        cardSelectOrd: cardSelectOrd,
+        cueType: cueType
+      },
+      success: res => {
+        resolve(res.data)
+      },
+      fail: error => {
+        reject(error)
+      }
+    })
+  })
+}
+
 module.exports = {
   start: start,
   getInfo: getInfo,
   doPlay: doPlay,
-  doDiscard: doDiscard
+  doDiscard: doDiscard,
+  doCue: doCue
 }
