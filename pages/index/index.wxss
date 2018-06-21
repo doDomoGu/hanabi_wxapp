@@ -38,3 +38,15 @@
 canvas.hidden {
   display:none;
 }
+
+#game-log {
+  padding-left:10rpx;
+  padding-top:10rpx;
+}
+
+#game-log li {
+  display:block;
+  float:left;
+  font-size:12px;
+
+}

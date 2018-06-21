@@ -49,6 +49,17 @@ const init = (t) => {  // t = this
           canvasParam: p
         })
 
+        //7.游戏日志位置参数
+        let gameLogPosition = {
+          top:p.MG_historyAreaY,
+          left:10,
+          width:p.MG_historyAreaW - 20,
+          height:p.MG_historyAreaH - 14
+        }
+
+        t.setData({
+          gameLogPosition: gameLogPosition
+        })
         resolve()
       }
     })
