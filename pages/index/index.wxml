@@ -4,14 +4,16 @@
 
   <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_room" bindtap="tap" />
 
-  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:1;" data-canvas="my_game" bindtap="tap" />
+  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:1;" data-canvas="my_game" bindtap="tap" >
+    <cover-view class="{{(isInRoom && isInGame) ? '':'hidden'}}" id="game-log" style="position:absolute;top:{{gameLogPosition.top}}px;left:{{gameLogPosition.left}}px;height:{{gameLogPosition.height}}px;width:{{gameLogPosition.width}}px;z-index:8;overflow-y:scroll;">
+        <cover-view wx:for="{{log}}" wx:for-item="logItem" wx:key="i">{{logItem}}</cover-view>
+    </cover-view>
+  </canvas>
 
   <canvas class="{{(isInRoom && isInGame && gameOperation==='self') ? '':'hidden'}}" canvas-id="gameOperationSelfCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:10;background:rgba(10,10,10,0.5);" data-canvas="game_operation_self" bindtap="tap" />
 
   <canvas class="{{(isInRoom && isInGame && gameOperation==='opposite') ? '':'hidden'}}" canvas-id="gameOperationOppositeCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:10;background:rgba(10,10,10,0.5);" data-canvas="game_operation_opposite" bindtap="tap" />
 
-  <div class="{{(isInRoom && !isInGame) ? '':'hidden'}}" id="game-log" style="position:absolute;top:{{gameLogPosition.top}}px;left:{{gameLogPosition.left}}px;height:{{gameLogPosition.height}}px;width:{{gameLogPosition.width}}px;z-index:8;overflow-y:scroll;">
-      <li wx:for="{{log}}" wx:for-item="logItem" wx:key="i">{{logItem}}</li>
-  </div>
+
 
 </view>
