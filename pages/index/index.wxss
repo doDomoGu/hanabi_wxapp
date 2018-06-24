@@ -40,13 +40,14 @@ canvas.hidden {
 }
 
 #game-log {
-  padding-left:10rpx;
-  padding-top:10rpx;
+  padding-left:10px;
+  padding-top:10px;
 }
 
-#game-log li {
+#game-log .log-item {
   display:block;
   float:left;
   font-size:12px;
-
+  white-space:normal;
+  height:70rpx;
 }
