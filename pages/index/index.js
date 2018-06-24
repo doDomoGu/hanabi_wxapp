@@ -191,7 +191,7 @@ Page({
                     card: res.data.card,
                     game: res.data.game,
                     isPlaying: res.data.isPlaying,
-                    log: res.data.log
+                    log: res.data.log.reverse()
                   })
 
                   Canvas.Draw.myGame(that.data,that.data.canvasParam)
