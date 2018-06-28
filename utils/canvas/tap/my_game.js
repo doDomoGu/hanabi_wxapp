@@ -33,8 +33,8 @@ module.exports = (e, t) => {
             // console.log('顺序 ：'+ (hostHands[i].ord +1 ) )
           }else{
             // console.log('牌: 颜色：'+ hostHands[i].color + ' 数字'+ hostHands[i].num)
-            result.color = guestHands[i].color
-            result.num   = guestHands[i].num
+            result.color = hostHands[i].color
+            result.num   = hostHands[i].num
           }
         }
       }
