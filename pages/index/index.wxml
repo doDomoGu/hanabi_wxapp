@@ -4,8 +4,8 @@
 
   <canvas class="{{(isInRoom && !isInGame) ? '':'hidden'}}" canvas-id="myRoomCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;" data-canvas="my_room" bindtap="tap" />
 
-  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:1;" data-canvas="my_game" bindtap="tap" >
-    <cover-view class="{{(isInRoom && isInGame) ? '':'hidden'}}" id="game-log" style="position:absolute;top:{{gameLogPosition.top}}px;left:{{gameLogPosition.left}}px;height:{{gameLogPosition.height}}px;width:{{gameLogPosition.width}}px;z-index:8;overflow-y:scroll;">
+  <canvas class="{{(isInRoom && isInGame) ? '':'hidden'}}" canvas-id="myGameCanvas" style="position:absolute;height:{{canvasParam.height}}px;width:{{canvasParam.width}}px;z-index:1;" data-canvas="my_game" disable-scroll="true"   bindtap="tap" >
+    <cover-view scroll-top="{{scrollTop}}" class="{{(isInRoom && isInGame) ? '':'hidden'}}" id="game-log" style="position:absolute;top:{{gameLogPosition.top}}px;left:{{gameLogPosition.left}}px;height:{{gameLogPosition.height}}px;width:{{gameLogPosition.width}}px;z-index:8;overflow-y:scroll;">
             <cover-view class="log-item" wx:for="{{log}}" wx:for-item="logItem" wx:key="i">{{logItem}}</cover-view>
         </cover-view>
   </canvas>

@@ -65,6 +65,7 @@ Page({
     colorsCn: ['白', '蓝', '黄', '红', '绿'],
     numbers: [1, 1, 1, 2, 2, 3, 3, 4, 4, 5],
 
+    scrollTop:0,
 
     canvasParam: {}
   },
@@ -99,10 +100,10 @@ Page({
           })
         }else{
           that.drawMyGame(true)
-          let myGameInterval = setInterval(that.drawMyGame,1000)
-          that.setData({
-            myGameInterval : myGameInterval
-          })
+          // let myGameInterval = setInterval(that.drawMyGame,1000)
+          // that.setData({
+          //   myGameInterval : myGameInterval
+          // })
         }
       }
     }).catch(function(err){
@@ -194,6 +195,10 @@ Page({
                     log: res.data.log.reverse()
                   })
 
+                  that.setData({
+                    scrollTop:0
+                  })
+
                   Canvas.Draw.myGame(that.data,that.data.canvasParam)
                 }
               } else {
@@ -262,8 +267,17 @@ Page({
       console.log('draw go wrong')
     }
   },
-
+  startHandle : function(e) {
+    console.log(e)
+    console.log(123123)
+  },
+  moveHandle : function(e) {
+    // console.log(2222)
+    console.log(e)
+    console.log(111)
+  },
   tap: function(e) {
+    console.log(222)
     let that = this
     const canvas_name = e.currentTarget.dataset.canvas
     //let tap

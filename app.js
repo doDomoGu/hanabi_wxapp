@@ -1,7 +1,8 @@
 App({
   gData : {
-    //apiBaseUrl: "http://192.168.31.176:8889/v1",
-    apiBaseUrl: "http://192.168.0.110:8889/v1",
+    // apiBaseUrl: "http://192.168.31.176:8889/v1",
+    apiBaseUrl: "http://192.168.31.241:8889/v1",
+    //apiBaseUrl: "http://10.21.1.21:8889/v1",
     //apiBaseUrl: "https://api.hanabi8.com/v1",
   },
   onLaunch: function () {

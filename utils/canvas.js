@@ -25,7 +25,7 @@ const init = (t) => {  // t = this
       success: function (res) {
         let p = t.data.canvasParam
         p.width = res.windowWidth
-        p.height = res.windowHeight
+        p.height = res.windowHeight - 100
         p.ratio = res.pixelRatio
         // console.log('width : '+ p.width)
         // console.log('height : '+ p.height)
